@@ -1,0 +1,90 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+% thesis.tex
+%
+% Enjoy, evolve, and share!
+%
+% Compile it as follows:
+%	xelatex demo.tex
+%   bibtex demo.aux
+%   bibtex lop.aux (run this, only if you pass option 'lop' below)
+%   xelatex demo.tex && xelatex demo.tex
+%
+% Alternatively, compile it using `make -i' (see the provided Makefile).
+%
+% Check file `diphdthesis.cls' for other configuration options.
+%
+\documentclass[inscr,ack,preface]{diphdthesis}
+
+%\usepackage{graphicx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% User-specific package inclusions %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{
+    unicode=true,                     % non-Latin characters in bookmarks
+    pdffitwindow=true,                % page fit to window when opened
+    pdfnewwindow=true,                % links in new window
+    pdfkeywords={},                   % list of keywords
+    colorlinks=true,                  % false: boxed links; true: colored links
+    linkcolor=black,                  % color of internal links
+    citecolor=black,                  % color of links to bibliography
+    filecolor=black,                  % color of file links
+    urlcolor=black,                   % color of external links
+    pdftitle={},                      % title
+    pdfauthor={},                     % author
+    pdfsubject={}                     % subject of the document
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% User-specific package inclusions %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% User-specific configuration %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% User-specific configuration %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%
+% Set the .bib file containing your paper publications (leave the extension out)
+%
+% This is optional, but it should be specified when option 'lop' is passed to
+% the document class.
+%
+% Then, inside the document environment, you may use the command '\nocitelop' to
+% site your papers, as you would traditionally do with the commands '\cite' or
+% '\nocite'.
+%
+% The papers are printed in reverse chronological order.
+%
+%\lopfile{mypapers/pubs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Required Metadata %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% the front matter
+
+\frontmatter
+
+% site my papers
+%\nocitelop{}
+
+\mainmatter
+
+% include each chapter...
+% \setcounter{chapter}{-1}  % start chapter numbering at 0
+\include{chapters/introduction}
+\include{chapters/chapter1}
+\include{chapters/conclusion}
+
+\backmatter
+
+\end{document}
