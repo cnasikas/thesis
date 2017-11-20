@@ -394,9 +394,9 @@ publications}\gdef\@lopfileinternal{#1}}
 
       {\bfseries
       \ifenglishfrontpage
-      	PhD THESIS
+      	Masters Thesis
       \else
-      	ΔΙΔΑΚΤΟΡΙΚΗ ΔΙΑΤΡΙΒΗ
+      	Διπλωματική Εργασία
       \fi}
       \linebreak\linebreak\linebreak
 
@@ -774,7 +774,7 @@ publications}\gdef\@lopfileinternal{#1}}
       \include{chapters/appendixA}
     \end{appendix}
     \bibliographystyle{plain}
-    \bibliography{references}
+    % \bibliography{./references.bib} - Moved to root due to cite autocomplete bugs with atom-latextools package
     % include it also in ToC (do sth on your own)
     \addcontentsline{toc}{chapter}{REFERENCES}
 }

@@ -1,0 +1,25 @@
+%!TEX root = ../thesis.tex
+\chapter{Blockchain Technologies}
+\label{blockchain_technologies}
+
+A blockchain is a distributed transaction ledger~\cite{nakamoto2012bitcoin}.
+Blockchain consist of a continuously growing list of records, which are called blocks, and are linked, secured and immutable.
+Each block typically contains a hash pointer being a link to a previous block, a timestamp and transaction data~\cite{wiki:blockchain}.
+Blockchain has a high Byzantine fault tolerance because of a decentralized consensus mechanism.
+This makes blockchains potentially suitable for the recording of events, medical records~\cite{blockchain_ehr,Azaria2016}, and other records management activities,
+such as identity management, transaction processing or documenting provenance~\cite{wiki:blockchain}. Blockchain could be seen as a distributed immutable, tamper-proof,
+and audit log that records every data transaction. As a result any attempt to tamper blockchain is immediately evident and easily detectable.
+The first successful financial implementation of blockchain is Bitcoin.
+Bitcoin is the first decentralized digital currency and payment system invented by an unknown person or group of people under the name Satoshi Nakamoto~\cite{nakamoto2012bitcoin,wiki:bitcoin}.
+
+\section{Blockchain Types}\label{blockchain_types}
+
+There are various types of blockchains varying in restrictions on data access and participation in the consensus process.
+Each one has its own advantages and disadvantages.
+
+\begin{itemize}
+  \item Public Blockchain: A public blockchain is a blockchain, in which there are no restrictions on reading blockchain data -encrypted or not- and validating transactions~\cite{prbc_vs_pubbc}.
+  The most common implementation of a public blockchain is Bitcoin~\cite{nakamoto2012bitcoin} and Ethereum~\cite{ethash}.
+  \item Federated or Consortium blockchain: In a federated blockchain transaction validation is limited to a predefined list of entities with their identities known to the network. Data access can either be public or restricted~\cite{prbc_vs_pubbc}.
+  \item Private blockchain: A private blockchain is a blockchain where consensus mechanism is centralized to one single entity regardless of data access~\cite{prbc_vs_pubbc}.
+\end{itemize}
