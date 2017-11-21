@@ -12,7 +12,7 @@ and audit log that records every data transaction. As a result any attempt to ta
 The first successful financial implementation of blockchain is Bitcoin.
 Bitcoin is the first decentralized digital currency and payment system invented by an unknown person or group of people under the name Satoshi Nakamoto~\cite{nakamoto2012bitcoin,wiki:bitcoin}.
 
-\section{Blockchain Types}\label{blockchain_types}
+\section{Blockchain Types}\label{bltech:blockchain_types}
 
 There are various types of blockchains varying in restrictions on data access and participation in the consensus process.
 Each one has its own advantages and disadvantages.
@@ -23,3 +23,132 @@ Each one has its own advantages and disadvantages.
   \item Federated or Consortium blockchain: In a federated blockchain transaction validation is limited to a predefined list of entities with their identities known to the network. Data access can either be public or restricted~\cite{prbc_vs_pubbc}.
   \item Private blockchain: A private blockchain is a blockchain where consensus mechanism is centralized to one single entity regardless of data access~\cite{prbc_vs_pubbc}.
 \end{itemize}
+
+\section{Consensus defined types of Blockchain}\label{bltech:consensus_blockchain_types}
+
+\begin{itemize}
+  \item Permissionless blockchain: A permissionless blockchain is a blockchain, in which there are no restrictions on identities of transaction processors (i.e., users that are eligible to create blocks of transactions)~\cite{prbc_vs_pubbc}.
+  \item Permissioned blockchain: A permissioned blockchain is a blockchain, in which transaction processing is performed by a predefined list of subjects with known identities~\cite{prbc_vs_pubbc}.
+\end{itemize}
+
+\begin{table}[]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{|l|l|l|l|}
+      \hline
+       & Public & Permissioned (Multiple Entities) & Private (Single Entity) \\ \hline
+       Participants & Permissionless - Anonymous & Permissioned - Identified, Trusted & Permissioned - Identified, Trusted \\ \hline
+       Data Access & Public & Public or Restricted & Restricted \\ \hline
+       Consensus & PoW, PoS & FBTA, PoS & FBTA \\ \hline
+    \end{tabular}
+  }
+  \caption{Blockchain Types. Source~\cite{hub-bl-types}}
+  \label{table:blockchain_types}
+\end{table}
+
+\section{Consensus mechanisms}\label{bltech:consensus_mechanisms}
+
+The consensus mechanism is the core mechanism of the blockchain. Through consensus, the shared state of the ledger comes to an agreement upon a global state,
+allowing all the nodes of the network to reach the same ledger state. Achieving consensus in a distributed system is challenging.
+A consensus mechanism has to be resilient to node failures, network delays and the existence of malicious nodes~\cite{wiki:byzantine_fault_tolerance}.
+
+There are three basic consensus mechanism categories:
+
+\begin{enumerate}
+  \item Proof-of-Work (PoW).
+  \item Proof-of-Stake (PoS).
+  \item Practical Byzantine Fault Tolerance (PBFT)
+\end{enumerate}
+
+
+\subsection{Proof of Work (PoW)}\label{bltech:consensus:pow}
+
+In the case of Proof-of-Work consensus mechanism, each network node participating in
+the consensus tries to solve a computational puzzle that is computational hard, but feasible to find, and easy to verify correctness.
+A PoW system is also based on randomness, which is approximated proportionally to the computational power of each node.
+The participating nodes are bound to trial and error until a correct answer is found. Being a blockchain system a random node is selected as a winner for block creation.
+In order for a block to be accepted by the rest of consensus participants, they must complete a proof of work based on the data of the block.
+The difficulty of the work is adjusted in a way that a new block is generated in a specific time interval on average.
+
+The process of solving a PoW computational puzzle is known as mining and the participants as miners.
+The first miner that solves the puzzle gets to add the proposed block to the blockchain and broadcast
+the block to the entire network. Due to network latency and the distributed nature of the system it is possible that two miners will
+find a block around the same time and some nodes will accept the first block and some others the second one. In such cases there is a temporary
+fork in the blockchain, where one node is adding blocks to one branch while other nodes are adding blocks to another branch. Eventually the
+system will come to an agreement, the longest branch will be accepted and the others will be discarded.
+
+Bitcoin~\cite{Zohar:2015:BUH:2817191.2701411} is the first blockchain system that utilizes a PoW for blockchain block generation. Due to the nature of PoW, bitcoin is vulnerable to 51\% attacks.
+This means that if a node or a group of nodes is able to control over 51\% of the computational power of the network, it is able to manipulate
+the verification process: by writing its own blocks, it has made it possible to double-spend funds or reject certain transactions.
+
+PoW consensus mechanism works very well in public blockchain systems where trust of the nodes is low eliminating
+the double-spend problem -to redirect previously processed payments and use the same money twice- and guarding against Sybil attacks~\cite{Vu:2009:PCP:1671222}.
+However, the transaction confirmation time is longer compared to conventional financial services (such as VISA)\cite{Sompolinsky2015,Zohar:2015:BUH:2817191.2701411,DBLP:journals/corr/abs-1708-05665} resulting
+in slower transaction confirmation rates. Lastly, the energy waste attributed to the mining process can be very high -the energy requirements
+of the Bitcoin protocol are estimated to be comparable to those of a small country~\cite{6912770}.
+
+\subsection{Proof of Stake (PoS)}\label{bltech:consensus:pos}
+
+Proof-of-Stake algorithms are designed to overcome the disadvantages of PoW in terms of the high electricity consumption involved in mining~\cite{bl_consensus}
+and provide equal security guarantees~\cite{Kiayias2017}. Unlike PoW where the miners solve computational puzzles in order to create a new block, in PoS the choice
+of the block creator among the miners is random, yet relative to the stake the miner possesses according to the current blockchain ledger. Maintaining
+the blockchain relies on the stakeholders themselves and assigns work to them based on the amount of stake that each possesses as reported in the ledge~\cite{Kiayias2017}.
+The higher the stake participant, the higher the possibility to be chosen.
+
+Proof-of-Stake algorithms suffer from the so-called “nothing at stake” problem.
+The “nothing at stake” problem refers to attacks against PoS blockchain systems where shareholders do not have
+incentives to follow the protocol and vote simultaneously on multiple blockchains exploiting the fact that little computational effort
+is needed to build a PoS blockchain~\cite{Kiayias2017}. Ouroboros is the first provable secure PoS algorithm~\cite{Kiayias2017} and is the main consensus algorithm of the Cardano blockchain~\cite{cardano_site}.
+
+\subsection{Practical Byzantine Fault Tolerance (PBFT)}\label{bltech:consensus:PBFT}
+
+The Practical Byzantine Fault Tolerance algorithm~\cite{Castro:1999:PBF:296806.296824} is the first practical consensus algorithm with Byzantine Fault Tolerance~\cite{wiki:byzantine_fault_tolerance}.
+It is based on the concept of state machine replication and replication state voting, and is able to process tens of thousands of requests per second with minimal latency.
+The algorithm has only a 3\% overhead over a typical filesystem~\cite{Castro:1999:PBF:296806.296824}.
+
+PBFT and state-machine replication protocols’ downside is related to scalability, in terms of the number of nodes (replicas)~\cite{Vukolić2016} that can be supported.
+PBFT has only been scaled and studied up to 20 replicas~\cite{bl_consensus,Vukolić2016}. To overcome this limitation, without compromising security, various PBFT variants,
+such as Ripple and Stellar, partition the network into smaller groups called federates and each one runs a local consensus protocol among its members and
+global consensus is achieved when certain conditions are being met~\cite{DBLP:journals/corr/abs-1708-05665}.
+
+\section{Blockchain Implementations}\label{blockchain_implementations}
+
+\subsection{Bitcoin}\label{bltech:impl:bitcoin}
+\subsection{Ethereum}\label{bltech:impl:ethereum}
+
+Ethereum is an open-source, public, blockchain-based distributed computing platform featuring smart contract functionality.
+It provides a decentralized Turing-complete virtual machine, the Ethereum Virtual Machine (EVM), which can execute scripts using an
+international network of public nodes~\cite{wiki:ethereum}. Ethereum provides a cryptocurrency called ether which can be transferred between accounts and gas,
+an internal pricing mechanism used to execute contracts and allocate resources on the network. Through EVM, Ethereum provides Solidity a
+Turing-complete language for writing smart contracts that enables anyone to build distributed applications making the process much easier and efficient than ever before.
+Ethereum use a Proof-of-Work consensus mechanism called Ethash and has been designed to be ASIC-resistant~\cite{ethash}.
+Soon Ethereum will be moved to a Proof-of-Stake consensus mechanism called Casper. Ethereum can be implemented as well as a permissioned blockchain~\cite{consortium_chain_development,quorum}.
+
+
+\subsection{Hyperledger}\label{bltech:impl:hyperledger}
+
+Hyperledger is an open-source permissioned blockchain and provides a flexible, modular and secure architecture with a
+pluggable consensus mechanism is among the most popular permissioned blockchains~\cite{DBLP:journals/corr/abs-1708-05665}. In Hyperledger, Fabric a predefined list of
+entities is not only known, but their identities and roles are registered and verified with a central registry service running within the system.
+It also supports smart contracts on the blockchain, also known as chaincode~\cite{bl_consensus} and does not support a cryptocurrency system. The default consensus
+mechanism of Hyperledger is the Practical Byzantine Fault Tolerance algorithm (PBFT) which assumes authenticated nodes.
+Hyperledger version 0.6 fails to scale up to more than 16 nodes~\cite{DBLP:journals/corr/abs-1708-05665} but version 1.0 architecture has been designed to address transaction and
+node scalability in a manner adherent with regulatory and industry standard~\cite{imb_hypeledger_adv}.
+
+\subsection{Cardano}\label{bltech:impl:cardano}
+
+Cardano is a security focused blockchain that utilize the latest research and engineering insights to build a platform suitable for
+the highest value applications~\cite{cardano_site}. It supports distributed applications creation and smart contracts verifiable by a method called formal
+verification allowing logical proof of correctness of code providing high security. Cardano addresses the need for regulatory oversight while
+maintaining consumer privacy and security. Cardano is the first blockchain project to be peer reviewed by academic researchers~\cite{cardano_site} and its consensus
+mechanism, Ouroboros, is the first Proof of Stake algorithm to be provably secure~\cite{Kiayias2017}.
+Cardano consists of two main layers, one for accounting and one for computation. The accounting layer is called Cardano Settlement Layer (CSL)
+and the computation layer Cardano Computation Layer (CCP) where distributed application can be built and run upon. The CCP layer has not been
+implemented yet and there is a plan to be released as a beta by the first quarter of 2018~\cite{cardano_parsons}.
+
+\subsection{Enigma}\label{bltech:impl:enigma}
+
+Enigma is a decentralized computation platform with guaranteed privacy~\cite{DBLP:journals/corr/ZyskindNP15}. It operates through a peer-to-peer network enabling
+different parties to store and run computation on data while keeping privacy. Enigma uses a highly optimized version of secure multi-party computation (MPC)
+guaranteed by a verifiable secret-sharing scheme~\cite{DBLP:journals/corr/ZyskindNP15}. A blockchain is utilized as the controller of the network, managing access to the data and identities.
+The data are stored off-chain, encrypted in a distributed database, and a modified distributed hash table (DTH), accessible through the blockchain, is used for holding only references to the data.
