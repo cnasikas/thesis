@@ -12,39 +12,17 @@ and audit log that records every data transaction. As a result any attempt to ta
 The first successful financial implementation of blockchain is Bitcoin.
 Bitcoin is the first decentralized digital currency and payment system invented by an unknown person or group of people under the name Satoshi Nakamoto~\cite{nakamoto2012bitcoin,wiki:bitcoin}.
 
-\section{Blockchain Types}\label{blockchain:blockchain_types}
+\section{History}\label{blockchain:history}
 
-There are various types of blockchains varying in restrictions on data access and participation in the consensus process.
-Each one has its own advantages and disadvantages.
+\section{Structure}\label{blockchain:structure}
 
-\begin{itemize}
-  \item Public Blockchain: A public blockchain is a blockchain, in which there are no restrictions on reading blockchain data -encrypted or not- and validating transactions~\cite{prbc_vs_pubbc}.
-  The most common implementation of a public blockchain is Bitcoin~\cite{nakamoto2012bitcoin} and Ethereum~\cite{ethash}.
-  \item Federated or Consortium blockchain: In a federated blockchain transaction validation is limited to a predefined list of entities with their identities known to the network. Data access can either be public or restricted~\cite{prbc_vs_pubbc}.
-  \item Private blockchain: A private blockchain is a blockchain where consensus mechanism is centralized to one single entity regardless of data access~\cite{prbc_vs_pubbc}.
-\end{itemize}
+\section{Identity}\label{blockchain:identity}
 
-\section{Consensus defined types of Blockchain}\label{blockchain:consensus_blockchain_types}
+\section{Incentives}\label{blockchain:incentives}
 
-\begin{itemize}
-  \item Permissionless blockchain: A permissionless blockchain is a blockchain, in which there are no restrictions on identities of transaction processors (i.e., users that are eligible to create blocks of transactions)~\cite{prbc_vs_pubbc}.
-  \item Permissioned blockchain: A permissioned blockchain is a blockchain, in which transaction processing is performed by a predefined list of subjects with known identities~\cite{prbc_vs_pubbc}.
-\end{itemize}
-
-\begin{table}[]
-  \centering
-  \resizebox{\textwidth}{!}{
-    \begin{tabular}{|l|l|l|l|}
-      \hline
-       & Public & Permissioned (Multiple Entities) & Private (Single Entity) \\ \hline
-       Participants & Permissionless - Anonymous & Permissioned - Identified, Trusted & Permissioned - Identified, Trusted \\ \hline
-       Data Access & Public & Public or Restricted & Restricted \\ \hline
-       Consensus & PoW, PoS & FBTA, PoS & FBTA \\ \hline
-    \end{tabular}
-  }
-  \caption{Blockchain Types. Source~\cite{hub-bl-types}}
-  \label{table:blockchain_types}
-\end{table}
+For miners to participate in the network and contribute their computation resources incentives must be provided.
+Normally, in permissionless blockchains such as Bitcoin or Ethereum a monetary incentive in the form of cryptocurrency
+incentivize the miners and in a permissioned blockchain finance incentives or access to blockchain data could encourage miners to participate~\cite{deloitte}.
 
 \section{Consensus mechanisms}\label{blockchain:consensus_mechanisms}
 
@@ -130,6 +108,40 @@ global consensus is achieved when certain conditions are being met~\cite{DBLP:jo
   }
   \caption{Blockchain consensus mechanisms. Adapted and modified from~\cite{bl_consensus,Vukolić2016}}
   \label{table:blockchain_consensus}
+\end{table}
+
+\section{Blockchain Types}\label{blockchain:blockchain_types}
+
+There are various types of blockchains varying in restrictions on data access and participation in the consensus process.
+Each one has its own advantages and disadvantages.
+
+\begin{itemize}
+  \item Public Blockchain: A public blockchain is a blockchain, in which there are no restrictions on reading blockchain data -encrypted or not- and validating transactions~\cite{prbc_vs_pubbc}.
+  The most common implementation of a public blockchain is Bitcoin~\cite{nakamoto2012bitcoin} and Ethereum~\cite{ethash}.
+  \item Federated or Consortium blockchain: In a federated blockchain transaction validation is limited to a predefined list of entities with their identities known to the network. Data access can either be public or restricted~\cite{prbc_vs_pubbc}.
+  \item Private blockchain: A private blockchain is a blockchain where consensus mechanism is centralized to one single entity regardless of data access~\cite{prbc_vs_pubbc}.
+\end{itemize}
+
+\section{Consensus defined types of Blockchain}\label{blockchain:consensus_blockchain_types}
+
+\begin{itemize}
+  \item Permissionless blockchain: A permissionless blockchain is a blockchain, in which there are no restrictions on identities of transaction processors (i.e., users that are eligible to create blocks of transactions)~\cite{prbc_vs_pubbc}.
+  \item Permissioned blockchain: A permissioned blockchain is a blockchain, in which transaction processing is performed by a predefined list of subjects with known identities~\cite{prbc_vs_pubbc}.
+\end{itemize}
+
+\begin{table}[]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{|l|l|l|l|}
+      \hline
+       & Public & Permissioned (Multiple Entities) & Private (Single Entity) \\ \hline
+       Participants & Permissionless - Anonymous & Permissioned - Identified, Trusted & Permissioned - Identified, Trusted \\ \hline
+       Data Access & Public & Public or Restricted & Restricted \\ \hline
+       Consensus & PoW, PoS & FBTA, PoS & FBTA \\ \hline
+    \end{tabular}
+  }
+  \caption{Blockchain Types. Source~\cite{hub-bl-types}}
+  \label{table:blockchain_types}
 \end{table}
 
 \section{Blockchain Implementations}\label{blockchain_implementations}
