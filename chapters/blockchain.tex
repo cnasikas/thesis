@@ -1,6 +1,6 @@
 %!TEX root = ../thesis.tex
-\chapter{Blockchain Technologies}
-\label{blockchain_technologies}
+\chapter{Blockchain}
+\label{blockchain}
 
 A blockchain is a distributed transaction ledger~\cite{nakamoto2012bitcoin}.
 Blockchain consist of a continuously growing list of records, which are called blocks, and are linked, secured and immutable.
@@ -12,7 +12,7 @@ and audit log that records every data transaction. As a result any attempt to ta
 The first successful financial implementation of blockchain is Bitcoin.
 Bitcoin is the first decentralized digital currency and payment system invented by an unknown person or group of people under the name Satoshi Nakamoto~\cite{nakamoto2012bitcoin,wiki:bitcoin}.
 
-\section{Blockchain Types}\label{bltech:blockchain_types}
+\section{Blockchain Types}\label{blockchain:blockchain_types}
 
 There are various types of blockchains varying in restrictions on data access and participation in the consensus process.
 Each one has its own advantages and disadvantages.
@@ -24,7 +24,7 @@ Each one has its own advantages and disadvantages.
   \item Private blockchain: A private blockchain is a blockchain where consensus mechanism is centralized to one single entity regardless of data access~\cite{prbc_vs_pubbc}.
 \end{itemize}
 
-\section{Consensus defined types of Blockchain}\label{bltech:consensus_blockchain_types}
+\section{Consensus defined types of Blockchain}\label{blockchain:consensus_blockchain_types}
 
 \begin{itemize}
   \item Permissionless blockchain: A permissionless blockchain is a blockchain, in which there are no restrictions on identities of transaction processors (i.e., users that are eligible to create blocks of transactions)~\cite{prbc_vs_pubbc}.
@@ -46,7 +46,7 @@ Each one has its own advantages and disadvantages.
   \label{table:blockchain_types}
 \end{table}
 
-\section{Consensus mechanisms}\label{bltech:consensus_mechanisms}
+\section{Consensus mechanisms}\label{blockchain:consensus_mechanisms}
 
 The consensus mechanism is the core mechanism of the blockchain. Through consensus, the shared state of the ledger comes to an agreement upon a global state,
 allowing all the nodes of the network to reach the same ledger state. Achieving consensus in a distributed system is challenging.
@@ -61,7 +61,7 @@ There are three basic consensus mechanism categories:
 \end{enumerate}
 
 
-\subsection{Proof of Work (PoW)}\label{bltech:consensus:pow}
+\subsection{Proof of Work (PoW)}\label{blockchain:consensus:pow}
 
 In the case of Proof-of-Work consensus mechanism, each network node participating in
 the consensus tries to solve a computational puzzle that is computational hard, but feasible to find, and easy to verify correctness.
@@ -87,7 +87,7 @@ However, the transaction confirmation time is longer compared to conventional fi
 in slower transaction confirmation rates. Lastly, the energy waste attributed to the mining process can be very high -the energy requirements
 of the Bitcoin protocol are estimated to be comparable to those of a small country~\cite{6912770}.
 
-\subsection{Proof of Stake (PoS)}\label{bltech:consensus:pos}
+\subsection{Proof of Stake (PoS)}\label{blockchain:consensus:pos}
 
 Proof-of-Stake algorithms are designed to overcome the disadvantages of PoW in terms of the high electricity consumption involved in mining~\cite{bl_consensus}
 and provide equal security guarantees~\cite{Kiayias2017}. Unlike PoW where the miners solve computational puzzles in order to create a new block, in PoS the choice
@@ -100,7 +100,7 @@ The “nothing at stake” problem refers to attacks against PoS blockchain syst
 incentives to follow the protocol and vote simultaneously on multiple blockchains exploiting the fact that little computational effort
 is needed to build a PoS blockchain~\cite{Kiayias2017}. Ouroboros is the first provable secure PoS algorithm~\cite{Kiayias2017} and is the main consensus algorithm of the Cardano blockchain~\cite{cardano_site}.
 
-\subsection{Practical Byzantine Fault Tolerance (PBFT)}\label{bltech:consensus:PBFT}
+\subsection{Practical Byzantine Fault Tolerance (PBFT)}\label{blockchain:consensus:PBFT}
 
 The Practical Byzantine Fault Tolerance algorithm~\cite{Castro:1999:PBF:296806.296824} is the first practical consensus algorithm with Byzantine Fault Tolerance~\cite{wiki:byzantine_fault_tolerance}.
 It is based on the concept of state machine replication and replication state voting, and is able to process tens of thousands of requests per second with minimal latency.
@@ -134,8 +134,8 @@ global consensus is achieved when certain conditions are being met~\cite{DBLP:jo
 
 \section{Blockchain Implementations}\label{blockchain_implementations}
 
-\subsection{Bitcoin}\label{bltech:impl:bitcoin}
-\subsection{Ethereum}\label{bltech:impl:ethereum}
+\subsection{Bitcoin}\label{blockchain:impl:bitcoin}
+\subsection{Ethereum}\label{blockchain:impl:ethereum}
 
 Ethereum is an open-source, public, blockchain-based distributed computing platform featuring smart contract functionality.
 It provides a decentralized Turing-complete virtual machine, the Ethereum Virtual Machine (EVM), which can execute scripts using an
@@ -146,7 +146,7 @@ Ethereum use a Proof-of-Work consensus mechanism called Ethash and has been desi
 Soon Ethereum will be moved to a Proof-of-Stake consensus mechanism called Casper. Ethereum can be implemented as well as a permissioned blockchain~\cite{consortium_chain_development,quorum}.
 
 
-\subsection{Hyperledger}\label{bltech:impl:hyperledger}
+\subsection{Hyperledger}\label{blockchain:impl:hyperledger}
 
 Hyperledger is an open-source permissioned blockchain and provides a flexible, modular and secure architecture with a
 pluggable consensus mechanism is among the most popular permissioned blockchains~\cite{DBLP:journals/corr/abs-1708-05665}. In Hyperledger, Fabric a predefined list of
@@ -156,7 +156,7 @@ mechanism of Hyperledger is the Practical Byzantine Fault Tolerance algorithm (P
 Hyperledger version 0.6 fails to scale up to more than 16 nodes~\cite{DBLP:journals/corr/abs-1708-05665} but version 1.0 architecture has been designed to address transaction and
 node scalability in a manner adherent with regulatory and industry standard~\cite{imb_hypeledger_adv}.
 
-\subsection{Cardano}\label{bltech:impl:cardano}
+\subsection{Cardano}\label{blockchain:impl:cardano}
 
 Cardano is a security focused blockchain that utilize the latest research and engineering insights to build a platform suitable for
 the highest value applications~\cite{cardano_site}. It supports distributed applications creation and smart contracts verifiable by a method called formal
@@ -167,7 +167,7 @@ Cardano consists of two main layers, one for accounting and one for computation.
 and the computation layer Cardano Computation Layer (CCP) where distributed application can be built and run upon. The CCP layer has not been
 implemented yet and there is a plan to be released as a beta by the first quarter of 2018~\cite{cardano_parsons}.
 
-\subsection{Enigma}\label{bltech:impl:enigma}
+\subsection{Enigma}\label{blockchain:impl:enigma}
 
 Enigma is a decentralized computation platform with guaranteed privacy~\cite{DBLP:journals/corr/ZyskindNP15}. It operates through a peer-to-peer network enabling
 different parties to store and run computation on data while keeping privacy. Enigma uses a highly optimized version of secure multi-party computation (MPC)
