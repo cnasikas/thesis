@@ -672,7 +672,7 @@ publications}\gdef\@lopfileinternal{#1}}
     \input{frontmatter/personalize}
     \input{frontmatter/abstract}
     \input{frontmatter/preface}
-    \input{frontmatter/synopsis}
+    % \input{frontmatter/synopsis}
     \input{frontmatter/thanks}
 
     \pagestyle{empty}
@@ -695,10 +695,10 @@ publications}\gdef\@lopfileinternal{#1}}
     \@absEn
 
     % thesis synopsis (greek version only, OPTIONAL)
-    \@synopsis
-    \ifinscriptionpage
-       	\@inscr
-    \fi
+    % \@synopsis
+    % \ifinscriptionpage
+    %    	\@inscr
+    % \fi
 
     % acknowledgements (english version only, OPTIONAL)
     \ifackpage
