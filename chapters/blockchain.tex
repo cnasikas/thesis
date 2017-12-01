@@ -6,13 +6,42 @@ A blockchain is a distributed transaction ledger~\cite{nakamoto2012bitcoin}.
 Blockchain consist of a continuously growing list of records, which are called blocks, and are linked, secured and immutable.
 Each block typically contains a hash pointer being a link to a previous block, a timestamp and transaction data~\cite{wiki:blockchain}.
 Blockchain has a high Byzantine fault tolerance because of a decentralized consensus mechanism.
-This makes blockchains potentially suitable for the recording of events, medical records~\cite{blockchain_ehr,Azaria2016}, and other records management activities,
+This makes blockchains potentially suitable for fincancial activities, the recording of events, medical records~\cite{blockchain_ehr,Azaria2016}, and other records management activities,
 such as identity management, transaction processing or documenting provenance~\cite{wiki:blockchain}. Blockchain could be seen as a distributed immutable, tamper-proof,
 and audit log that records every data transaction. As a result any attempt to tamper blockchain is immediately evident and easily detectable.
-The first successful financial implementation of blockchain is Bitcoin.
+The first successful financial implementation of blockchain is Bitcoin~\cite{nakamoto2012bitcoin}.
 Bitcoin is the first decentralized digital currency and payment system invented by an unknown person or group of people under the name Satoshi Nakamoto~\cite{nakamoto2012bitcoin,wiki:bitcoin}.
 
 \section{History}\label{blockchain:history}
+
+Credit card transactions are the dominant payment method that is used on the web today~\cite{Narayanan:2016:BCT:2994437} handled by a financial
+system involving processors, banks, credit card companies and other intermediaries. Normally, a credit card transaction is done as follow:
+the buyer sends over his credit card details to the merchant, and then the merchant sends and validates the data in the financial system.
+
+Buyers may feel uncofortable to handle their credit card details to an unknown vendor without good reputation, especially over a insecure channel.
+Intermediate services, such as Paypal, sits between the buyer and the seller and the intermediate service has the buyer's credit card details which approves
+the trasnaction and notify the seller. Through this architecture the buyer is not exposed to security risks and can be anonymous improving privacy. On the other hand,
+both the buyer and the seller might have an account to the same service.
+
+A notable intermediate architecture called SET (Secure Electronic Transaction) established in 1996 by VISA and MasterCard~\cite{wiki:set}
+which goal was to combine the card associations' similar but incompatible protocols. SET allowed parties to identity themselves with the use of
+certificates avoiding that way the need of having to enroll with the intermediary. SET failed to gain attraction in the market and the fundamental
+problem has to do with the end-user certificates issue complexity.
+
+David Chaum~\cite{wiki:david_chaum} is the inventor of the secure digital cash idea which first introduced in his 1983 paper~\cite{Chaum1983}. In
+1990 proposed the first off-line e-cash system~\cite{Chaum:1988:UEC:646753.704915} and founded DigiCash~\cite{wiki:digicash}, an electronic money corporation,
+which in 1994 sent the first electronic payment.
+
+Digital cash shemes have a potential flaw called double-spending~\cite{wiki:double_spend} in which the same digital token can be spent more than once.
+Chaum find a way to both keep the system anonymous and prevent double-spending with the use of blind signatures~\cite{Chaum1983,Chaum:1988:UEC:646753.704915}.
+Nevertheless, Chauma's solution need a centralized trusted oracle that validates the transactions. Many cryptographers tried to improve Chaum's et al. sheme
+such as Okamoto and Ohta~\cite{Watanabe1996} who implemented the subdivisions of coins with the use of Merkle trees~\cite{wiki:merkle_tree}.
+
+Chaum patent the blind-signature scheme preventing others from developing ecash system that use the same protocol. A group of cryptographers called
+Cypherpunk~\cite{wiki:cypherpunk} implemented an ecash system called MagicMoney which violated Chaum's patents.
+
+Chaum's~\cite{wiki:david_chaum} ideas have been described as the technical roots of the vision of the Cypherpunk~\cite{wiki:cypherpunk}
+movement that began in the late 1980s.
 
 \section{Structure}\label{blockchain:structure}
 
