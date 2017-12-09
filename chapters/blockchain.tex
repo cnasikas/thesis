@@ -5,7 +5,7 @@
 A blockchain is a distributed transaction ledger~\cite{nakamoto2012bitcoin}.
 Blockchain consist of a continuously growing list of records, which are called blocks, and are linked, secured and immutable.
 Each block typically contains a hash pointer being a link to a previous block, a timestamp and transaction data~\cite{wiki:blockchain}.
-Blockchain has a high Byzantine fault tolerance because of a decentralized consensus mechanism.
+Blockchain has a high Byzantine fault tolerance~\cite{wiki:byzantine_fault_tolerance} because of a decentralized consensus mechanism.
 This makes blockchains potentially suitable for fincancial activities, the recording of events, medical records~\cite{blockchain_ehr,Azaria2016}, and other records management activities,
 such as identity management, transaction processing or documenting provenance~\cite{wiki:blockchain}. Blockchain could be seen as a distributed immutable, tamper-proof,
 and audit log that records every data transaction. As a result any attempt to tamper blockchain is immediately evident and easily detectable.
@@ -18,9 +18,9 @@ Credit card transactions are the dominant payment method that is used on the web
 system involving processors, banks, credit card companies and other intermediaries. Normally, a credit card transaction is done as follow:
 the buyer sends over his credit card details to the merchant, and then the merchant sends and validates the data in the financial system.
 
-Buyers may feel uncofortable to handle their credit card details to an unknown vendor without good reputation, especially over a insecure channel.
+Buyers may feel uncofortable to handle their credit card details to an unknown vendor without good reputation, especially over an insecure channel.
 Intermediate services, such as Paypal, sits between the buyer and the seller and the intermediate service has the buyer's credit card details which approves
-the trasnaction and notify the seller. Through this architecture the buyer is not exposed to security risks and can be anonymous improving privacy. On the other hand,
+the transaction and notify the seller. Through this architecture the buyer is not exposed to security risks and can be anonymous improving privacy. On the other hand,
 both the buyer and the seller might have an account to the same service.
 
 A notable intermediate architecture called SET (Secure Electronic Transaction) established in 1996 by VISA and MasterCard~\cite{wiki:set}
@@ -34,14 +34,38 @@ which in 1994 sent the first electronic payment.
 
 Digital cash shemes have a potential flaw called double-spending~\cite{wiki:double_spend} in which the same digital token can be spent more than once.
 Chaum find a way to both keep the system anonymous and prevent double-spending with the use of blind signatures~\cite{Chaum1983,Chaum:1988:UEC:646753.704915}.
-Nevertheless, Chauma's solution need a centralized trusted oracle that validates the transactions. Many cryptographers tried to improve Chaum's et al. sheme
+Nevertheless, Chauma's solution needed a centralized trusted oracle that validates the transactions. Many cryptographers tried to improve Chaum's et al. sheme
 such as Okamoto and Ohta~\cite{Watanabe1996} who implemented the subdivisions of coins with the use of Merkle trees~\cite{wiki:merkle_tree}.
 
-Chaum patent the blind-signature scheme preventing others from developing ecash system that use the same protocol. A group of cryptographers called
-Cypherpunk~\cite{wiki:cypherpunk} implemented an ecash system called MagicMoney which violated Chaum's patents.
+About the same time, a group of cryptographers called Cypherpunks~\cite{wiki:cypherpunk,cypherpunks_manifesto} was formed who advocate the widespread
+use of strong cryptography and privacy-enhancing technologies~\cite{cypherpunks_manifesto} as a route to social and political change. Cypherpunks electronic mailing list,
+through which they communicating originally, was the predecessor to the mailing list where Satoshi Nakamoto~\cite{wiki:satoshi_nakamoto} would announce later Bitcoin~\cite{nakamoto2012bitcoin}.
 
-Chaum's~\cite{wiki:david_chaum} ideas have been described as the technical roots of the vision of the Cypherpunk~\cite{wiki:cypherpunk}
-movement that began in the late 1980s.
+It is worth mentioning that Chaum's~\cite{wiki:david_chaum} ideas have been described as the technical roots of the vision of the Cypherpunks~\cite{wiki:cypherpunk}
+movement.
+
+Chaum patented the blind-signature scheme preventing others from developing ecash system that use the same protocol. As a respond,
+Cypherpunks implemented an e-cash system called Magic Money~\cite{magic_money} which violated Chaum's patents.
+
+At the end, DigiCash failed to gain attraction and the main problem was that it was centered on the user-merchant transaction hence
+DigiCash had to persuate banks and merchants to adopt it.
+
+At 1991, Haber et al. proposed a sheme for secure timestamping of digital documents using digital signatures and hash pointers to previous documents
+creating a chain of documents' certificates~\cite{Haber1991}. Later, they proposed an improvement in which the documents are collected into a block and
+the blocks are linked together in a chain instead of the documents. This data stracture forms the skeleton of Bitcoin's blockchain.
+
+At 1992 cryptographers Dwork and Naor proposed solutions to computational puzzles as a potentional solution to email spam~\cite{Dwork1993},
+creating the idea of Proof-of-Work. Later, at 1997, Adam Back proposed a similar idea called Hashcash~\cite{hash_cash}.
+A similar Proof-of-Work system as Hashcash is used in Bitcoin for its consensus mechanism.
+
+Wei Dai~\cite{bitcoin_wiki:wei_dai} at 1998 created b-money~\cite{bitcoin_wiki:b_money}, an anonymous distributed electronic cash system, in which everyone
+could create money using a Proof-of-Work mechanism like hashcash. B-money used the notion of a secured timestamp ledger as used by Haber et al. for digital documents.
+
+Bitcoin was invented by Satoshi Nakamoto at 2008 with the publication of a paper called ``Bitcoin: A Peer-to-Peer Electronic Cash System''.
+Bitcoin represents the culmination of decades of research in cryptography~\cite{antonopoulos2014mastering} and combines several prior inventions
+such as b-money and HashCash~\cite{antonopoulos2014mastering}. Bitcoin is the first decentralized electronic cash system that does not relies on a central authority and
+provided for the first time a practical solution to the Byzantine Generals' Problem~\cite{wiki:byzantine_fault_tolerance} with the use of a consensus mechanism
+based on Proof-of-Work which can be used to achieve consensus on decentralized networks for elections, lotteries, assets registries and more~\cite{antonopoulos2014mastering}.
 
 \section{Structure}\label{blockchain:structure}
 
