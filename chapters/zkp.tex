@@ -1,3 +1,25 @@
 %!TEX root = ../thesis.tex
 \chapter{Zero Knowledge Proofs}
 \label{zkp}
+
+A proof of knowledge is a protocol that enables one party to convince another of the validity of a statement.
+In a zero-knowledge proof, this is accomplished without revealing any information beyond the legitimacy of the proof\cite{kiagias:crypto},
+meaning that one party can prove to another party that a given statemnet is true, without conveying any information apart from
+the fact that the statement is indeed true\cite{wiki:zkp}. The one party is called the prover and the other one the verifier.
+
+\subsection{Examples}
+
+\begin{figure*}[t!]
+  \centering
+  \begin{tikzpicture}
+    \draw(0,5) --(2,5) -- (6,8) -- (10,5);
+    \draw(0,4) --(2,4) -- (6,1) -- (10,4);
+    \draw(10,5) -- (10,4);
+    \draw(9,4.5) -- (10,4.5);
+
+    \draw(3,4.5) -- (6,7) -- (9,4.5);
+    \draw(3,4.5) -- (6,2) -- (9,4.5);
+  \end{tikzpicture}
+\end{figure*}
+
+\subsubsection{The strange cave of Ali Baba}
