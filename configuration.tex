@@ -1,0 +1,242 @@
+%!TEX root = ./thesis.tex
+
+%General
+\newcommand{\FF}{\mathbf{F}}
+\newcommand{\ZZ}{\mathbf{Z}}
+\newcommand{\RR}{\mathbf{R}}
+\newcommand{\QQ}{\mathbf{Q}}
+\newcommand{\CC}{\mathbf{C}}
+\newcommand{\NN}{\mathbf{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+%\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Po}{\mathbb{P}}
+\renewcommand{\G}{\mathbb{G}}
+
+%Uppercase Bold Letters
+\newcommand{\bfA}{\mathbf{A}}
+\newcommand{\bfB}{\mathbf{B}}
+\newcommand{\bfC}{\mathbf{C}}
+\newcommand{\bfD}{\mathbf{D}}
+\newcommand{\bfE}{\mathbf{E}}
+\newcommand{\bfF}{\mathbf{F}}
+\newcommand{\bfG}{\mathbf{G}}
+\newcommand{\bfH}{\mathbf{H}}
+\newcommand{\bfI}{\mathbf{I}}
+\newcommand{\bfJ}{\mathbf{J}}
+\newcommand{\bfK}{\mathbf{K}}
+\newcommand{\bfL}{\mathbf{L}}
+\newcommand{\bfM}{\mathbf{M}}
+\newcommand{\bfN}{\mathbf{N}}
+\newcommand{\bfO}{\mathbf{O}}
+\newcommand{\bfP}{\mathbf{P}}
+\newcommand{\bfQ}{\mathbf{Q}}
+\newcommand{\bfR}{\mathbf{R}}
+\newcommand{\bfS}{\mathbf{S}}
+\newcommand{\bfT}{\mathbf{T}}
+\newcommand{\bfU}{\mathbf{U}}
+\newcommand{\bfV}{\mathbf{V}}
+\newcommand{\bfW}{\mathbf{W}}
+\newcommand{\bfX}{\mathbf{X}}
+\newcommand{\bfY}{\mathbf{Y}}
+\newcommand{\bfZ}{\mathbf{Z}}
+
+
+
+\newcommand{\Zn}[1]{\mathbb{Z}/#1\mathbb{Z}}
+\newcommand{\Znx}[1]{(\mathbb{Z}/#1\mathbb{Z})^\times}
+\newcommand{\X}{\times}
+\newcommand{\set}[2]{\left\{#1 : #2\right\}}
+\newcommand{\sett}[1]{\left\{#1\right\}}
+\newcommand{\nonempty}{\neq\varnothing}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\abs}[1]{\left| {#1} \right|}
+\newcommand{\qedbox}{\rule{2mm}{2mm}}
+\renewcommand{\qedsymbol}{\qedbox}
+\newcommand{\lto}{\longrightarrow}
+\newcommand{\aand}{\qquad\hbox{and}\qquad}
+\newcommand{\e}{\varepsilon}
+\newcommand{\be}[1]{\emph{\textbf{#1}}}
+\newcommand{\tto}{\rightrightarrows}
+\newcommand{\gs}{\geqslant}
+\newcommand{\ls}{\leqslant}
+%\renewcommand{\tilde}{\widetilde}
+%\renewcommand{\hat}{\widehat}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+
+%Crypto
+\newcommand{\ord}{\mathsf{ord}}    %order
+\newcommand{\Prob}{\mathsf{Prob}}  %probability
+\newcommand{\Var}{\mathsf{Var}}    %variance
+\newcommand{\Ev}{\mathsf{E}}       %expectation
+\newcommand{\Adv}{\mathsf{Adv}}    %advantage
+\newcommand{\negl}{\mathsf{negl}}  %negligible function
+\newcommand{\out}{\mathsf{out}}    %output
+
+\newcommand{\Gen}{\textsf{GGen}}          %group generator
+\newcommand{\kgen}{\textsf{Gen}}          %key generator
+\newcommand{\verify}{\textsf{Verify}}
+\newcommand{\commit}{\textsf{Commit}}
+\newcommand{\sign}{\textsf{Sign}}
+\newcommand{\blind}{\textsf{Blind}}
+\newcommand{\unblind}{\textsf{Unblind}}
+
+\newcommand{\dsy}{\displaystyle}
+\newcommand{\mtt}{\mathtt}
+\newcommand{\defn}[1]{\textbf{\emph{#1}}}
+
+\newcommand{\subdh}{ {\mbox{\scriptsize{DDH}}} } % DDH subscript
+\newcommand{\subbdh}{ {\mbox{\scriptsize{BDDH}}} } % BDDH subscript
+
+\newcommand{\rselect}{\xleftarrow{\mathtt{r}}}
+\newcommand{\ppar}[1]{\left( {#1} \right)}
+\newcommand{\brac}[1]{\left[ {#1} \right]}
+\renewcommand\T{\rule{0pt}{2.5ex}}          % Adds a space between the text and the [T]op \hline
+\renewcommand\B{\rule[-1.1ex]{0pt}{0pt}}    % Adds a space between the text and the [B]ottom \hline
+
+
+\makeatletter
+\def\RightExtendSymbol#1#2#3#4#5{\ext@arrow 0359{\arrowfill@#1#2#3}{#4}{#5}}
+\makeatother
+\newcommand\llrightarrow[2][]{\RightExtendSymbol{-}{-}{\rightarrow}{#1}{#2}}
+\newcommand\llleftarrow[2][]{\RightExtendSymbol{\leftarrow}{-}{-}{#1}{#2}}
+
+
+
+
+
+\newcommand{\cell}{\phantom{1insssssss}}
+\newcommand{\fto}[1]{\xrightarrow{\hspace{4pt} #1 \hspace{4pt}}}
+\newcommand{\flto}[1]{\xrightarrow{\quad #1 \quad}}
+
+%Euler Script Characters
+\newcommand{\esa}{\EuScript{A}}
+\newcommand{\esb}{\EuScript{B}}
+\newcommand{\esc}{\EuScript{C}}
+\newcommand{\esd}{\EuScript{D}}
+\newcommand{\ese}{\EuScript{E}}
+\newcommand{\esf}{\EuScript{F}}
+\newcommand{\esg}{\EuScript{G}}
+\newcommand{\esH}{\EuScript{H}}
+\newcommand{\esi}{\EuScript{I}}
+\newcommand{\esj}{\EuScript{J}}
+\newcommand{\esk}{\EuScript{K}}
+\newcommand{\esl}{\EuScript{L}}
+\newcommand{\esm}{\EuScript{M}}
+\newcommand{\esn}{\EuScript{N}}
+\newcommand{\eso}{\EuScript{O}}
+\newcommand{\esp}{\EuScript{P}}
+\newcommand{\esq}{\EuScript{Q}}
+\newcommand{\esr}{\EuScript{R}}
+\newcommand{\ess}{\EuScript{S}}
+\newcommand{\est}{\EuScript{T}}
+\newcommand{\esu}{\EuScript{U}}
+\newcommand{\esv}{\EuScript{V}}
+\newcommand{\esw}{\EuScript{W}}
+\newcommand{\esx}{\EuScript{X}}
+\newcommand{\esy}{\EuScript{Y}}
+\newcommand{\esz}{\EuScript{Z}}
+
+%Calligraphic Characters
+\newcommand{\cala}{\mathcal{A}}
+\newcommand{\calb}{\mathcal{B}}
+\newcommand{\calc}{\mathcal{C}}
+\newcommand{\cald}{\mathcal{D}}
+\newcommand{\cale}{\mathcal{E}}
+\newcommand{\calf}{\mathcal{F}}
+\newcommand{\calg}{\mathcal{G}}
+\newcommand{\calh}{\mathcal{H}}
+\newcommand{\cali}{\mathcal{I}}
+\newcommand{\calj}{\mathcal{J}}
+\newcommand{\calk}{\mathcal{K}}
+\newcommand{\call}{\mathcal{L}}
+\newcommand{\calm}{\mathcal{M}}
+\newcommand{\caln}{\mathcal{N}}
+\newcommand{\calo}{\mathcal{O}}
+\newcommand{\calp}{\mathcal{P}}
+\newcommand{\calq}{\mathcal{Q}}
+\newcommand{\calr}{\mathcal{R}}
+\newcommand{\cals}{\mathcal{S}}
+\newcommand{\calt}{\mathcal{T}}
+\newcommand{\calu}{\mathcal{U}}
+\newcommand{\calv}{\mathcal{V}}
+\newcommand{\calw}{\mathcal{W}}
+\newcommand{\calx}{\mathcal{X}}
+\newcommand{\caly}{\mathcal{Y}}
+\newcommand{\calz}{\mathcal{Z}}
+
+%Uppercase Roman characters
+\newcommand{\rmA}{\mathrm{A}}
+\newcommand{\rmB}{\mathrm{B}}
+\newcommand{\rmC}{\mathrm{C}}
+\newcommand{\rmD}{\mathrm{D}}
+\newcommand{\rmE}{\mathrm{E}}
+\newcommand{\rmF}{\mathrm{F}}
+\newcommand{\rmG}{\mathrm{G}}
+\newcommand{\rmH}{\mathrm{H}}
+\newcommand{\rmI}{\mathrm{I}}
+\newcommand{\rmJ}{\mathrm{J}}
+\newcommand{\rmK}{\mathrm{K}}
+\newcommand{\rmL}{\mathrm{L}}
+\newcommand{\rmM}{\mathrm{M}}
+\newcommand{\rmN}{\mathrm{N}}
+\newcommand{\rmO}{\mathrm{O}}
+\newcommand{\rmP}{\mathrm{P}}
+\newcommand{\rmQ}{\mathrm{Q}}
+\newcommand{\rmR}{\mathrm{R}}
+\newcommand{\rmS}{\mathrm{S}}
+\newcommand{\rmT}{\mathrm{T}}
+\newcommand{\rmU}{\mathrm{U}}
+\newcommand{\rmV}{\mathrm{V}}
+\newcommand{\rmW}{\mathrm{W}}
+\newcommand{\rmX}{\mathrm{X}}
+\newcommand{\rmY}{\mathrm{Y}}
+\newcommand{\rmZ}{\mathrm{Z}}
+
+%Customized Theorem Environments
+\newtheoremstyle%
+{custom}%
+{}%                         Space above
+{}%						     Space below
+{}%							 Body font
+{}%                         Indent amount
+{}%                         Theorem head font
+{.}%                        Punctuation after heading
+{ }%                        Space after heading
+{\thmname{}%                Additional specifications for theorem head
+\thmnumber{}%
+\thmnote{\bfseries #3}}%
+
+\newtheoremstyle%
+{Theorem}%
+{}%
+{}%
+{\itshape}%
+{}%
+{}%
+{.}%
+{ }%
+{\thmname{\bfseries #1}%
+\thmnumber{\;\bfseries #2}%
+\thmnote{\;(\bfseries #3)}}%
+
+%Theorem Environments
+\theoremstyle{Theorem}
+\newtheorem{thm}{Theorem}[subsection]
+\newtheorem{prop}{Proposition}[subsection]
+\theoremstyle{definition}
+\newtheorem{dfn}{Definition}[subsection]
+\newtheorem*{ex}{Example}
+\newtheorem*{remark}{Remark}
+\theoremstyle{Lemma}
+\newtheorem{lemma}{Lemma}[subsection]
+\theoremstyle{remark}
+\newtheorem*{note}{Note}
+\theoremstyle{definition}
+\newtheorem*{notation}{Notation}
+\theoremstyle{custom}
+\newtheorem*{cust}{Definition}
