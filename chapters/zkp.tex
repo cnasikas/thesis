@@ -3,23 +3,103 @@
 \label{zkp}
 
 A proof of knowledge is a protocol that enables one party to convince another of the validity of a statement.
-In a zero-knowledge proof, this is accomplished without revealing any information beyond the legitimacy of the proof\cite{kiagias:crypto},
+In a zero-knowledge proof, this is accomplished without revealing any information beyond the legitimacy of the proof~\cite{kiagias:crypto},
 meaning that one party can prove to another party that a given statemnet is true, without conveying any information apart from
-the fact that the statement is indeed true\cite{wiki:zkp}. The one party is called the prover and the other one the verifier.
+the fact that the statement is indeed true~\cite{wiki:zkp}.
+
+Let $\calp$ be a prover and $\calv$ the verifier. $\calp$ must convince $\calv$ that she has some
+knowledge of a statement $x$ without explicitly stating what she knows. We call this knowledge a witness $w$.
+Both parties are aware of a predicate $R$ that will attest to $w$ being a valid witness to $x$~\cite{kiagias:crypto}.
 
 \section{Examples}
 
-\begin{figure*}[t!]
+\subsection{The strange cave of Ali Baba~\cite{Quisquater:1989:EZP:118209.118269}}
+
+\begin{figure}[t!]
   \centering
-  \begin{tikzpicture}
-    \draw(0,5) --(2,5) -- (6,8) -- (10,5);
-    \draw(0,4) --(2,4) -- (6,1) -- (10,4);
-    \draw(10,5) -- (10,4);
-    \draw(9,4.5) -- (10,4.5);
+  \begin{subfigure}[t]{0.30\textwidth}
+    \centering
+    \resizebox{\linewidth}{!}{
+      \begin{tikzpicture}[scale=1]
+        % Cave %
+        \draw(0,5) -- (2,5) -- (2,8) -- (10,8) -- (10,4);
+        \draw(0,4) --(2,4) -- (2,1) -- (10,1) -- (10, 4);
+        \draw(9,4.5) -- (10,4.5);
+        \draw(3,5) -- (3,7) -- (9,7) -- (9,5);
+        \draw(3,4) -- (3,2) -- (9,2) -- (9,5);
+        % Actors %
+        \draw[fill] (1,5.6) circle [radius=0.1];
+        \node [below] at (1,5.5) {Alice};
+        \draw[fill] (2.5,4.6) circle [radius=0.1];
+        \node [below] at (2.5,4.5) {Bob};
+        % Arrows %
+        \draw [dashed, ->] (2.5,4.6) -- (2.5,6);
+        \draw [dashed, ->] (2.5,3.9) -- (2.5,2);
 
-    \draw(3,4.5) -- (6,7) -- (9,4.5);
-    \draw(3,4.5) -- (6,2) -- (9,4.5);
-  \end{tikzpicture}
-\end{figure*}
+      \end{tikzpicture}
+    }
+    \caption{Alice stands outside and Bob choose randomly a path, left or right}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.30\textwidth}
+    \centering
+    \resizebox{\linewidth}{!}{
+      \begin{tikzpicture}[scale=1]
+        % Cave %
+        \draw(0,5) -- (2,5) -- (2,8) -- (10,8) -- (10,4);
+        \draw(0,4) --(2,4) -- (2,1) -- (10,1) -- (10, 4);
+        \draw(9,4.5) -- (10,4.5);
+        \draw(3,5) -- (3,7) -- (9,7) -- (9,5);
+        \draw(3,4) -- (3,2) -- (9,2) -- (9,5);
+        % Actors %
+        \draw[fill] (1,5.6) circle [radius=0.1];
+        \node [below] at (1,5.5) {Alice};
+        \draw[fill] (2.5,4.6) circle [radius=0.1];
+        \node [below] at (2.5,4.5) {Bob};
+        % Arrows %
+        \draw [dashed, ->] (2.5,4.6) -- (2.5,6);
+        \draw [dashed, ->] (2.5,3.9) -- (2.5,2);
 
-\subsection{The strange cave of Ali Baba}
+      \end{tikzpicture}
+    }
+    \caption{Alice calls to Bob, asking him to come out either the left or the right passage}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.30\textwidth}
+    \centering
+    \resizebox{\linewidth}{!}{
+      \begin{tikzpicture}[scale=1]
+        % Cave %
+        \draw(0,5) -- (2,5) -- (2,8) -- (10,8) -- (10,4);
+        \draw(0,4) --(2,4) -- (2,1) -- (10,1) -- (10, 4);
+        \draw(9,4.5) -- (10,4.5);
+        \draw(3,5) -- (3,7) -- (9,7) -- (9,5);
+        \draw(3,4) -- (3,2) -- (9,2) -- (9,5);
+        % Actors %
+        \draw[fill] (1,5.6) circle [radius=0.1];
+        \node [below] at (1,5.5) {Alice};
+        \draw[fill] (2.5,4.6) circle [radius=0.1];
+        \node [below] at (2.5,4.5) {Bob};
+        % Arrows %
+        \draw [dashed, ->] (2.5,4.6) -- (2.5,6);
+        \draw [dashed, ->] (2.5,3.9) -- (2.5,2);
+
+      \end{tikzpicture}
+    }
+    \caption{Bob complies appearing at the exit Alices names}
+  \end{subfigure}
+  \caption{Ali Baba Cave}
+\end{figure}
+
+\section{Formal Definition~\cite{kiagias:crypto}}
+
+Let $<\calp, \calv>$ be a pair of interactive programs. Define $\text{out}^{\calp}_{\calp, \calv}(x,w,z)$
+to be the output of $\calp$ when both $\calp$ and $\calv$ are executed with the public input $x$ and private
+inputs $w$ and $z$ ($\calp$ determines $w$ and $\calv$ choose $z$); $\text{out}^{\calv}_{\calp, \calv}(x,w,z)$
+is similar defined for $\calv$. The PPT interactive protocol $<\calp, \calv>$ is a \textbf{zero-knowledge proof}
+for a language $L \in NP$ with knowledge error $k$ and zero-knowledge distance $\epsilon$ if the following
+properties hold.
+
+\begin{enumerate}
+  \item \textbf{Completeness:}
+  \item \textbf{Soundness:}
+  \item \textbf{Zero-knowledge:}
+\end{enumerate}
