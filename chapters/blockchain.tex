@@ -69,7 +69,66 @@ based on Proof-of-Work which can be used to achieve consensus on decentralized n
 
 \section{Structure}\label{blockchain:structure}
 
+The first blockchain was conceptualized and implemented as a core component of bitcoin where it serves as the public ledger for all transactions.
+The invention of the blockchain for bitcoin made it the first digital currency to solve the double spending problem without the need of a trusted authority or
+central server. The bitcoin design has been the inspiration for other applications~\cite{7163021,10.1007/978-3-662-46803-6_10}.
+
+The basic data structure is of blockchains is a transaction (tx) and transfers money from somebody to somebody else. A blockchain transaction can be described as
+a node with two edges, one incoming edge and one outcoming edge. The incoming edge describes the sender (from) and the outcoming edge the recipient (to).
+Every transaction has a unique transaction id (txid) which comes from the double hash of the transaction with the use of SHA-256 hash function.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+      \node[circle,draw, minimum size=4cm] (A) at (0,0) {$tx$};
+      \draw [->] (-5,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
+      \draw [->] (A) -- (5, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
+    \end{tikzpicture}
+  \caption{A bitcoin transaction}
+  \label{fig:bl_transaction}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+      \node[circle,draw, minimum size=4cm] (A) at (0,0) {$tx$};
+      \draw [->] (-5,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
+      \draw [->] (A) -- (5, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
+      \node (txid) at (-7,0) {$txid = SHA256^{2}($};
+      \node (txid) at (5.3,0) {$)$};
+    \end{tikzpicture}
+  \caption{Transaction ID}
+  \label{fig:bl_txid}
+\end{figure}
+
+Payments are done throught linking transaction nodes and money is a chain of transactions. All transactions together form a transaction graph which is public and everyone participating in
+the network can see and add new transactions to the graph. Spendable money are outgoing unlinked edges which are called unspent transaction outputs (utxo).
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+      \node[circle,draw, minimum size=2cm] (B) at (4,0) {$tx$};
+      \node[circle,draw, minimum size=2cm] (C) at (8,0) {$tx$};
+      \draw [->] (-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{1mBTC};
+      \draw [->] (A) -- (B) node[midway, below]{Bob} node[midway, above]{1mBTC};
+      \draw [->] (B) -- (C) node[midway, below]{Charlie} node[midway, above]{1mBTC};
+      \draw [->] (C) -- (11,0) node[midway, below]{Eve} node[midway, above]{1mBTC};
+
+      \node[red] (D) at (10, 3) {$utxo$};
+      \draw [->, red] (D) -- (10,1.2);
+      \node[ellipse, draw, red, inner xsep=-1ex,inner ysep=0.5ex, minimum size=2cm] at (10,0) {};
+    \end{tikzpicture}
+  \caption{Transaction graph and UTXO}
+  \label{fig:bl_utxo}
+\end{figure}
+
 \section{Identity}\label{blockchain:identity}
+
+In Bitcoin, and to most of cryptocurrencies, there is no inherent notion of identities or individual accounts which “own” bitcoins~\cite{7163021,nakamoto2012bitcoin}.
+There is no users, account balance or identities—these all exist only to the extent that they can be imputed from the list of published transactions~\cite{7163021,nakamoto2012bitcoin}.
+Ownership simply means knowning a cryptographic key pair $<s_k, p_k>$. The secret key redeems unspent “coins” and the public key function as pseudonymous
+identities within the system and are referred to as addresses. No real-world name or identifying information are required~\cite{7163021,nakamoto2012bitcoin}.
 
 \section{Incentives}\label{blockchain:incentives}
 
