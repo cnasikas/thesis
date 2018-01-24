@@ -240,3 +240,30 @@
 \newtheorem*{notation}{Notation}
 \theoremstyle{custom}
 \newtheorem*{cust}{Definition}
+
+% Tikz %
+
+\newcommand{\arrowthis}[2]{
+        \tikz[remember picture,baseline]{\node[anchor=base,inner sep=0,outer sep=0]%
+        (#1) {\underline{#1}};
+        \node[overlay,single arrow,draw=none,fill=red!50,anchor=tip,rotate=60]
+        at (#1.south) {#2};}%
+    }%
+
+\newcommand{\speechthis}[2]{
+        \tikz[remember picture,baseline]{\node[anchor=base,inner sep=0,outer sep=0]%
+        (#1) {\underline{#1}};\node[overlay,ellipse callout,fill=blue!50]
+        at ($(#1.north)+(-.5cm,0.8cm)$) {#2};}%
+    }%
+
+\newcommand{\bubblethis}[2]{
+        \tikz[remember picture,baseline]{\node[anchor=base,inner sep=0,outer sep=0]%
+        (#1) {\underline{#1}};\node[overlay,cloud callout,callout relative pointer={(0.2cm,-0.7cm)},%
+        aspect=2.5,fill=yellow!90] at ($(#1.north)+(-0.5cm,1.6cm)$) {#2};}%
+    }%
+
+\newcommand{\pointthis}[2]{
+        \tikz[remember picture,baseline]{\node[anchor=base,inner sep=0,outer sep=0]%
+        (#1) {\underline{#1}};\node[overlay,rectangle callout,%
+        callout relative pointer={(0.2cm,0.7cm)},fill=green!50] at ($(#1.north)+(-.5cm,-1.4cm)$) {#2};}%
+        }%
