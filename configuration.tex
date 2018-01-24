@@ -53,7 +53,7 @@
 \newcommand{\sett}[1]{\left\{#1\right\}}
 \newcommand{\nonempty}{\neq\varnothing}
 \newcommand{\ds}{\displaystyle}
-\newcommand{\abs}[1]{\left| {#1} \right|}
+%\newcommand{\abs}[1]{\left| {#1} \right|}
 \newcommand{\qedbox}{\rule{2mm}{2mm}}
 \renewcommand{\qedsymbol}{\qedbox}
 \newcommand{\lto}{\longrightarrow}
@@ -196,6 +196,13 @@
 \newcommand{\rmX}{\mathrm{X}}
 \newcommand{\rmY}{\mathrm{Y}}
 \newcommand{\rmZ}{\mathrm{Z}}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+
+% \abs{\frac{x}{y}}        \quad same as \lvert\frac{x}{y}\rvert
+% \abs[\Big]{\frac{x}{y}}  \quad same as \Bigl|\frac{x}{y}\Bigr|
+% \abs*{\frac{x}{y}}         same as \left|\frac{x}{y}\right|
 
 %Customized Theorem Environments
 \newtheoremstyle%
