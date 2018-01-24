@@ -9,11 +9,42 @@ the fact that the statement is indeed true~\cite{wiki:zkp}.
 
 Let $\calp$ be a prover and $\calv$ the verifier. $\calp$ must convince $\calv$ that she has some
 knowledge of a statement $x$ without explicitly stating what she knows. We call this knowledge a witness $w$.
-Both parties are aware of a predicate $R$ that will attest to $w$ being a valid witness to $x$~\cite{kiagias:crypto}.
+Both parties are aware of a predicate $R$ that will attest to $w$ being a valid witness to $x$~\cite{kiagias:crypto}. In general,
+
+\begin{itemize}
+  \item The predicate $R$ is assumed to be polynomial-time computable.
+  \item The prover $\calp$ has $R,x$, and $w$ such that $R(x,w) = 1$. She wishes to prove possesion of $w$ by producing a proof of knowledge $\pi$.
+  \item The verifier $\calv$ has $R,x$, and $\pi$.
+  \item Given $R$ it is hard to find a corresponding $w$ such as $R(x,w) = 1$
+  \item The prover $\calp$ is reluctant to reveal $w$; otherwise the solution is trivial.
+  \item The verifier $\calv$ can efficiently check the validity of $\pi$.
+\end{itemize}
 
 \section{Examples}
 
 \subsection{The strange cave of Ali Baba~\cite{Quisquater:1989:EZP:118209.118269}}
+
+Suppose there is our old friends Alice and Bob. At the bottom of the cave of figure~\ref{fig:alibaba} there is a magic door that
+can only be open using a secret password. The cave is shaped like a rentacle with one entrace at one side and the magic door blocking the opposite side.
+Bob knows the secret password and wants to prove to Alice that he can open the magic door without revealing the password to Alice.
+Bob propose the following game to prove to Alice he can open the magic door: Alice waits outside the cave, Bob enters the cave and
+takes either left or right path. Alice can not see which path Bob takes. Then Alice enters, stants at the entrance of cave and calls
+Bob to come out either the left or the right passage. Bob complies, using the secret password if necessary.
+
+If Bob does not know the secret password he has $1/2$ change of guessing correctly (he would only be able to return by the named path if
+Alice were to give the name of the same path by which he had entered) as Alice choose at random which path Bob should take. If they repeat this procedure
+$k$ times the probability of Bob convincing Alice that he knows the secret password without actually knowing it reduce exponetially. In particular, at most $1/2^{k}$.
+
+\subsection{The colour-blind friend~\cite{wiki:zkp,zkp:colour_blind}}
+
+Let's bring again our friends Alice and Bob. Suppose Bob is color-blind and Alice has two balls: one red and one green but otherwise identical when you touch them.
+To Alice they seem complete identical and she is not sure if they are actually distinguishable. Bob wants to prove to Alice that indeed the are differently-coloured
+without revealing which one is red and which is green. To prove his knowledge, Bob gives to Alice the two balls so that she is holding one in each hand. Bob can see
+at this point which ball is in which hand. Next, Alice either switches the ball behind her hands or leaves them be, with probability $1/2$. Finally, she brings
+them out from behind her back. Alice then asks Bob if she switch the balls. By looking at their colors, Bob can can say with certainty whether he switched them or not.
+On the other hand, if they were the same color and hence indistinguishable, there is no way you could guess correctly with probability higher than 1/2. If they repeat
+this procedure $k$ times the probability that Bob succeeded at identifying all the switch/non-switches when the balls are identical (thus lying to Alice) is at most
+$1/2^{k}$.
 
 \begin{figure}[t!]
   \centering
@@ -26,12 +57,12 @@ Both parties are aware of a predicate $R$ that will attest to $w$ being a valid 
         \draw(0,4) --(2,4) -- (2,1) -- (10,1) -- (10, 4);
         \draw(9,4.5) -- (10,4.5);
         \draw(3,5) -- (3,7) -- (9,7) -- (9,5);
-        \draw(3,4) -- (3,2) -- (9,2) -- (9,5);
+        \draw(3,5) -- (3,2) -- (9,2) -- (9,5);
         % Actors %
         \draw[fill] (1,5.6) circle [radius=0.1];
-        \node [below] at (1,5.5) {Alice};
+        \node [below] (alice) at (1,5.5) {Alice};
         \draw[fill] (2.5,4.6) circle [radius=0.1];
-        \node [below] at (2.5,4.5) {Bob};
+        \node [below] (bob) at (2.5,4.5) {Bob};
         % Arrows %
         \draw [dashed, ->] (2.5,4.6) -- (2.5,6);
         \draw [dashed, ->] (2.5,3.9) -- (2.5,2);
@@ -39,6 +70,7 @@ Both parties are aware of a predicate $R$ that will attest to $w$ being a valid 
       \end{tikzpicture}
     }
     \caption{Alice stands outside and Bob choose randomly a path, left or right}
+    \label{fig:alibaba:a}
   \end{subfigure}
   \begin{subfigure}[t]{0.30\textwidth}
     \centering
@@ -49,19 +81,20 @@ Both parties are aware of a predicate $R$ that will attest to $w$ being a valid 
         \draw(0,4) --(2,4) -- (2,1) -- (10,1) -- (10, 4);
         \draw(9,4.5) -- (10,4.5);
         \draw(3,5) -- (3,7) -- (9,7) -- (9,5);
-        \draw(3,4) -- (3,2) -- (9,2) -- (9,5);
+        \draw(3,5) -- (3,2) -- (9,2) -- (9,5);
         % Actors %
-        \draw[fill] (1,5.6) circle [radius=0.1];
-        \node [below] at (1,5.5) {Alice};
         \draw[fill] (2.5,4.6) circle [radius=0.1];
-        \node [below] at (2.5,4.5) {Bob};
-        % Arrows %
-        \draw [dashed, ->] (2.5,4.6) -- (2.5,6);
-        \draw [dashed, ->] (2.5,3.9) -- (2.5,2);
+        \node [below] (alice) at (2.5,4.5) {Alice};
+        \draw[fill] (9.5,4.3) circle [radius=0.1];
+        \node [below] (bob) at (9.5,4.2) {Bob};
+        % Speech Bubble %
+        \node[overlay,draw,cloud callout,callout relative pointer={(0.2cm,-0.7cm)},%
+        aspect=2.5,fill=white!90] at ($(alice)+(-0.5cm,2.3cm)$) {Left};
 
       \end{tikzpicture}
     }
     \caption{Alice calls to Bob, asking him to come out either the left or the right passage}
+    \label{fig:alibaba:b}
   \end{subfigure}
   \begin{subfigure}[t]{0.30\textwidth}
     \centering
@@ -70,23 +103,25 @@ Both parties are aware of a predicate $R$ that will attest to $w$ being a valid 
         % Cave %
         \draw(0,5) -- (2,5) -- (2,8) -- (10,8) -- (10,4);
         \draw(0,4) --(2,4) -- (2,1) -- (10,1) -- (10, 4);
-        \draw(9,4.5) -- (10,4.5);
+        \draw(9,4.5) -- (9.5,4.5);
         \draw(3,5) -- (3,7) -- (9,7) -- (9,5);
-        \draw(3,4) -- (3,2) -- (9,2) -- (9,5);
+        \draw(3,5) -- (3,2) -- (9,2) -- (9,5);
         % Actors %
-        \draw[fill] (1,5.6) circle [radius=0.1];
-        \node [below] at (1,5.5) {Alice};
         \draw[fill] (2.5,4.6) circle [radius=0.1];
-        \node [below] at (2.5,4.5) {Bob};
-        % Arrows %
-        \draw [dashed, ->] (2.5,4.6) -- (2.5,6);
-        \draw [dashed, ->] (2.5,3.9) -- (2.5,2);
+        \node [below] (alice) at (2.5,4.5) {Alice};
+        \draw[fill] (2.5,7.8) circle [radius=0.1];
+        \node [below] (bob) at (2.5,7.7) {Bob};
+        % Speech Bubble %
+        \node[overlay,draw,cloud callout,callout relative pointer={(0.2cm,-0.7cm)},%
+        aspect=2.5,fill=white!90] at ($(alice)+(-0.5cm,2.3cm)$) {OK};
 
       \end{tikzpicture}
     }
     \caption{Bob complies appearing at the exit Alices names}
+    \label{fig:alibaba:c}
   \end{subfigure}
   \caption{Ali Baba Cave}
+  \label{fig:alibaba}
 \end{figure}
 
 \section{Formal Definition~\cite{kiagias:crypto}}
@@ -95,11 +130,34 @@ Let $<\calp, \calv>$ be a pair of interactive programs. Define $\text{out}^{\cal
 to be the output of $\calp$ when both $\calp$ and $\calv$ are executed with the public input $x$ and private
 inputs $w$ and $z$ ($\calp$ determines $w$ and $\calv$ choose $z$); $\text{out}^{\calv}_{\calp, \calv}(x,w,z)$
 is similar defined for $\calv$. The PPT interactive protocol $<\calp, \calv>$ is a \textbf{zero-knowledge proof}
-for a language $L \in NP$ with knowledge error $k$ and zero-knowledge distance $\epsilon$ if the following
+for a language $L \in NP$ with knowledge error $k$ and zero-knowledge distance $\e$ if the following
 properties hold.
 
 \begin{enumerate}
-  \item \textbf{Completeness:}
-  \item \textbf{Soundness:}
-  \item \textbf{Zero-knowledge:}
+  \item \textbf{Completeness:} If $x \in L$ and $R(x,w) = 1$ for some witness $w$, then $\text{out}^{\calv}_{\calp, \calv}(x,w,z)$ = 1
+    for all string $z$ with overwhelming probability in $v$.
+  \item \textbf{Soundness:} For any polynomial-time program $\calp^{*}$ define for arbitrary $x,w,z,$
+    \begin{equation*}
+      \pi_{x,w,z} = \Prob[\text{out}^{\calv}_{\calp^{*}, \calv}(x,w,z) = 1].
+    \end{equation*}
+    A protocol $<\calp, \calv>$ satisfies soundness if there are non-negligible functions $s(v), q(v)$ such for all $\calp^{*}$ here exists a probabilistic
+    Turing machine (PTM) program $K$, called a knowledge extractor with the following property. Suppose that
+
+    \begin{equation*}
+      \widetilde{\pi} = \Prob[K(x,w,z) = w^{'} : R(x, x^{'}) = 1].
+    \end{equation*}
+    Then it holds that $\pi_{x,w,z} \geq s(|x|)$ implies that $\widetilde{\pi}_{x,w,z} \geq q(\abs{x})$.
+
+  \item \textbf{(Statistical) Zero-knowledge:} For each polynomial-time program $\calv^{*}$, there is a PTM program $S$, called the \textbf{simulator}, such that for all
+    $x,w$ with $R(x,w) = 1$, the random variables $S(x,z)$ and $\text{out}^{\calv^{*}}_{\calp, \calv^{*}}(x,w,z)$ are statistically indistinguishable for all strings $z$:
+    \begin{equation*}
+      \forall \cala \abs[\Big]{\Prob[\cala(S(x,z) = 1)] - \Prob[\cala(\text{out}^{\calv^{*}}_{\calp, \calv^{*}}(x,w,z)) = 1]} < \e.
+    \end{equation*}
 \end{enumerate}
+
+Completeness is very similar to correctness. Assuming both the prover and verifier follow the protocol faithfully, completeness guarantees that the
+protocol will succeed with a sufficiently high probability.
+Soundness ensures that if the statement is false, no cheating prover can convince the honest verifier that it is true, except with some small probability.
+Intuitively, statistical zero-knowledge is a property that prohibits a verifier from extracting information from an honest prover.
+A weaker version of zero-knowledge is honest-verifier zero-knowledge (HVZK). Here it is assumed that the verifier executes the protocol faithfully,
+but makes additional computations. 
