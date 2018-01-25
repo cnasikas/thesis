@@ -74,7 +74,17 @@ There is no users, account balance or identities—these all exist only to the e
 Ownership simply means knowning a cryptographic key pair $<s_k, p_k>$. The secret key redeems unspent “coins” and the public key functions as pseudonymous
 identities within the system and are referred to as addresses. No real-world name or identifying information are required~\cite{7163021,nakamoto2012bitcoin}.
 
+In Bitcoin, due to the public nature of the blockchain it is sometimes possible to trace the flow of money between pseudonyms and conclude that they are likely controlled by the same
+individual~\cite{7163021}. The underlaying non-anonymous Internet infrastructure (nodes leak their IP address when broadcasting transactions),
+together with the availability of all bitcoin transactions in the blockchain, has proven to be an anonymity threat~\cite{10.1007/978-3-319-17016-9_1, 7163021,Meiklejohn:2013:FBC:2504730.2504747,6113303,10.1007/978-3-642-39884-1_2,fi5020237}.
+Although Bitcoin provides a limited form of unlinkability by letting users create new addresses at any time for any
+transaction, various techniques, such as transaction graph analysis, can be utilized by an adversary to link together different addresses controlled
+by the same entity~\cite{7163021,Meiklejohn:2013:FBC:2504730.2504747,6113303,10.1007/978-3-642-39884-1_2,fi5020237}.
+Furthermore, Bitcoin does not provide untraceability-for each incoming transaction all possible senders are equiprobable-since all transactions are public~\cite{cryptonote}.
 
+Altcoins such as Zerocash~\cite{zcash} and CryptoNote~\cite{cryptonote} were focused on improving bitcoin anonymity and integrated unlinkability to their currency proposals.
+In particular, Zerocash utilize zero-knowledge proofs (SNARKs~\cite{10.1007/978-3-642-40084-1_6}) which reveal no information at all about the amount or recipients enabling a completely untraceable ledger.
+On the other hand, CryptoNote uses ring signatures creating a mixing protocol satisfying both untraceability and unlinkability. CryptoNote compared to Zerocash has better performance but weaker anonymity~\cite{7163021}.
 
 \section{Structure}\label{blockchain:structure}
 
