@@ -32,7 +32,7 @@ David Chaum~\cite{wiki:david_chaum} is the inventor of the secure digital cash i
 1990 proposed the first off-line e-cash system~\cite{Chaum:1988:UEC:646753.704915} and founded DigiCash~\cite{wiki:digicash}, an electronic money corporation,
 which in 1994 sent the first electronic payment.
 
-Digital cash shemes have a potential flaw called double-spending~\cite{wiki:double_spend} in which the same digital token can be spent more than once.
+Digital cash shemes have a potential flaw called double-spending~\cite{wiki:double_spend,bitcoin_wiki:double_spend} in which the same digital token can be spent more than once.
 Chaum find a way to both keep the system anonymous and prevent double-spending with the use of blind signatures~\cite{Chaum1983,Chaum:1988:UEC:646753.704915}.
 Nevertheless, Chauma's solution needed a centralized trusted oracle that validates the transactions. Many cryptographers tried to improve Chaum's et al. sheme
 such as Okamoto and Ohta~\cite{Watanabe1996} who implemented the subdivisions of coins with the use of Merkle trees~\cite{wiki:merkle_tree}.
@@ -67,46 +67,66 @@ such as b-money and HashCash~\cite{antonopoulos2014mastering}. Bitcoin is the fi
 provided for the first time a practical solution to the Byzantine Generals' Problem~\cite{wiki:byzantine_fault_tolerance} with the use of a consensus mechanism
 based on Proof-of-Work which can be used to achieve consensus on decentralized networks for elections, lotteries, assets registries and more~\cite{antonopoulos2014mastering}.
 
+\section{Identity}\label{blockchain:identity}
+
+In Bitcoin, and in most cryptocurrencies, there is no inherent notion of identities or individual accounts which “own” bitcoins~\cite{7163021,nakamoto2012bitcoin}.
+There is no users, account balance or identities—these all exist only to the extent that they can be imputed from the list of published transactions~\cite{7163021,nakamoto2012bitcoin}.
+Ownership simply means knowning a cryptographic key pair $<s_k, p_k>$. The secret key redeems unspent “coins” and the public key functions as pseudonymous
+identities within the system and are referred to as addresses. No real-world name or identifying information are required~\cite{7163021,nakamoto2012bitcoin}.
+
+
+
 \section{Structure}\label{blockchain:structure}
 
 The first blockchain was conceptualized and implemented as a core component of bitcoin where it serves as the public ledger for all transactions.
 The invention of the blockchain for bitcoin made it the first digital currency to solve the double spending problem without the need of a trusted authority or
-central server. The bitcoin design has been the inspiration for other applications~\cite{7163021,10.1007/978-3-662-46803-6_10}.
+central server. The bitcoin design has been the inspiration for other applications~\cite{7163021,10.1007/978-3-662-46803-6_10}. In the next subsections we analyze
+the bitcoin blockchain structure as it was the first blockchain and put the bases for other blockchain systems to be made and involve.
 
-The basic data structure is of blockchains is a transaction (tx) and transfers money from somebody to somebody else. A blockchain transaction can be described as
+\subsection{Transaction}\label{blockchain:structure:tx}
+
+The basic data structure of blockchain is a transaction (tx) and transfers money from somebody to somebody else. A blockchain transaction can be described as
 a node with two edges, one incoming edge and one outcoming edge. The incoming edge describes the sender (from) and the outcoming edge the recipient (to).
-Every transaction has a unique transaction id (txid) which comes from the double hash of the transaction with the use of SHA-256 hash function.
+Every bitcoin transaction has a unique transaction id (txid) which comes from the double hash of the transaction with the use of SHA-256 cryptographic hash function.
 
-\begin{figure}
+\begin{figure}[h]
+  \begin{subfigure}[t]{0.50\textwidth}
     \centering
     \begin{tikzpicture}
-      \node[circle,draw, minimum size=4cm] (A) at (0,0) {$tx$};
-      \draw [->] (-5,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
-      \draw [->] (A) -- (5, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
+      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+      \draw [->] (-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
+      \draw [->] (A) -- (3, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
     \end{tikzpicture}
-  \caption{A bitcoin transaction}
+    \caption{A bitcoin transaction}
+    \label{fig:bl_tx:tx}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.50\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+      \draw [->] (-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
+      \draw [->] (A) -- (3, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
+      \node (txid) at (-5,0) {$txid = SHA256^{2}($};
+      \node (txid) at (3.3,0) {$)$};
+    \end{tikzpicture}
+    \caption{Bitcoin Transaction ID}
+    \label{fig:bl_tx:id}
+  \end{subfigure}
+  \caption{Transactions}
   \label{fig:bl_transaction}
 \end{figure}
 
-\begin{figure}
-    \centering
-    \begin{tikzpicture}
-      \node[circle,draw, minimum size=4cm] (A) at (0,0) {$tx$};
-      \draw [->] (-5,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
-      \draw [->] (A) -- (5, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
-      \node (txid) at (-7,0) {$txid = SHA256^{2}($};
-      \node (txid) at (5.3,0) {$)$};
-    \end{tikzpicture}
-  \caption{Transaction ID}
-  \label{fig:bl_txid}
-\end{figure}
-
 Payments are done throught linking transaction nodes and money is a chain of transactions. All transactions together form a transaction graph which is public and everyone participating in
-the network can see and add new transactions to the graph. Spendable money are outgoing unlinked edges which are called unspent transaction outputs (utxo).
+the network can see and add new transactions to the graph. Spendable money are outgoing unlinked edges which are called unspent transaction outputs (UTXO). So for a user to spent her money
+she has to claim her UTXO's, meaning to find all the UTXO that have her public key as recipient given she has the corresponding secret key. A user too spent money, first she find a transaction
+that has a UTXO of which she is the owner. Then she creates one transaction with one incoming and one outgoing edge and connect the incoming edge of the new transaction with the old UTXO.
+Now the old UTXO is not a UTXO anymore, it was just spent, and the outgoing edge of the new tx is unconnected and becomes the new UTXO. Finally she specifies the value and the owner (address)
+of the new outgoing edge.
 
-\begin{figure}
+
+\begin{figure}[ht!]
     \centering
-    \begin{tikzpicture}
+    \begin{tikzpicture}[scale=0.9]
       \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
       \node[circle,draw, minimum size=2cm] (B) at (4,0) {$tx$};
       \node[circle,draw, minimum size=2cm] (C) at (8,0) {$tx$};
@@ -116,25 +136,174 @@ the network can see and add new transactions to the graph. Spendable money are o
       \draw [->] (C) -- (11,0) node[midway, below]{Eve} node[midway, above]{1mBTC};
 
       \node[red] (D) at (10, 3) {$utxo$};
-      \draw [->, red] (D) -- (10,1.2);
-      \node[ellipse, draw, red, inner xsep=-1ex,inner ysep=0.5ex, minimum size=2cm] at (10,0) {};
+      \draw [->, red] (D) -- (10,0.8);
+      \node[ellipse, draw, red, inner xsep=4.5ex,inner ysep=1.9ex] at (10,0) {};
     \end{tikzpicture}
   \caption{Transaction graph and UTXO}
   \label{fig:bl_utxo}
 \end{figure}
 
-\section{Identity}\label{blockchain:identity}
+\begin{figure}[ht!]
+  \begin{subfigure}[t]{0.50\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+      \draw [->] (A) -- (3,0) node[midway, below]{Alice} node[midway, above]{1mBTC};
 
-In Bitcoin, and to most of cryptocurrencies, there is no inherent notion of identities or individual accounts which “own” bitcoins~\cite{7163021,nakamoto2012bitcoin}.
-There is no users, account balance or identities—these all exist only to the extent that they can be imputed from the list of published transactions~\cite{7163021,nakamoto2012bitcoin}.
-Ownership simply means knowning a cryptographic key pair $<s_k, p_k>$. The secret key redeems unspent “coins” and the public key function as pseudonymous
-identities within the system and are referred to as addresses. No real-world name or identifying information are required~\cite{7163021,nakamoto2012bitcoin}.
+      \node[red] (utxo) at (2, 3) {$utxo$};
+      \draw [->, red] (utxo) -- (2,0.8);
+      \node[ellipse, draw, red, inner xsep=4.5ex,inner ysep=1.9ex] at (2,0) {};
+    \end{tikzpicture}
+    \caption{Alice finds one UTXO that belongs to her}
+    \label{fig:bl_spent:a}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.50\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.9]
+      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+      \draw [->] (A) -- (3,0) node[midway, below]{Alice} node[midway, above]{1mBTC};
+      \node[circle,draw, minimum size=2cm] (B) at (5,0) {$tx$};
+      \draw [->] (B) -- (8,0) node[midway, below]{Bob} node[midway, above]{1mBTC};
 
-\section{Incentives}\label{blockchain:incentives}
+      \node[red] (utxo) at (2, 3) {$utxo$};
+      \draw [->, red] (utxo) -- (2,0.8);
+      \node[ellipse, draw, red, inner xsep=4.5ex,inner ysep=1.9ex] at (2,0) {};
+    \end{tikzpicture}
+    \caption{Alice create a transaction with recipient Bob}
+    \label{fig:bl_spent:b}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.50\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.9]
+      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+      \node[circle,draw, minimum size=2cm] (B) at (4,0) {$tx$};
+      \draw [->] (A) -- (B) node[midway, below]{Alice} node[midway, above]{1mBTC};
+      \draw [->] (B) -- (7,0) node[midway, below]{Bob} node[midway, above]{1mBTC};
 
-For miners to participate in the network and contribute their computation resources incentives must be provided.
-Normally, in permissionless blockchains such as Bitcoin or Ethereum a monetary incentive in the form of cryptocurrency
-incentivize the miners and in a permissioned blockchain finance incentives or access to blockchain data could encourage miners to participate~\cite{deloitte}.
+      \node[red] (utxo) at (2, 3) {$not\text{ }utxo\text{ }anymore$};
+      \draw [->, red] (utxo) -- (2,0.8);
+      \node[ellipse, draw, red, inner xsep=4.5ex,inner ysep=1.9ex] at (2,0) {};
+
+      \node[blue] (utxo) at (6, 3) {$new\text{ }utxo$};
+      \draw [->, blue] (utxo) -- (6,0.8);
+      \node[ellipse, draw, blue, inner xsep=4.5ex,inner ysep=1.9ex] at (6,0) {};
+    \end{tikzpicture}
+    \caption{Alice connects the incoming edge of the new transaction with the old UTXO}
+    \label{fig:bl_spent:c}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.50\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.9]
+      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+      \node[circle,draw, minimum size=2cm] (B) at (4,0) {$tx$};
+      \draw [->] (A) -- (B) node[midway, below]{Alice} node[midway, above]{1mBTC};
+      \draw [->] (B) -- (7,0) node[midway, below]{Bob} node[midway, above]{1mBTC};
+
+      \node[red] (utxo) at (4.8, 3) {$Alice\text{ }signs\text{ }$};
+      \node[ellipse, draw, red, inner xsep=8ex,inner ysep=4ex] (ell) at (4.8,0) {};
+      \draw [->, red] (utxo) -- (ell);
+    \end{tikzpicture}
+    \caption{Alice signs the transaction. No one else can forge this signature}
+    \label{fig:bl_spent:d}
+  \end{subfigure}
+  \caption{Speding money}
+  \label{fig:bl_spent}
+\end{figure}
+
+\subsection{Block}\label{blockchain:structure:block}
+
+To prevent double-spending~\cite{wiki:double_spend,bitcoin_wiki:double_spend} the transaction must be put in chronological order so that it can be answered
+if transaction A happen before transaction B. Furthermore, the order must be common for everyone in the network.
+This global aggrement on a common truth is named consensus (See Section~\ref{blockchain:consensus_mechanisms}) and this is where the bitcoin novelty is.
+
+A block contains many transactions and it cannot contain double spends;transactions that spend the same output.
+Each transaction can appear only once in a block and a transaction in a valid block is called confirmed.
+
+In bitcoin network a block is set to be created approximately one every ten minutes and every newly created block contains the most recent transactions that did not
+exist in previous blocks. As in transaction every bitcoin block has a unique block id which comes from the double hash of the header of the block with the use of SHA-256 cryptographic hash function.
+
+\begin{figure}[ht!]
+  \begin{subfigure}[t]{0.50\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \draw (0,0) rectangle (5,3);
+      \foreach \x in {1,2,...,4}
+        \foreach \y in {1,...,2}
+          \node[circle,draw, minimum size=0.4cm] at (\x,\y) {$tx$};
+
+      \node[red] (confirm) at (4.8, 4) {$confirmed \text{ }transaction$};
+      \draw [->, red] (confirm) -- (4,2.2);
+    \end{tikzpicture}
+    \caption{A block}
+    \label{fig:block:a}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.50\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.9]
+      \draw (0,0) rectangle (5,3);
+      \foreach \x in {1,2,...,4}
+        \foreach \y in {1,...,2}
+          \node[circle,draw, minimum size=0.4cm] at (\x,\y) {$tx$};
+      \node (txid) at (-2.5,1.5) {$blockid = SHA256^{2}($};
+      \node (txid) at (5.5,1.5) {$)$};
+    \end{tikzpicture}
+    \caption{Bitcoin Block ID}
+    \label{fig:block:b}
+  \end{subfigure}
+  \caption{Blocks}
+  \label{fig:blocks}
+\end{figure}
+
+\subsection{Blockchain}\label{blockchain:structure:blockchain}
+
+The blockchain data structure is an ordered back-linked list of blocks of transactions. Each block references a
+previous block, known as the parent block, through a pointer to the previous block id. A later block cannot contain a double spend of a previous one or a transaction that appeared in a previous block.
+So, a transaction A precedes transaction B if A is contained in a previous block from B and if we want to ensure that a transaction will not be double spent, we have to
+wait for it to be confirmed. So, the need of a consensus-a single universal “truth”, a global aggrement- on the order of the blocks emerge (See Section~\ref{blockchain:consensus_mechanisms}).
+
+\begin{figure}[ht!]
+  \centering
+  \begin{tikzpicture}
+    \foreach \x in {0,1,...,4}
+        \pgfmathparse{(\x*3)}
+        \edef\position{\pgfmathresult}
+        \node[rectangle,draw,minimum width=2cm,minimum height=1cm] (\x) at (\position,0) {$block$};
+
+    \foreach \x in {1,2,...,4}
+        \pgfmathparse{(\x-1)}
+        \edef\previous{\pgfmathresult}
+        \draw [->] (\x) -- (\previous);
+
+  \end{tikzpicture}
+  \caption{Blockchain}
+  \label{fig:blockchain}
+\end{figure}
+
+\begin{figure}[ht!]
+  \begin{tikzpicture}
+    \foreach \x in {0,1,...,4}{
+        \pgfmathparse{(\x*3)}
+        \edef\position{\pgfmathresult}
+        \node[rectangle,draw,minimum width=2cm,minimum height=1cm] (\x) at (\position,0) {$block$};
+        \pgfmathparse{int(\x*10 + 10)}
+        \edef\time{\pgfmathresult}
+        \node[] at (\position,-2) {$17:\time$};
+    }
+
+
+    \foreach \x in {1,2,...,4}
+        \pgfmathparse{(\x-1)}
+        \edef\previous{\pgfmathresult}
+        \draw [->] (\x) -- (\previous);
+
+    \node[ellipse, draw, red, inner xsep=6ex,inner ysep=3ex] (old_ell) at (0) {};
+    \node[ellipse, draw, red, inner xsep=6ex,inner ysep=3ex] (recent_ell) at (4) {};
+    \node[red,below=0cm of old_ell] (old) {$oldest\text{ }block\text{ }$};
+    \node[red,below=0cm of recent_ell] (recent) {$recent\text{ }block\text{ }$};
+  \end{tikzpicture}
+  \caption{Blockchain timeline}
+  \label{fig:blockchain_timeline}
+\end{figure}
 
 \section{Consensus mechanisms}\label{blockchain:consensus_mechanisms}
 
@@ -221,6 +390,12 @@ global consensus is achieved when certain conditions are being met~\cite{DBLP:jo
   \caption{Blockchain consensus mechanisms. Adapted and modified from~\cite{bl_consensus,Vukolić2016}}
   \label{table:blockchain_consensus}
 \end{table}
+
+\section{Incentives}\label{blockchain:incentives}
+
+For miners to participate in the network and contribute their computation resources incentives must be provided.
+Normally, in permissionless blockchains such as Bitcoin or Ethereum a monetary incentive in the form of cryptocurrency
+incentivize the miners and in a permissioned blockchain finance incentives or access to blockchain data could encourage miners to participate~\cite{deloitte}.
 
 \section{Blockchain Types}\label{blockchain:blockchain_types}
 
