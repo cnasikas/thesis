@@ -1,3 +1,39 @@
 %!TEX root = ../thesis.tex
 \chapter{Solution}
 \label{solution}
+
+\section{Architecture}
+
+\begin{figure}[ht!]
+  \begin{tikzpicture}[
+        database/.style={
+        cylinder,
+        shape border rotate=90,
+        aspect=0.5,
+        draw
+      }
+    ]
+
+    \node[draw,rectangle,minimum width=\textwidth, minimum height=1cm,anchor=west] (blockchain) at (0,0){blockchain};
+
+    \begin{scope}[node distance=2cm]
+      \node[draw, minimum size=1cm,anchor=west] (owner) at (0,-5) {Data Controller};
+      \node[database] (db) [below right=of owner] {Database};
+      \draw[<->] (owner) -- (db);
+      \draw[<->] (owner.north) -- (blockchain);
+    \end{scope}
+
+    \begin{scope}
+      \node[draw, minimum size=1cm,anchor=west] (processor) at (0,5) {Data Processor};
+      \draw[<->] (processor.south) -- (blockchain);
+    \end{scope}
+
+    \begin{scope}
+      \node[draw, minimum size=1cm,anchor=east] (requestor) at (\textwidth,-5) {Requestor};
+      \draw[<->] (requestor.north) -- (blockchain);
+    \end{scope}
+
+  \end{tikzpicture}
+  \caption{Architecture}
+  \label{fig:architecture}
+\end{figure}
