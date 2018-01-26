@@ -2,7 +2,15 @@
 \chapter{Smart Contracts}
 \label{smart_contracts}
 
-Blockchains could also incorporate the notion of smart contracts~\cite{ethreum}.
-A smart contract is a computer protocol intended to facilitate, verify, or enforce the negotiation or performance of a contract~\cite{wiki:smart_contract}.
-Smart contracts have been used primarily in association with cryptocurrencies. The most prominent smart contract implementation
-is the Ethereum blockchain platform~\cite{ethreum}, known as a decentralized application, which implements a Turing complete language for writing smart contracts.
+A smart contract is a computer protocol intended to facilitate, verify, or enforce the negotiation or performance of a contract~\cite{FM548,wiki:smart_contract}.
+The idea of smart contracts proposed in the early 1990s~\cite{FM548} and have been used primarily in association with cryptocurrencies enabling
+parties to formally specify a cryptographically enforceable agreements~\cite{7163021}.
+
+Bitcoin offers smart contracts through a stack-based scripting language that is not Turing-complete limiting the type of smart contracts one can create.
+Numerous previous smart contract application atop Bitcoin (e.g., lottery\cite{Andrychowicz:2014:SMC:2650286.2650764,10.1007/978-3-662-44381-1_24},
+verifiable computation~\cite{Kumaresan:2014:UBI:2660267.2660380}) have demostrated the difficulty of Bitcoin's scripting language~\cite{cryptoeprint:2015:675}.
+
+Ethereum is the first Turing-complete decentralised smart contract framework. With Ethereum launch, the notion of DApps (decentralized applications) arised
+and a lot of developers and companies are building numerous applications atop Ethereum such as prediction markets~\cite{augur,gnosis}, social media platforms~\cite{akasha,backfeed},
+online gambling~\cite{etheroll,coinpoker} and video games~\cite{cryptokitties}. As of January 2018, there are more than 250 live DApps,
+with hundreds more under development~\cite{wiki:ethereum}.
