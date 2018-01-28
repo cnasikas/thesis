@@ -11,26 +11,36 @@
         shape border rotate=90,
         aspect=0.5,
         draw
+      },
+      txt/.style={
       }
     ]
 
     \node[draw,rectangle,minimum width=\textwidth, minimum height=1cm,anchor=west] (blockchain) at (0,0){blockchain};
 
-    \begin{scope}[node distance=2cm]
-      \node[draw, minimum size=1cm,anchor=west] (owner) at (0,-5) {Data Controller};
+    \begin{scope}[node distance=4cm]
+      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (owner) at (0,-5) {Data Owner};
       \node[database] (db) [below right=of owner] {Database};
       \draw[<->] (owner) -- (db);
-      \draw[<->] (owner.north) -- (blockchain);
+      \draw[<-] ([xshift=-1em]owner.north) -- ([xshift=-1em]2,-0.5);
+      \draw[->] ([xshift=1em]owner.north) -- ([xshift=1em]2,-0.5);
     \end{scope}
 
-    \begin{scope}
-      \node[draw, minimum size=1cm,anchor=west] (processor) at (0,5) {Data Processor};
-      \draw[<->] (processor.south) -- (blockchain);
-    \end{scope}
+    \node[txt] (enc_db) [below=of owner,yshift=-1.5em, xshift=3em] {$Enc_k(data)$};
+    \node[txt] (enc_key) [above=of owner, xshift=6.5em, yshift=1em] {$Enc_{pkA}(k, metadata)$};
 
     \begin{scope}
-      \node[draw, minimum size=1cm,anchor=east] (requestor) at (\textwidth,-5) {Requestor};
-      \draw[<->] (requestor.north) -- (blockchain);
+      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (processor) at (0,5) {Data Processor};
+      \draw[<-] ([xshift=-1em]processor.south) -- ([xshift=-1em]2,0.5);
+      \draw[->] ([xshift=1em]processor.south) -- ([xshift=1em]2,0.5);
+    \end{scope}
+
+    \node[txt] (enc_db) [below=of processor,yshift=-1.5em, xshift=6em] {$Enc_{pkB}(result, \pi)$};
+
+    \begin{scope}
+      \node[draw, minimum height=1cm, minimum width=4cm, anchor=east] (requester) at (\textwidth,-5) {Requester};
+      \draw[->] ([xshift=-1em]requester.north) -- ([xshift=-1em]14.45,-0.5);
+      \draw[<-] ([xshift=1em]requester.north) -- ([xshift=1em]14.45,-0.5);
     \end{scope}
 
   \end{tikzpicture}
