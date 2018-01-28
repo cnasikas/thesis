@@ -726,7 +726,7 @@ publications}\gdef\@lopfileinternal{#1}}
 
     \pagestyle{empty}
     \listoffigures
-    \cleardoublepage
+    %\cleardoublepage
     \endgroup
 
     % list of tables
