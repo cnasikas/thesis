@@ -224,7 +224,7 @@ of the new outgoing edge.
 
 To prevent double-spending~\cite{wiki:double_spend,bitcoin_wiki:double_spend} the transaction must be put in chronological order so that it can be answered
 if transaction A happen before transaction B. Furthermore, the order must be common for everyone in the network.
-This global aggrement on a common truth is named consensus (See Section~\ref{blockchain:consensus_mechanisms}) and this is where the bitcoin novelty is.
+This global aggrement on a common truth is named consensus (§~\ref{blockchain:consensus_mechanisms}) and this is where the bitcoin novelty is.
 
 A block contains many transactions and it cannot contain double spends;transactions that spend the same output.
 Each transaction can appear only once in a block and a transaction in a valid block is called confirmed.
@@ -269,7 +269,7 @@ exist in previous blocks. As in transaction every bitcoin block has a unique blo
 The blockchain data structure is an ordered back-linked list of blocks of transactions. Each block references a
 previous block, known as the parent block, through a pointer to the previous block id. A later block cannot contain a double spend of a previous one or a transaction that appeared in a previous block.
 So, a transaction A precedes transaction B if A is contained in a previous block from B and if we want to ensure that a transaction will not be double spent, we have to
-wait for it to be confirmed. So, the need of a consensus-a single universal “truth”, a global aggrement- on the order of the blocks emerge (See Section~\ref{blockchain:consensus_mechanisms}).
+wait for it to be confirmed. So, the need of a consensus-a single universal “truth”, a global aggrement- on the order of the blocks emerge (§~\ref{blockchain:consensus_mechanisms}).
 
 \begin{figure}[ht!]
   \centering
