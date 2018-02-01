@@ -447,9 +447,9 @@ publications}\gdef\@lopfileinternal{#1}}
 \begin{center}
 {\bfseries
 \ifenglishcommitteepage
-	PhD THESIS
+	Masters Thesis
 \else
-	ΔΙΔΑΚΤΟΡΙΚΗ ΔΙΑΤΡΙΒΗ
+	Διπλωματική Εργασία
 \fi
 }
 \linebreak
