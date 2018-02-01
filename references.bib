@@ -908,3 +908,82 @@ isbn="978-3-662-44381-1"
   url    = {https://www.cryptokitties.co/},
   note = {\url{https://www.cryptokitties.co/}},
 }
+
+@InProceedings{10.1007/978-3-642-38348-9_37,
+author="Gennaro, Rosario
+and Gentry, Craig
+and Parno, Bryan
+and Raykova, Mariana",
+editor="Johansson, Thomas
+and Nguyen, Phong Q.",
+title="Quadratic Span Programs and Succinct NIZKs without PCPs",
+booktitle="Advances in Cryptology -- EUROCRYPT 2013",
+year="2013",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="626--645",
+abstract="We introduce a new characterization of the NP complexity class, called Quadratic Span Programs (QSPs), which is a natural extension of span programs defined by Karchmer and Wigderson. Our main motivation is the quick construction of succinct, easily verified arguments for NP statements.",
+isbn="978-3-642-38348-9"
+}
+
+@inproceedings{pinocchio-nearly-practical-verifiable-computation,
+author = {Parno, Bryan and Howell, Jon and Gentry, Craig and Raykova, Mariana},
+title = {Pinocchio: Nearly Practical Verifiable Computation},
+booktitle = {Proceedings of the IEEE Symposium on Security and Privacy},
+year = {2013},
+month = {May},
+abstract = {
+
+To instill greater confidence in computations outsourced to the cloud, clients should be able to verify the correctness of the results returned. To this end, we introduce Pinocchio, a built system for efficiently verifying general computations while relying only on cryptographic assumptions. With Pinocchio, the client creates a public evaluation key to describe her computation; this setup is proportional to evaluating the computation once. The worker then evaluates the computation on a particular input and uses the evaluation key to produce a proof of correctness. The proof is only 288 bytes, regardless of the computation performed or the size of the inputs and outputs. Anyone can use a public verification key to check the proof.
+
+Crucially, our evaluation on seven applications demonstrates that Pinocchio is efficient in practice too. Pinocchio's verification time is typically 10ms: 5-7 orders of magnitude less than previous work; indeed Pinocchio is the first general-purpose system to demonstrate verification cheaper than native execution (for some apps). Pinocchio also reduces the worker's proof effort by an additional 19-60x. As an additional feature, Pinocchio generalizes to zero-knowledge proofs at a negligible cost over the base protocol. Finally, to aid development, Pinocchio provides an end-to-end toolchain that compiles a subset of C into programs that implement the verifiable computation protocol.
+
+For the full version of our paper, including a correction to the verification procedure, see http://eprint.iacr.org/2013/279
+
+Pinocchio's source code is also available! Visit https://vc.codeplex.com for more info.
+
+Coverage from the MIT Technology Review: http://www.technologyreview.com/news/515081/microsoft-and-ibm-researchers-develop-a-lie-detector-for-the-cloud/
+
+
+},
+publisher = {IEEE},
+url = {https://www.microsoft.com/en-us/research/publication/pinocchio-nearly-practical-verifiable-computation/},
+address = {},
+pages = {},
+journal = {},
+volume = {},
+chapter = {},
+isbn = {},
+}
+
+@inproceedings {184425,
+author = {Eli Ben-Sasson and Alessandro Chiesa and Eran Tromer and Madars Virza},
+title = {Succinct Non-Interactive Zero Knowledge for a von Neumann Architecture},
+booktitle = {23rd {USENIX} Security Symposium ({USENIX} Security 14)},
+year = {2014},
+isbn = {978-1-931971-15-7},
+address = {San Diego, CA},
+pages = {781--796},
+url = {https://www.usenix.org/conference/usenixsecurity14/technical-sessions/presentation/ben-sasson},
+publisher = {{USENIX} Association},
+}
+
+@TechReport{zksnarks_nutshell,
+  author      = {Christian Reitwießner},
+  title       = {zkSNARKs in a Nutshell},
+  year        = {2016},
+  url         = {https://chriseth.github.io/notes/articles/zksnarks/zksnarks.pdf},
+}
+
+@INPROCEEDINGS{6956581,
+author={E. B. Sasson and A. Chiesa and C. Garman and M. Green and I. Miers and E. Tromer and M. Virza},
+booktitle={2014 IEEE Symposium on Security and Privacy},
+title={Zerocash: Decentralized Anonymous Payments from Bitcoin},
+year={2014},
+volume={},
+number={},
+pages={459-474},
+keywords={data privacy;electronic money;Bitcoin;DAP schemes;Zero cash;Zerocash;decentralized anonymous payment schemes;decentralized anonymous payments;full-fledged ledger-based digital currency;payment transactions;privacy guarantees;public decentralized ledger;zero-knowledge succinct noninteractive arguments of knowledge;zk-SNARKs;Logic gates;Online banking;Privacy;Protocols;Public key;Bitcoin;decentralized electronic cash;zero knowledge},
+doi={10.1109/SP.2014.36},
+ISSN={1081-6011},
+month={May},}

@@ -23,8 +23,9 @@ Both parties are aware of a predicate $R$ that will attest to $w$ being a valid 
 \section{Examples}
 
 \subsection{The strange cave of Ali Baba}
+\label{zkp:examples}
 
-Suppose there is our old friends Alice and Bob. At the bottom of the cave~\cite{Quisquater:1989:EZP:118209.118269} of figure~\ref{fig:alibaba} there is a magic door that
+Suppose there is our old friends Alice and Bob. At the bottom of the cave~\cite{Quisquater:1989:EZP:118209.118269} of figure~\ref{fig:zkp:alibaba} there is a magic door that
 can only be open using a secret password. The cave is shaped like a rentacle with one entrace at one side and the magic door blocking the opposite side.
 Bob knows the secret password and wants to prove to Alice that he can open the magic door without revealing the password to Alice.
 Bob propose the following game to prove to Alice he can open the magic door: Alice waits outside the cave, Bob enters the cave and
@@ -70,7 +71,7 @@ $1/2^{k}$.
       \end{tikzpicture}
     }
     \caption{Alice stands outside and Bob choose randomly a path, left or right}
-    \label{fig:alibaba:a}
+    \label{fig:zkp:alibaba:a}
   \end{subfigure}
   \begin{subfigure}[t]{0.30\textwidth}
     \centering
@@ -94,7 +95,7 @@ $1/2^{k}$.
       \end{tikzpicture}
     }
     \caption{Alice calls to Bob, asking him to come out either the left or the right passage}
-    \label{fig:alibaba:b}
+    \label{fig:zkp:alibaba:b}
   \end{subfigure}
   \begin{subfigure}[t]{0.30\textwidth}
     \centering
@@ -118,20 +119,21 @@ $1/2^{k}$.
       \end{tikzpicture}
     }
     \caption{Bob complies appearing at the exit Alices names}
-    \label{fig:alibaba:c}
+    \label{fig:zkp:alibaba:c}
   \end{subfigure}
   \caption{Ali Baba Cave}
-  \label{fig:alibaba}
+  \label{fig:zkp:alibaba}
 \end{figure}
 
-\section{Formal Definition~\cite{kiagias:crypto}}
+\section{Formal Definition}
+\label{zkp:definition}
 
 Let $<\calp, \calv>$ be a pair of interactive programs. Define $\text{out}^{\calp}_{\calp, \calv}(x,w,z)$
 to be the output of $\calp$ when both $\calp$ and $\calv$ are executed with the public input $x$ and private
 inputs $w$ and $z$ ($\calp$ determines $w$ and $\calv$ choose $z$); $\text{out}^{\calv}_{\calp, \calv}(x,w,z)$
 is similar defined for $\calv$. The PPT interactive protocol $<\calp, \calv>$ is a \textbf{zero-knowledge proof}
 for a language $L \in NP$ with knowledge error $k$ and zero-knowledge distance $\e$ if the following
-properties hold.
+properties hold~\cite{kiagias:crypto}.
 
 \begin{enumerate}
   \item \textbf{Completeness:} If $x \in L$ and $R(x,w) = 1$ for some witness $w$, then $\text{out}^{\calv}_{\calp, \calv}(x,w,z)$ = 1
@@ -160,6 +162,40 @@ protocol will succeed with a sufficiently high probability.
 Soundness ensures that if the statement is false, no cheating prover can convince the honest verifier that it is true, except with some small probability.
 Intuitively, statistical zero-knowledge is a property that prohibits a verifier from extracting information from an honest prover.
 A weaker version of zero-knowledge is honest-verifier zero-knowledge (HVZK). Here it is assumed that the verifier executes the protocol faithfully,
-but makes additional computations.
+but makes additional computations~\cite{kiagias:crypto}.
 
-\section{Non-interactive zero-knowledge proof}
+\section{zk-SNARKs}
+
+The acronymum zk-SNARK stands for `Zero-Knowledge Succinct Non-Interactive Argument of Knowledge` in which each individual part, informally, have the following meaning~\cite{zksnarks_nutshell, 6956581, 184425}:
+
+\begin{itemize}
+  \item Zero-Knowledge: The verifier learns nothing but the validity of the computation
+  \item Succinct: The proof are sort and easy to verify in comparison to the actual computation (constant size and polynomial verifiable in the size of the proof)
+  \item Non-Interactive: There is no or little interaction done in one step. Anyone can verify without the need of interacting anew (publicly verifiable)
+  \item ARgument: Soundness (§~\ref{zkp:definition}) holds only against computationally bounded provers
+  \item of Knowledge: If the verifier accepts a proof output by a computationally bounded prover, then the prover has a witness for the given instance
+\end{itemize}
+
+
+
+\begin{figure}[ht!]
+  \begin{tikzpicture}[
+    flow/.style={rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black,font=\small},
+    scale=0.9
+  ]
+    \node[flow] (comp) at (0, 0) {Computation};
+    \node[flow] (alg) at (4, 0) {Arithmetic Circuit};
+    \node[flow] (r1cs) at (8, 0) {R1CS};
+    \node[flow] (qap) at (12, 0) {QAP};
+    \node[flow] (zk) at (16, 0) {zkSNARK};
+
+    \draw[->] (comp) -- (alg);
+    \draw[->] (alg) -- (r1cs);
+    \draw[->] (r1cs) -- (qap);
+    \draw[->] (qap) -- (zk);
+
+
+  \end{tikzpicture}
+  \caption{Steps of zk-SNARK}
+  \label{fig:zkp:zksnark_flow}
+\end{figure}
