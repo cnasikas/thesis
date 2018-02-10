@@ -4,6 +4,35 @@
 
 \section{Architecture}
 
+Blockchain is used as the controller of the application. It is responsible for keeping an
+audit immutable log of all actions of the participants. All interaction are being made
+through the blockchain supporting data accountability and provenance tracking.
+
+There are three main roles consisting the application: the data controller, the data processor
+and the data requester. The first two are also defined in the context of the new
+General Data Protection Regulation (GDPR)~\cite{gdpr} in 2016 by the European Commission.
+GDPR defines another role, that of data subject-the owner of the data.
+In our scheme we assume that the data controller already has permission to access the data or
+she is at the same time the data subject and the data controller.
+
+\subsection{Data Controller}
+
+The data controller is in charge of a data set. She run on behalf of a data subject (person)
+that authorises the data controller to access her personal data, with the possibility of forwarding
+them to a data processor that will be responsible for processing the data on behalf of controller~\cite{DBLP:journals/corr/NeisseSF17}.
+
+\subsection{Data Processor}
+
+The data processor is responsible for processing data on behalf of the data requester. She listens
+for requests and fulfil them on submission. Furthermore, she submits a Zero Knowledge Proof of correct computation over
+a data set.
+
+\subsection{Data Requester}
+
+The requester can be any entity that wants a computation over a data set. It can be a research lab, a machine learning
+algorithm or a university. The requester expects a proof of computation, over a specific data set, that verifies when she
+gets the results.
+
 \begin{figure}[ht!]
   \begin{tikzpicture}[
         database/.style={
