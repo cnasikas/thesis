@@ -33,6 +33,17 @@ The requester can be any entity that wants a computation over a data set. It can
 algorithm or a university. The requester expects a proof of computation, over a specific data set, that verifies when she
 gets the results.
 
+\subsection{Flow}
+
+\begin{enumerate}
+  \item The controller encrypts a data set with a symmetric key and saves the cipher-text to a database
+  \item The controller encrypts the symmetric key with the public key of the processor
+  \item The requester makes a request of process over some data
+  \item The processor process the data on behalf of the request and submits the result of the computation on the
+  blockchain along with a Zero Knowledge Proof (§~\ref{zkp}) of the correctness of the computation.
+  \item The requester gets the results and verifies the proof.
+\end{enumerate}
+
 \begin{figure}[ht!]
   \begin{tikzpicture}[
         database/.style={
