@@ -9,4 +9,4 @@ xelatex thesis
 xelatex thesis
 
 # Hide the log.
-mv "thesis.log" ".logged"
+# mv "thesis.log" ".logged"
