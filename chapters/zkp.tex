@@ -176,7 +176,14 @@ The acronymum zk-SNARK stands for `Zero-Knowledge Succinct Non-Interactive Argum
   \item of Knowledge: If the verifier accepts a proof output by a computationally bounded prover, then the prover has a witness for the given instance
 \end{itemize}
 
+At high level, zkSNARKs consinst of four basic steps (Figure ~\ref{fig:zkp:zksnark_flow}):
 
+\begin{enumerate}
+  \item Computation to Arithmetic circuit~\cite{wiki:circuits}
+  \item Arithmetic circuit to Rank 1 Constraint System (R1CS)~\cite{ggpr}
+  \item R1CS to Quadratic Span Program (QAP)~\cite{ggpr}
+  \item QAP to zkSNARK~\cite{pinocchio-nearly-practical-verifiable-computation}
+\end{enumerate}
 
 \begin{figure}[ht!]
   \begin{tikzpicture}[
