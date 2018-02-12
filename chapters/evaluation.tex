@@ -2,4 +2,63 @@
 \chapter{Evaluation}
 \label{evaluation}
 
-\section{Benchmarks}\label{evaluation:benchmarks}
+All experiments have been made on a MacBook Pro 2016 and on a private Ethereum testnet.
+
+PC Specs:
+
+\begin{enumerate}
+  \item CPU: 2GHz Intel Core i5 (2 cores)
+  \item Memory: 8GB 1867 MHz LPDDR3
+  \item 256BG PCI-Express SSD
+\end{enumerate}
+
+\section{Store Data}
+\label{evaluation:store_data}
+
+The cost of each Opcode (operation code) of Ethereum Virtual Machine (EVM) are defined on Ethereum yellow paper~\cite{ethereum_yellowpaper}. A gas cost summarisation of basic opcodes are be shown in Table~\ref{table:opcode_gas_cost}
+
+In particular SLOAD opcode loads a word from storage and SSTORE opcode saves a word from storage. The size of an EVM word is 32 bytes (256 bit). So to save a word to ethereum blockchain costs 20.000 gas. Thus, a kilobyte costs 640.000 gas.
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+ Operation & Gas  & Description \\ \hline
+ ADD/SUB & 3 & Arithmetic operation \\ \hline
+ MUL/DIV & 5 & Arithmetic operation \\ \hline
+ ADDMOD/MULMOD & 8 & Arithmetic operation \\ \hline
+ AND/OR/XOR & 3 & Bitwise logic operation \\ \hline
+ LT/GT/SLT/SGT/EQ & 3 & Comparison operation \\ \hline
+ POP & 2 & Stack operation \\ \hline
+ PUSH/DUP/SWAP & 3 & Stack operation \\ \hline
+ MLOAD/MSTORE & 3 & Memory operation \\ \hline
+ JUMP & 8 & Unconditional jump \\ \hline
+ JUMPI & 10 & Conditional jump \\ \hline
+ SLOAD & 200 & Storage operation \\ \hline
+ SSTORE & 5.000 / 20.000 & Storage operation \\ \hline
+ BALANCE & 400 & Get balance of an account \\ \hline
+ CREATE & 32.000 & Create a new account using CREATE \\ \hline
+ CALL & 25.000 & Create a new account using CALL \\ \hline
+\end{tabular}
+\caption{Ethereum opcodes gas costs}
+\label{table:opcode_gas_cost}
+\end{table}
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+ Size & Gas  & USD \\ \hline
+ 32 bytes & 20.000  & \$0,051 \\ \hline
+ 1kb bytes & 640.000  & \$1,644 \\ \hline
+ 1mb bytes & 640.000.000  & \$1,643.52 \\ \hline
+ 10mb bytes & 6.400.000.000  & \$16,435.2 \\ \hline
+ 100mb bytes & 64.000.000.000  & \$1,643,520 \\ \hline
+ 1gb bytes & 640.000.000.000  & \$16,435,200 \\ \hline
+\end{tabular}
+\caption{Saving data costs with gas price 3 Gwei}
+\label{table:bytes_usd_cost}
+\end{table}
+
+\section{Benchmarks}
+\label{evaluation:benchmarks}
