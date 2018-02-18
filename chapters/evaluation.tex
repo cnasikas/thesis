@@ -2,7 +2,7 @@
 \chapter{Evaluation}
 \label{evaluation}
 
-All experiments have been made on a MacBook Pro 2016 and on a private Ethereum testnet.
+All experiments have been made on a MacBook Pro 2016 and on a local Ethereum testnet.
 
 PC Specs:
 
@@ -12,12 +12,19 @@ PC Specs:
   \item 256BG PCI-Express SSD
 \end{enumerate}
 
+Ethereum Testnet:
+
+\begin{enumerate}
+  \item Ganache CLI v6.0.3 (ganache-core: 2.0.2)
+  \item Solidity 0.4.18
+\end{enumerate}
+
 \section{Store Data}
 \label{evaluation:store_data}
 
 The cost of each Opcode (operation code) of Ethereum Virtual Machine (EVM) are defined on Ethereum yellow paper~\cite{ethereum_yellowpaper}. A gas cost summarisation of basic opcodes are be shown in Table~\ref{table:opcode_gas_cost}
 
-In particular SLOAD opcode loads a word from storage and SSTORE opcode saves a word from storage. The size of an EVM word is 32 bytes (256 bit). So to save a word to ethereum blockchain costs 20.000 gas. Thus, a kilobyte costs 640.000 gas.
+In particular SLOAD opcode loads a word from storage and SSTORE opcode saves a word to storage. The size of an EVM word is 32 bytes (256 bit). To store one EVM word costs 20.000 gas, \$0.072 respectively, and to store 1kb the cost is 724.664, \$2.104.
 
 \begin{table}[!ht]
 \centering
@@ -49,14 +56,14 @@ In particular SLOAD opcode loads a word from storage and SSTORE opcode saves a w
 \begin{tabular}{|l|l|l|}
 \hline
  Size & Gas  & USD \\ \hline
- 32 bytes & 20.000  & \$0,051 \\ \hline
- 1kb bytes & 640.000  & \$1,644 \\ \hline
- 1mb bytes & 640.000.000  & \$1,643.52 \\ \hline
- 10mb bytes & 6.400.000.000  & \$16,435.2 \\ \hline
- 100mb bytes & 64.000.000.000  & \$1,643,520 \\ \hline
- 1gb bytes & 640.000.000.000  & \$16,435,200 \\ \hline
+ 32 bytes & 20.000  & \$0,058 \\ \hline
+ 1KB & 724.664  & \$2.104 \\ \hline
+ 1MB & 697.325.562  & \$2,025.03 \\ \hline
+ 10MB & ~7.000.000.000  & ~\$20,328 \\ \hline
+ 100MB & ~70.000.000.000  & ~\$203,280 \\ \hline
+ 1GB & ~700.000.000.000  & ~\$2,032,800 \\ \hline
 \end{tabular}
-\caption{Saving data costs with gas price 3 Gwei}
+\caption{Saving data costs. ETH Price: \$966.33 (Feb 17, 2018) - Gas Price: 3 Gwei}
 \label{table:bytes_usd_cost}
 \end{table}
 
