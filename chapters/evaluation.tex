@@ -2,11 +2,11 @@
 \chapter{Evaluation}
 \label{evaluation}
 
-Various experiments have been made regarding the cost of saving data on the blockchain.
+Saving data on the blockchain is expensive. Thus, various experiments have been made regarding the cost of saving data on the blockchain to compare and analyze various methods and alternatives.
 
 All experiments have been made on a MacBook Pro 2016 and on a local Ethereum testnet.
 
-PC Specs:
+PC Specifications:
 
 \begin{enumerate}
   \item CPU: 2GHz Intel Core i5 (2 cores)
@@ -14,7 +14,7 @@ PC Specs:
   \item 256BG PCI-Express SSD
 \end{enumerate}
 
-Ethereum Testnet:
+Ethereum Testnet Specifications:
 
 \begin{enumerate}
   \item Ganache CLI v6.0.3 (ganache-core: 2.0.2)
@@ -24,9 +24,11 @@ Ethereum Testnet:
 \section{Store Data}
 \label{evaluation:store_data}
 
-The cost of each Opcode (operation code) of Ethereum Virtual Machine (EVM) are defined on Ethereum yellow paper~\cite{ethereum_yellowpaper}. A gas cost summarisation of basic opcodes are be shown in Table~\ref{table:opcode_gas_cost}
+Ethreuem use a unit called gas as a measurement of computation use--an internal pricing mechanism used to execute contracts and allocate resources on the network-- and it's price is expressed in ether (Ethereum currency). Every node in the Ethereum network executes instructions (opcodes) within the Ethereum Virtual Machine (EVM) (§~\ref{blockchain:impl:ethereum}) and each of these instructions has an associated cost in gas. The cumulative sum of all the operations is the total gas cost for a transaction and is the fee that is being paid to the miners.
 
-In particular SLOAD opcode loads a word from storage and SSTORE opcode saves a word to storage. The size of an EVM word is 32 bytes (256 bit). To store one EVM word costs 20.000 gas, \$0.072 respectively, and to store 1kb the cost is 724.664, \$2.104.
+The cost of each opcode (operation code) of EVM is defined on Ethereum's yellow paper~\cite{ethereum_yellowpaper} and a gas cost summarization of basic opcodes are be shown on Table~\ref{table:opcode_gas_cost}.
+
+For storing data, Ethereum offers two opcodes: SLOAD opcode loads a word from storage and SSTORE opcode saves a word to storage. The size of an EVM word is 32 bytes (256 bit) and to store one EVM word using SSTORE opcode costs 20.000 gas.
 
 \begin{table}[!ht]
 \centering
@@ -48,6 +50,7 @@ In particular SLOAD opcode loads a word from storage and SSTORE opcode saves a w
  BALANCE & 400 & Get balance of an account \\ \hline
  CREATE & 32.000 & Create a new account using CREATE \\ \hline
  CALL & 25.000 & Create a new account using CALL \\ \hline
+ LOG & 375 & Logging operation \\ \hline
 \end{tabular}
 \caption{Ethereum opcodes gas costs}
 \label{table:opcode_gas_cost}
@@ -55,6 +58,14 @@ In particular SLOAD opcode loads a word from storage and SSTORE opcode saves a w
 
 \section{Benchmarks}
 \label{evaluation:benchmarks}
+
+The first evaluation test calculates the cost of storing raw data on the blockchain of the following sizes: 32 bytes, 1KB, 1MB, 10MB, 100MB and 1GB. The results are being shown on Table~\ref{table:bytes_usd_cost}. It is worth mentioning that storing 1GB of data on Ethereum costs around \$13.000.000 make it impossible and unpractical to store big data on blockchain technologies.
+
+A common way of countermeasure the preceding problem is to store the data on an off-chain infrastructure (i.e IPFS~\cite{ipfs}, Storj~\cite{storj} or Filecoin~\cite{filecoin}) and store the hash pointer of the data on the blockchain. Storing a fixed size hash is much cheaper than saving the whole data.
+
+Ethereum offers a logging mechanism that can be taken advantage of for data storing. A LOG opcode costs 375 gas and for each byte of data it costs 8 gas, way lower than SSTORE opcode.
+
+Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_05} demonstrate the difference between the four possible ways of storing data for various data sizes: store raw data, store the hash pointer of the data, log raw data and log the has pointer of the data.
 
 \begin{table}[!ht]
 \centering
