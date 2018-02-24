@@ -2,6 +2,8 @@
 \chapter{Evaluation}
 \label{evaluation}
 
+Various experiments have been made regarding the cost of saving data on the blockchain.
+
 All experiments have been made on a MacBook Pro 2016 and on a local Ethereum testnet.
 
 PC Specs:
@@ -51,33 +53,98 @@ In particular SLOAD opcode loads a word from storage and SSTORE opcode saves a w
 \label{table:opcode_gas_cost}
 \end{table}
 
+\section{Benchmarks}
+\label{evaluation:benchmarks}
+
 \begin{table}[!ht]
 \centering
 \begin{tabular}{|l|l|l|}
 \hline
  Size & Gas  & USD \\ \hline
- 32 bytes & 20.000  & \$0,058 \\ \hline
- 1KB & 724.664  & \$2.104 \\ \hline
- 1MB & 697.325.562  & \$2,025.03 \\ \hline
- 10MB & ~7.000.000.000  & ~\$20,328 \\ \hline
- 100MB & ~70.000.000.000  & ~\$203,280 \\ \hline
- 1GB & ~700.000.000.000  & ~\$2,032,800 \\ \hline
+ 32 bytes & 20.000  & \$0.037 \\ \hline
+ 1KB & 724.664  & \$1.357 \\ \hline
+ 1MB & 697.325.562  & \$1,305.393 \\ \hline
+ 10MB & 7.000.000.000  & \$13,104 \\ \hline
+ 100MB & 70.000.000.000  & \$131,040 \\ \hline
+ 1GB & 700.000.000.000  & \$13,104,00 \\ \hline
 \end{tabular}
-\caption{Saving data costs. ETH Price: \$966.33 (Feb 17, 2018) - Gas Price: 3 Gwei}
+\captionsetup{format=hang, justification=centering}
+\caption{Saving data costs.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei}
 \label{table:bytes_usd_cost}
 \end{table}
 
 \begin{table}[!ht]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
- Type & Size && Gas  & USD \\ \hline
- SHA256 & 32 bytes & 20.000  & \$0,058 \\ \hline
- IPFS & 32 bytes & 20.000  & \$0,058 \\ \hline
-\end{tabular}
-\caption{Saving data costs. ETH Price: \$966.33 (Feb 17, 2018) - Gas Price: 3 Gwei}
-\label{table:bytes_usd_cost}
+  \centering
+  \begin{tabular}{|l|l|l|l|}
+  \hline
+  Type & Size & Gas  & USD \\ \hline
+  Store raw data & 32 bytes & 34.916  & \$0.065 \\ \hline
+  Store hash pointer & 32 bytes & 34.850  & \$0.065 \\ \hline
+  Log raw data & 32 bytes & 25.995  & \$0.048 \\ \hline
+  Log hash pointer & 32 bytes & 25.995  & \$0.048 \\ \hline
+  \end{tabular}
+  \captionsetup{format=hang, justification=centering}
+  \caption{Comparing methods of storing data.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 32 bytes}
+  \label{table:data_store_comparison_01}
 \end{table}
 
-\section{Benchmarks}
-\label{evaluation:benchmarks}
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{|l|l|l|l|}
+  \hline
+    Type & Size & Gas  & USD \\ \hline
+    Store raw data & 1KB & 724.730  & \$1.347 \\ \hline
+    Store hash pointer & 32 bytes & 34.850  & \$0.065 \\ \hline
+    Log raw data & 1KB & 104.310  & \$0.194 \\ \hline
+    Log hash pointer & 32 bytes & 25.995  & \$0.048 \\ \hline
+  \end{tabular}
+  \captionsetup{format=hang, justification=centering}
+  \caption{Comparing methods of storing data.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 1KB}
+  \label{table:data_store_comparison_02}
+\end{table}
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{|l|l|l|l|}
+    \hline
+      Type & Size & Gas  & USD \\ \hline
+      Store raw data & 10KB & 6.668.509  & \$12.39 \\ \hline
+      Store hash pointer & 32 bytes & 34.850  & \$0.065 \\ \hline
+      Log raw data & 10KB & 832.604  & \$1.547 \\ \hline
+      Log hash pointer & 32 bytes & 25.995  & \$0.048 \\ \hline
+  \end{tabular}
+  \captionsetup{format=hang, justification=centering}
+  \caption{Comparing methods of storing data.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 10KB}
+  \label{table:data_store_comparison_03}
+\end{table}
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{|l|l|l|l|}
+    \hline
+    Type & Size & Gas  & USD \\ \hline
+    Store raw data & 100KB & 66.454.178  & \$123.472 \\ \hline
+    Store hash pointer & 32 bytes & 34.850  & \$0.065 \\ \hline
+    Log raw data & 100KB & 8.186.883  & \$15.211 \\ \hline
+    Log hash pointer & 32 bytes & 25.995  & \$0.048 \\ \hline
+  \end{tabular}
+  \captionsetup{format=hang, justification=centering}
+  \caption{Comparing methods of storing data.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 100KB}
+  \label{table:data_store_comparison_04}
+\end{table}
+
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{|l|l|l|l|}
+    \hline
+    Type & Size & Gas  & USD \\ \hline
+    Store raw data & 1MB & 666.092.228  & \$1,237.599 \\ \hline
+    Store hash pointer & 32 bytes & 34.850  & \$0.065 \\ \hline
+    Log raw data & 1MB & 88.857.033  & \$165.096 \\ \hline
+    Log hash pointer & 32 bytes & 25.995  & \$0.048 \\ \hline
+  \end{tabular}
+  \captionsetup{format=hang, justification=centering}
+  \caption{Comparing methods of storing data.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 1MB}
+  \label{table:data_store_comparison_05}
+\end{table}
