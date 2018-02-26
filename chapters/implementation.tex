@@ -1,6 +1,30 @@
 %!TEX root = ../thesis.tex
 \chapter{Implementation}
 \label{implemenation}
+
+\section{RESTful API}
+
+\begin{table}[ht!]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+ Method & URI  \\ \hline
+ GET & /\  \\ \hline
+ GET &  /contracts \\ \hline
+ GET &  /datastore \\ \hline
+ GET &  /datastore/{data} \\ \hline
+ POST &  /datastore\\ \hline
+ GET &  /accounts \\ \hline
+ GET &  /accounts/{account} \\ \hline
+ GET &  /requests \\ \hline
+ GET &  /requests/{request} \\ \hline
+ POST &  /requests \\ \hline
+\end{tabular}
+\caption{RESTful API Routes}
+\label{table:api_routes}
+\end{table}
+
+
 \begin{figure}[ht!]
   \center
   \begin{tikzpicture}[
