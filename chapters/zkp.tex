@@ -166,7 +166,13 @@ but makes additional computations~\cite{kiagias:crypto}.
 
 \section{zk-SNARKs}
 
-The acronymum zk-SNARK stands for `Zero-Knowledge Succinct Non-Interactive Argument of Knowledge` in which each individual part, informally, have the following meaning~\cite{zksnarks_nutshell, zcash, 184425}:
+Since computational power is often limited to devices such as mobiles or IoT (clients) the need of outsourcing computation to one or more powerful workers on the cloud emerges. Yet, confidence is needed at the working entity for proper computation. For this reason, the client should be able to verify the correctness of the results returned. That way not only the client is protected from malicious or malfunctioning workers but also the legitimate worker is benefit by shedding liability~\cite{pinocchio-nearly-practical-verifiable-computation}. This scheme is called public verifiable computation (VC).
+
+In a public verifiable computation scheme the client outsource the evaluation of a function $F$ on input $u$ known to the client (e.g. a query). The client then can verify the correctness of the computation of $F(u)$ with less work than required for the computation of $F(u)$. When the outsource function $F$ consist of two inputs $u$ and $w$, where $w$ is the worker's private input (e.g a data set), then the scheme is a Zero-Knowledge Verifiable Computation (or non-interactive zero knowledge (NIZK) proof~\cite{Blum:1991:NZ:123137.123145}) if the client learns nothing about workers input expect the output of the computation~\cite{pinocchio-nearly-practical-verifiable-computation}.
+
+Such schemes are not interactive meaning no interaction is necessary between prover and verifier (worker and client) and a common reference string shared between them is enough to achieve computational zero-knowledge~\cite{Blum:1991:NZ:123137.123145}.
+
+The acronym zk-SNARK stands for `Zero-Knowledge Succinct Non-Interactive Argument of Knowledge` in which each individual part, informally, have the following meaning~\cite{zksnarks_nutshell, zcash, 184425, Bitansky:2012:ECR:2090236.2090263}:
 
 \begin{itemize}
   \item Zero-Knowledge: The verifier learns nothing but the validity of the computation
@@ -176,9 +182,7 @@ The acronymum zk-SNARK stands for `Zero-Knowledge Succinct Non-Interactive Argum
   \item of Knowledge: If the verifier accepts a proof output by a computationally bounded prover, then the prover has a witness for the given instance
 \end{itemize}
 
-\note{Implementations of zksnark (pinnochio etc)}
-
-At high level, zkSNARKs consinst of four basic steps (Figure ~\ref{fig:zkp:zksnark_flow}):
+At high level, zkSNARKs consist of four basic steps (Figure ~\ref{fig:zkp:zksnark_flow}):
 
 \begin{enumerate}
   \item Computation to Arithmetic circuit~\cite{wiki:circuits}
@@ -186,6 +190,13 @@ At high level, zkSNARKs consinst of four basic steps (Figure ~\ref{fig:zkp:zksna
   \item R1CS to Quadratic Span Program (QAP)~\cite{ggpr}
   \item QAP to zkSNARK~\cite{pinocchio-nearly-practical-verifiable-computation}
 \end{enumerate}
+
+The main idea for constructing zkSNARKs is firstly to transform the generic program as a quadratic equation of polynomials (QAP)~\cite{ggpr}: $p(x)q(x) = s(x)r(x)$, where the equality holds if and only if the program is computed correctly. So the prover wants to convince the verifier that the equality holds.
+
+Succinctness is achieved by random sampling. The verifier chooses a secret evaluation point $x_0$ to reduce the problem from polynomial multiplication and equality to simple number arithmetic checks: $p(x_0)q(x_0) = s(x_0)r(x_0)$. To allow the prover to compute the evaluation of the polynomials at $x_0$, without revealing $x_0$, Homomorphic encryption is used:  $E(p(x_0))E(q(x_0)) = E(s(x_0))E(r(x_0))$
+
+Finally the prover obfuscates the encrypted values by multiplying with a number so that the verifier can still check their correct structure without knowing the actual
+encrypted values: $E(k + p(x_0))E(k + q(x_0)) = E(k + s(x_0))E(k + r(x_0))$
 
 \begin{figure}[ht!]
   \begin{tikzpicture}[
@@ -208,3 +219,5 @@ At high level, zkSNARKs consinst of four basic steps (Figure ~\ref{fig:zkp:zksna
   \caption{Steps of zk-SNARK}
   \label{fig:zkp:zksnark_flow}
 \end{figure}
+
+\note{Implementations of zksnark (pinnochio, Hawk, Zcash etc)}
