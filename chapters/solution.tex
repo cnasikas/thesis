@@ -2,12 +2,12 @@
 \chapter{Solution}
 \label{solution}
 
-\section{Architecture}
-\label{solution:architecture}
-
 Blockchain is used as the controller of the application. It is responsible for keeping an
 audit immutable log of all actions of the participants. All interaction are being made
-through the blockchain supporting data accountability and provenance tracking.
+through the blockchain supporting data accountability and provenance tracking. It should be mention that blockchain does not offers an extra security layer as the data are off-chain and data silos remain a single point of failure.
+
+\section{Architecture}
+\label{solution:architecture}
 
 There are three main roles consisting the application: the data controller, the data processor
 and the data requester. The first two are also defined in the context of GDPR (§~\ref{problem:regulations}).
@@ -26,15 +26,30 @@ them to a data processor that will be responsible for processing the data on beh
 \label{solution:arc:data_processor}
 
 The data processor is responsible for processing data on behalf of the data requester. She listens
-for requests and fulfil them on submission. Furthermore, she submits a Zero Knowledge Proof of correct computation over
-a data set.
+for requests and fulfil them on submission. Furthermore, she submits a Zero Knowledge Proof of correct computation over a data set.
 
 \subsection{Data Requester}
 \label{solution:arc:data_req}
 
-The requester can be any entity that wants a computation over a data set. It can be a research centres, a machine learning
-algorithm or individuals. The requester expects a proof of computation, over a specific data set, that verifies when she
-gets the results.
+The requester can be any entity that requests a computation over a data set. It can be a research center, a university, a machine learning algorithm or any individual. The requester expects, along with the output, a proof of correct computation, over a specific data set, that verifies at the end of the interaction with the processor.
+
+\subsection{Queries}
+\label{solution:arc:queries}
+
+The system should support only a set of open pre-fabricated queries that have been analyzed and constructed to be privacy-preserving with the use of techniques such as k-anonymity~\cite{Samarati98protectingprivacy} and l-diversity~\cite{Aggarwal2008}. The queries return only de-identified aggregated results.
+
+The supported queries are:
+
+\begin{enumerate}
+  \item Sum
+  \item Average
+  \item Count
+  \item Maximum
+  \item Median
+  \item Minimum
+\end{enumerate}
+
+The above queries are not considered to be privacy-preserving as it is outside the scope of the initial prototype and should be implemented on future work.
 
 \subsection{Consent}
 \label{solution:arc:consent}
