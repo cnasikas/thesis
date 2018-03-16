@@ -6,35 +6,32 @@ Blockchain is used as the controller of the application. It is responsible for k
 audit immutable log of all actions of the participants. All interaction are being made
 through the blockchain supporting data accountability and provenance tracking. It should be mention that blockchain does not offers an extra security layer as the data are off-chain and data silos remain a single point of failure.
 
-\section{Architecture}
-\label{solution:architecture}
-
 There are three main roles consisting the application: the data controller, the data processor
 and the data requester. The first two are also defined in the context of GDPR (§~\ref{problem:regulations}).
 GDPR defines another role, that of data subject-the owner of the data.
 In our scheme we assume that the data controller already has permission to access the data or
 she is at the same time the data subject and the data controller.
 
-\subsection{Data Controller}
-\label{solution:arc:data_controller}
+\section{Data Controller}
+\label{solution:data_controller}
 
 The data controller is in charge of a data set. She run on behalf of a data subject (person)
 that authorizes the data controller to access her personal data, with the possibility of forwarding
 them to a data processor that will be responsible for processing the data on behalf of controller~\cite{DBLP:journals/corr/NeisseSF17}.
 
-\subsection{Data Processor}
-\label{solution:arc:data_processor}
+\section{Data Processor}
+\label{solution:data_processor}
 
 The data processor is responsible for processing data on behalf of the data requester. She listens
 for requests and fulfil them on submission. Furthermore, she submits a Zero Knowledge Proof of correct computation over a data set.
 
-\subsection{Data Requester}
-\label{solution:arc:data_req}
+\section{Data Requester}
+\label{solution:data_req}
 
 The requester can be any entity that requests a computation over a data set. It can be a research center, a university, a machine learning algorithm or any individual. The requester expects, along with the output, a proof of correct computation, over a specific data set, that verifies at the end of the interaction with the processor.
 
-\subsection{Queries}
-\label{solution:arc:queries}
+\section{Queries}
+\label{solution:queries}
 
 The system should support only a set of open pre-fabricated queries that have been analyzed and constructed to be privacy-preserving with the use of techniques such as k-anonymity~\cite{Samarati98protectingprivacy} and l-diversity~\cite{Aggarwal2008}. The queries return only de-identified aggregated results.
 
@@ -51,8 +48,8 @@ The supported queries are:
 
 The above queries are not considered to be privacy-preserving as it is outside the scope of the initial prototype and should be implemented on future work.
 
-\subsection{Consent}
-\label{solution:arc:consent}
+\section{Consent}
+\label{solution:consent}
 
 Modeling dynamic consent in smart contracts should be carefully analyzed taking into account design issues that are related to smart contracts lifecycle, required state variables for storing contract’s information, and access restrictions to those variables.
 
@@ -66,16 +63,53 @@ Neisse et al.~\cite{DBLP:journals/corr/NeisseSF17} proposed the following three 
 
 The first contract is more adequate for sensitive data~\cite{DBLP:journals/corr/NeisseSF17}, such as health data, since a subject-controller relationship~\cite{Azaria2016} is being created where each patient has a different contract for each controller accessing their data, providing fine grained access control and provenance information. On the other hand, it has the highest cardinality among the others two types~\cite{DBLP:journals/corr/NeisseSF17}. The second contract suffers from direct linkability as a unique subject address is needed compromising patients’ privacy~\cite{DBLP:journals/corr/NeisseSF17}. Lastly, the third one has the lowest cardinality among the others but also has the lower level of customization due to the limited number of contract options~\cite{DBLP:journals/corr/NeisseSF17}.
 
-\subsection{Flow}
-\label{solution:arc:flow}
+\section{Proof}
+\label{solution:proof}
+
+The processor's proof of computation consists of two parts: a) knowledge of a secret key $k$, a secret data set $x$ and a public $r_x$ such as $Enc(k, x, r_x) = C$ and b) a proof of correct computation on $C$
+
+\begin{equation*}
+  \exists x, r_x, k, Enc(x, r_x) = C : f(C) = y
+\end{equation*}
+
+\section{Processor Selection}
+\label{solution:pr_selection}
+
+\section{Flow}
+\label{solution:flow}
+
+\subsection{Dataset Registration}
+\label{solution:flow:reg_data}
 
 \begin{enumerate}
-  \item The controller encrypts a data set with a symmetric key and saves the cipher-text to a database
-  \item The controller encrypts the symmetric key with the public key of the processor
-  \item The requester makes a request of process over some data
-  \item The processor process the data on behalf of the request and submits the result of the computation on the
-  blockchain along with a Zero Knowledge Proof (§~\ref{zkp}) of the correctness of the computation.
-  \item The requester gets the results and verifies the proof.
+  \item Encrypts a data set with a symmetric key and save it to a specific location
+  \item Registers the data set by initiating a transaction that saves the data set's metadata on blockchain
+\end{enumerate}
+
+\subsection{Processor Registration}
+\label{solution:flow:pr_reg}
+
+\begin{enumerate}
+  \item Generates an asymmetric encryption key pair
+  \item Registers availability by initiating a transaction that saves processors name and public key on the blockchain
+\end{enumerate}
+
+\subsection{Request for processing}
+\label{solution:flow:pr_reg}
+
+\begin{enumerate}
+  \item The requestor selects a data set on which the processing should be made and  notify the network participants of the request by initiating a transaction on the blockchain passing along her public key
+  \item The controller, responsible for the desired data set, selects a processor and encrypts the symmetric key with the public key of the selected processor
+  \item The controller notifies the processor by initiating a transaction on the blockchain passing all needed information such as the encrypted symmetric key and the location of the data set
+\end{enumerate}
+
+\subsection{Data set processing}
+\label{solution:flow:pr_data}
+
+\begin{enumerate}
+  \item Process the data
+  \item Encrypts the results with the public key of the requestor
+  \item Submits the encrypted result of the computation on the blockchain along with a Zero Knowledge Proof (§~\ref{zkp}) of the correctness of the computation.
 \end{enumerate}
 
 \begin{figure}[ht!]
