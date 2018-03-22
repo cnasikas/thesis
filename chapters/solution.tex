@@ -68,18 +68,6 @@ Neisse et al.~\cite{DBLP:journals/corr/NeisseSF17} proposed the following three 
 
 The first contract is more adequate for sensitive data~\cite{DBLP:journals/corr/NeisseSF17}, such as health data, since a subject-controller relationship~\cite{Azaria2016} is being created where each patient has a different contract for each controller accessing their data, providing fine grained access control and provenance information. On the other hand, it has the highest cardinality among the others two types~\cite{DBLP:journals/corr/NeisseSF17}. The second contract suffers from direct linkability as a unique subject address is needed compromising patients’ privacy~\cite{DBLP:journals/corr/NeisseSF17}. Lastly, the third one has the lowest cardinality among the others but also has the lower level of customization due to the limited number of contract options~\cite{DBLP:journals/corr/NeisseSF17}.
 
-\section{Proof}
-\label{solution:proof}
-
-The processor's proof of computation consists of two parts: a) knowledge of a secret key $k$, a secret data set $x$ and a public $r_x$ such as $Enc(k, x, r_x) = C$ and b) a proof of correct computation on $C$
-
-\begin{equation*}
-  \exists x, r_x, k, Enc(x, r_x) = C : f(C) = y
-\end{equation*}
-
-\section{Processor Selection}
-\label{solution:pr_selection}
-
 \section{Flow}
 \label{solution:flow}
 
@@ -216,6 +204,16 @@ The processor's proof of computation consists of two parts: a) knowledge of a se
   \item Encrypts the results with the public key of the requestor
   \item Submits the encrypted result of the computation on the blockchain along with a Zero Knowledge Proof (§~\ref{zkp}) of the correctness of the computation.
 \end{enumerate}
+
+\section{Processor Selection}
+\label{solution:pr_selection}
+
+\section{Proof of correctness of computation}
+\label{solution:proof}
+
+Let $d$ be a private dataset, $H$ a cryptographic hash function and $h = H(d)$ the digest of $d$ over $H$. Let $\calp$ be a prover (data processor) and $\calv$ the verifier (data requester). $\calp$ wants to prove to $\calv$ that
+
+$\calp$ zk-SNARK proof(§~\ref{zkp:snarks}) consists of two parts: a) Knowledge of a pre-image $d$ such that $H(d) = h$ and b) a correct computation over $d$.
 
 \begin{figure}[ht!]
   \begin{tikzpicture}[
