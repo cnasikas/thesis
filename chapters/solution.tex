@@ -12,28 +12,23 @@ GDPR defines another role, that of data subject-the owner of the data.
 In our scheme we assume that the data controller already has permission to access the data or
 she is at the same time the data subject and the data controller.
 
-\section{Trust model}
-\label{solution:trust_model}
-
-Data controller trusted for integrity and confidentiality and data processor only for confidentiality.
-
-\section{Data Controller}
-\label{solution:data_controller}
+\subsection{Data Controller}
+\label{solution:entities:data_controller}
 
 The data controller is in charge of a data set. She run on behalf of a data subject (person)
 that authorizes the data controller to access her personal data, with the possibility of forwarding
 them to a data processor that will be responsible for processing the data on behalf of controller~\cite{DBLP:journals/corr/NeisseSF17}.
 
-\section{Data Processor}
-\label{solution:data_processor}
+\subsection{Data Processor}
+\label{solution:entities:data_processor}
 
 The data processor is responsible for processing data on behalf of the data requester. She listens
-for requests and fulfil them on submission. Furthermore, she submits a Zero Knowledge Proof of correct computation over a data set.
+for data processing requests and returns, along with the output of the process, a Zero Knowledge Proof of correct computation over the requested data set.
 
-\section{Data Requester}
-\label{solution:data_req}
+\subsection{Data Requester}
+\label{solution:entities:data_req}
 
-The requester can be any entity that requests a computation over a data set. It can be a research center, a university, a machine learning algorithm or any individual. The requester expects, along with the output, a proof of correct computation, over a specific data set, that verifies at the end of the interaction with the processor.
+The requester can be any entity that requests a computation over a data set. It can be a research center, a university, a machine learning algorithm or any individual. The requester expects, along with the output, a proof of correct computation over the requested data set that verifies when the result of the processing is available.
 
 \section{Queries}
 \label{solution:queries}
