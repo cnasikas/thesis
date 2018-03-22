@@ -2,9 +2,17 @@
 \chapter{Solution}
 \label{solution}
 
-Blockchain is used as the controller of the application. It is responsible for keeping an
+In our solution the blockchain is used as the controller of the application. It is responsible for keeping an
 audit immutable log of all actions of the participants. All interaction are being made
 through the blockchain supporting data accountability and provenance tracking. It should be mention that blockchain does not offers an extra security layer as the data are off-chain and data silos remain a single point of failure.
+
+\section{Trust model}
+\label{solution:trust_model}
+
+In our model we assume that the involved entities that interact with a data set--the data controller and the data processor-- are identified and verified through a public key infrastructure (PKI)~\cite{adams_understanding_2003}. Furthermore, each entity is a trusted entity with certain trust properties. In particular, the data controller is trusted for integrity and confidentiality and the data processor only for confidentiality.
+
+\section{Entities}
+\label{solution:entities}
 
 There are three main roles consisting the application: the data controller, the data processor
 and the data requester. The first two are also defined in the context of GDPR (§~\ref{problem:regulations}).
