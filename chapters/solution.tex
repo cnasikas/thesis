@@ -88,8 +88,38 @@ The processor's proof of computation consists of two parts: a) knowledge of a se
 
 \begin{enumerate}
   \item Encrypts a data set with a symmetric key and save it to a specific location
-  \item Registers the data set by initiating a transaction that saves the data set's metadata on blockchain
+  \item Registers the data set by initiating a transaction that saves the data set's metadata (name, location, category, digest) on the Blockchain.
 \end{enumerate}
+
+\begin{figure}[ht!]
+  \begin{tikzpicture}[
+        database/.style={
+        cylinder,
+        shape border rotate=90,
+        aspect=0.5,
+        draw
+      },
+      txt/.style={
+      }
+    ]
+
+    \node[draw,rectangle,minimum width=\textwidth, minimum height=1cm,anchor=west] (blockchain) at (0,0){Blockchain};
+
+    \begin{scope}[node distance=4cm]
+      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (owner) at (0,-5) {Data Controller};
+      \node[database] (db) [below right=of owner] {Datastore};
+      \draw[<->] (owner) -- (db);
+      \draw[<-] ([xshift=-1em]owner.north) -- ([xshift=-1em]2,-0.5);
+      \draw[->] ([xshift=1em]owner.north) -- ([xshift=1em]2,-0.5);
+    \end{scope}
+
+    \node[txt] (enc_db) [below=of owner,yshift=0em, xshift=10em] {$Enc_k(data)$};
+    \node[txt] (enc_key) [above=of owner, xshift=19em, yshift=1em] {$Tx(\{name, location, category, digest, address, hashMeta\}, "register\_data")$};
+
+  \end{tikzpicture}
+  \caption{Data registration}
+  \label{fig:arc:reg}
+\end{figure}
 
 \subsection{Processor Registration}
 \label{solution:flow:pr_reg}
