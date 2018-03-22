@@ -129,14 +129,84 @@ The processor's proof of computation consists of two parts: a) knowledge of a se
   \item Registers availability by initiating a transaction that saves processors name and public key on the blockchain
 \end{enumerate}
 
+\begin{figure}[ht!]
+  \begin{tikzpicture}[
+        database/.style={
+        cylinder,
+        shape border rotate=90,
+        aspect=0.5,
+        draw
+      },
+      txt/.style={
+      }
+    ]
+
+    \node[draw,rectangle,minimum width=\textwidth, minimum height=1cm,anchor=west] (blockchain) at (0,0){Blockchain};
+
+
+    \begin{scope}
+      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (processor) at (0,5) {Data Processor};
+      \draw[<-] ([xshift=-1em]processor.south) -- ([xshift=-1em]2,0.5);
+      \draw[->] ([xshift=1em]processor.south) -- ([xshift=1em]2,0.5);
+    \end{scope}
+
+    \node[txt] (enc_db) [below=of processor,yshift=-1.5em, xshift=14em] {$Tx(\{name, pubKey, address\}, "register\_processor")$};
+
+  \end{tikzpicture}
+  \caption{Processor Registration}
+  \label{fig:arch:pr_reg}
+\end{figure}
+
 \subsection{Request for processing}
 \label{solution:flow:pr_reg}
 
 \begin{enumerate}
   \item The requestor selects a data set on which the processing should be made and  notify the network participants of the request by initiating a transaction on the blockchain passing along her public key
   \item The controller, responsible for the desired data set, selects a processor and encrypts the symmetric key with the public key of the selected processor
-  \item The controller notifies the processor by initiating a transaction on the blockchain passing all needed information such as the encrypted symmetric key and the location of the data set
+  \item The controller notifies the processor by initiating a transaction on the blockchain passing all needed information such as the encrypted symmetric key and the request ID.
 \end{enumerate}
+
+\begin{figure}[ht!]
+  \begin{tikzpicture}[
+        database/.style={
+        cylinder,
+        shape border rotate=90,
+        aspect=0.5,
+        draw
+      },
+      txt/.style={
+      }
+    ]
+
+    \node[draw,rectangle,minimum width=\textwidth, minimum height=1cm,anchor=west] (blockchain) at (0,0){Blockchain};
+
+    \begin{scope}[node distance=4cm]
+      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (owner) at (0,-5) {Data Controller};
+      \draw[->] ([xshift=0em]owner.north) -- ([xshift=0em]2,-0.5);
+    \end{scope}
+
+    \node[txt] (enc_key) [above=of owner, xshift=11.2em, yshift=13em] {$Tx(requestID, Enc_{pk_P}(k), "notify\_processor")$};
+
+    \node[txt] (list_req) [below=of owner, xshift=0em, yshift=1.5em] {$listen("request\_processing")$};
+
+    \begin{scope}
+      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (processor) at (0,5) {Data Processor};
+      \draw[<-] ([xshift=0em]processor.south) -- ([xshift=0em]2,0.5);
+    \end{scope}
+
+    \node[txt] (list_req_cr) [above=of processor, xshift=0em, yshift=-1.5em] {$listen("processing")$};
+
+    \begin{scope}
+      \node[draw, minimum height=1cm, minimum width=4cm, anchor=east] (requester) at (\textwidth,-5) {Requester};
+      \draw[->] ([xshift=0em]requester.north) -- ([xshift=0em]14.45,-0.5);
+    \end{scope}
+
+    \node[txt] (enc_db) [above left=of requester, xshift=7em, yshift=1em] {\footnotesize $Tx(\{dataSetID, queryID, pubKey, address\}, "request\_processing")$};
+
+  \end{tikzpicture}
+  \caption{Request for processing}
+  \label{fig:arch:req_pr}
+\end{figure}
 
 \subsection{Data set processing}
 \label{solution:flow:pr_data}
