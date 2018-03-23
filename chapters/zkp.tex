@@ -229,4 +229,52 @@ encrypted values: $E(k + p(x_0))E(k + q(x_0)) = E(k + s(x_0))E(k + r(x_0))$
   \label{fig:zkp:zksnark_flow}
 \end{figure}
 
+\subsection{Arithmetic circuits}
+\label{zkp:snarks:circuits}
+
+An arithmetic circuit $C$ over a finite field $\F$ is a circuit that contains
+only addition and multiplication gates. It takes inputs that are elements in $\F$ and its gates output elements in $\F$~\cite{184425, zcash}.
+
+Any program  can be reduced to  an arithmetic circuit~\cite{pankova_succinct_2013, 10.1007/978-3-642-40084-1_6} and normally the circuit is associated to the function it computes; the outsource function the Prover works upon.
+
+Given a circuit evaluation, the task of the Prover is to convince the Verifier that there exist valuations of intermediate gates such that the circuit indeed produces such an output with such an input~\cite{pankova_succinct_2013}.
+
+\begin{figure}[ht!]
+  \center
+  \begin{tikzpicture}[
+        gate/.style={
+        circle,
+        minimum size=1cm,
+        draw
+      },
+      node distance=2cm
+    ]
+
+    \node[gate] (x1) at (0, 0) {$x_1$};
+    \node[gate] (x2) at (2, 0) {$x_2$};
+    \node[gate] (1) at (4, 0) {$1$};
+
+    \node[gate] (p1) at (1, 2) {$+$};
+    \node[gate] (p2) at (3, 2) {$+$};
+
+    \node[gate] (m1) at (2, 4) {$*$};
+
+    \draw[->] (x1) -- (p1);
+    \draw[->] (x2) -- (p1);
+    \draw[->] (x2) -- (p2);
+    \draw[->] (x2) -- (m1);
+
+    \draw[->] (1) -- (p2);
+
+    \draw[->] (p1) -- (m1);
+    \draw[->] (p2) -- (m1);
+
+  \end{tikzpicture}
+  \caption{A simple arithmetic circuit}
+  \label{fig:zkp:circuit}
+\end{figure}
+
+\subsection{Quadratic Span Program (QAP)}
+\label{zkp:snarks:qap}
+
 \note{Implementations of zksnark (pinnochio, Hawk, Zcash etc)}
