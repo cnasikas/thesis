@@ -90,29 +90,16 @@ The first contract is more adequate for sensitive data~\cite{DBLP:journals/corr/
 \end{enumerate}
 
 \begin{figure}[ht!]
-  \begin{tikzpicture}[
-        database/.style={
-        cylinder,
-        shape border rotate=90,
-        aspect=0.5,
-        draw
-      },
-      txt/.style={
-      }
-    ]
-
-    \node[draw,rectangle,minimum width=\textwidth, minimum height=1cm,anchor=west] (blockchain) at (0,0){Blockchain};
+  \begin{tikzpicture}
+    \node[blockchain] (blockchain) at (0,0){Blockchain};
 
     \begin{scope}[node distance=4cm]
-      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (owner) at (0,-5) {Data Controller};
+      \node[node, anchor=west] (owner) at (0,-5) {Data Controller};
       \node[database] (db) [below right=of owner] {Datastore};
-      \draw[<->] (owner) -- (db);
+      \draw[<->] (owner) -- (db) node[midway,left] {$Enc_k(data)$};
       \draw[<-] ([xshift=-1em]owner.north) -- ([xshift=-1em]2,-0.5);
-      \draw[->] ([xshift=1em]owner.north) -- ([xshift=1em]2,-0.5);
+      \draw[->] ([xshift=1em]owner.north) -- ([xshift=1em]2,-0.5) node[midway,right] {$Tx(\{name, location, category, digest, address, hashMeta\}, "register\_data")$};
     \end{scope}
-
-    \node[txt] (enc_db) [below=of owner,yshift=0em, xshift=10em] {$Enc_k(data)$};
-    \node[txt] (enc_key) [above=of owner, xshift=19em, yshift=1em] {$Tx(\{name, location, category, digest, address, hashMeta\}, "register\_data")$};
 
   \end{tikzpicture}
   \caption{Data registration}
@@ -128,27 +115,16 @@ The first contract is more adequate for sensitive data~\cite{DBLP:journals/corr/
 \end{enumerate}
 
 \begin{figure}[ht!]
-  \begin{tikzpicture}[
-        database/.style={
-        cylinder,
-        shape border rotate=90,
-        aspect=0.5,
-        draw
-      },
-      txt/.style={
-      }
-    ]
+  \begin{tikzpicture}
 
-    \node[draw,rectangle,minimum width=\textwidth, minimum height=1cm,anchor=west] (blockchain) at (0,0){Blockchain};
+    \node[blockchain] (blockchain) at (0,0){Blockchain};
 
 
     \begin{scope}
-      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (processor) at (0,5) {Data Processor};
+      \node[node, anchor=west] (processor) at (0,5) {Data Processor};
       \draw[<-] ([xshift=-1em]processor.south) -- ([xshift=-1em]2,0.5);
-      \draw[->] ([xshift=1em]processor.south) -- ([xshift=1em]2,0.5);
+      \draw[->] ([xshift=1em]processor.south) -- ([xshift=1em]2,0.5) node[midway,right] {$Tx(\{name, pubKey, address\}, "register\_processor")$};
     \end{scope}
-
-    \node[txt] (enc_db) [below=of processor,yshift=-1.5em, xshift=14em] {$Tx(\{name, pubKey, address\}, "register\_processor")$};
 
   \end{tikzpicture}
   \caption{Processor Registration}
@@ -165,41 +141,28 @@ The first contract is more adequate for sensitive data~\cite{DBLP:journals/corr/
 \end{enumerate}
 
 \begin{figure}[ht!]
-  \begin{tikzpicture}[
-        database/.style={
-        cylinder,
-        shape border rotate=90,
-        aspect=0.5,
-        draw
-      },
-      txt/.style={
-      }
-    ]
+  \begin{tikzpicture}
 
-    \node[draw,rectangle,minimum width=\textwidth, minimum height=1cm,anchor=west] (blockchain) at (0,0){Blockchain};
+    \node[blockchain] (blockchain) at (0,0){Blockchain};
 
     \begin{scope}[node distance=4cm]
-      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (owner) at (0,-5) {Data Controller};
+      \node[node, anchor=west] (owner) at (0,-5) {Data Controller};
       \draw[->] ([xshift=0em]owner.north) -- ([xshift=0em]2,-0.5);
     \end{scope}
-
-    \node[txt] (enc_key) [above=of owner, xshift=11.2em, yshift=13em] {$Tx(requestID, Enc_{pk_P}(k), "notify\_processor")$};
 
     \node[txt] (list_req) [below=of owner, xshift=0em, yshift=1.5em] {$listen("request\_processing")$};
 
     \begin{scope}
-      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (processor) at (0,5) {Data Processor};
-      \draw[<-] ([xshift=0em]processor.south) -- ([xshift=0em]2,0.5);
+      \node[node, anchor=west] (processor) at (0,5) {Data Processor};
+      \draw[<-] ([xshift=0em]processor.south) -- ([xshift=0em]2,0.5) node[midway,right] {$Tx(\{requestID, Enc_{pk_P}(k)\}, "notify\_processor")$};
     \end{scope}
 
     \node[txt] (list_req_cr) [above=of processor, xshift=0em, yshift=-1.5em] {$listen("processing")$};
 
     \begin{scope}
-      \node[draw, minimum height=1cm, minimum width=4cm, anchor=east] (requester) at (\textwidth,-5) {Requester};
-      \draw[->] ([xshift=0em]requester.north) -- ([xshift=0em]14.45,-0.5);
+      \node[node, anchor=east] (requester) at (\textwidth,-5) {Requester};
+      \draw[->] ([xshift=0em]requester.north) -- ([xshift=0em]14.45,-0.5) node[midway,left] {\small $Tx(\{dataSetID, queryID, pubKey, address\}, "request\_processing")$};
     \end{scope}
-
-    \node[txt] (enc_db) [above left=of requester, xshift=7em, yshift=1em] {\footnotesize $Tx(\{dataSetID, queryID, pubKey, address\}, "request\_processing")$};
 
   \end{tikzpicture}
   \caption{Request for processing}
@@ -251,46 +214,29 @@ Let $d$ be a private dataset, $H$ a cryptographic hash function and $h = H(d)$ t
 $\calp$ zk-SNARK proof(§~\ref{zkp:snarks}) consists of two parts: a) Knowledge of a pre-image $d$ such that $H(d) = h$ and b) a correct computation over $d$.
 
 \begin{figure}[ht!]
-  \begin{tikzpicture}[
-        database/.style={
-        cylinder,
-        shape border rotate=90,
-        aspect=0.5,
-        draw
-      },
-      txt/.style={
-      }
-    ]
+  \begin{tikzpicture}
 
-    \node[draw,rectangle,minimum width=\textwidth, minimum height=1cm,anchor=west] (blockchain) at (0,0){Blockchain};
+    \node[blockchain] (blockchain) at (0,0){Blockchain};
 
     \begin{scope}[node distance=4cm]
-      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (owner) at (0,-5) {Data Controller};
+      \node[node, anchor=west] (owner) at (0,-5) {Data Controller};
       \node[database] (db) [below right=of owner] {Database};
-      \draw[<->] (owner) -- (db);
+      \draw[<->] (owner) -- (db) node[midway,left] {$Enc_k(data)$};
       \draw[<-] ([xshift=-1em]owner.north) -- ([xshift=-1em]2,-0.5);
-      \draw[->] ([xshift=1em]owner.north) -- ([xshift=1em]2,-0.5);
+      \draw[->] ([xshift=1em]owner.north) -- ([xshift=1em]2,-0.5) node[midway,right] {$Enc_{pk_P}(k, metadata)$};
     \end{scope}
 
-    \node[txt] (enc_db) [below=of owner,yshift=-1.5em, xshift=3em] {$Enc_k(data)$};
-    \node[txt] (enc_key) [above=of owner, xshift=6.5em, yshift=1em] {$Enc_{pk_P}(k, metadata)$};
-
     \begin{scope}
-      \node[draw, minimum height=1cm, minimum width=4cm, anchor=west] (processor) at (0,5) {Data Processor};
+      \node[node, anchor=west] (processor) at (0,5) {Data Processor};
       \draw[<-] ([xshift=-1em]processor.south) -- ([xshift=-1em]2,0.5);
-      \draw[->] ([xshift=1em]processor.south) -- ([xshift=1em]2,0.5);
+      \draw[->] ([xshift=1em]processor.south) -- ([xshift=1em]2,0.5) node[midway,right] {$Enc_{pk_R}(result, \pi)$};
     \end{scope}
-
-    \node[txt] (enc_db) [below=of processor,yshift=-1.5em, xshift=6em] {$Enc_{pk_R}(result, \pi)$};
 
     \begin{scope}
-      \node[draw, minimum height=1cm, minimum width=4cm, anchor=east] (requester) at (\textwidth,-5) {Requester};
-      \draw[->] ([xshift=-1em]requester.north) -- ([xshift=-1em]14.45,-0.5);
-      \draw[<-] ([xshift=1em]requester.north) -- ([xshift=1em]14.45,-0.5);
+      \node[node, anchor=east] (requester) at (\textwidth,-5) {Requester};
+      \draw[->] ([xshift=-1em]requester.north) -- ([xshift=-1em]14.45,-0.5) node[midway,left] {$Request(pk_R, pred)$};
+      \draw[<-] ([xshift=1em]requester.north) -- ([xshift=1em]14.45,-0.5) node[midway,right]  {$Verify_{vk}(\pi)$};
     \end{scope}
-
-    \node[txt] (enc_db) [above left=of requester, xshift=5.5em] {$Request(pk_R, pred)$};
-    \node[txt] (enc_db) [above right=of requester, xshift=-5.5em] {$Verify_{vk}(\pi)$};
 
   \end{tikzpicture}
   \caption{Architecture}
