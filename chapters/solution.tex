@@ -215,6 +215,31 @@ The first contract is more adequate for sensitive data~\cite{DBLP:journals/corr/
   \item Submits the encrypted result of the computation on the blockchain along with a Zero Knowledge Proof (§~\ref{zkp}) of the correctness of the computation.
 \end{enumerate}
 
+\begin{figure}[ht!]
+  \begin{tikzpicture}
+
+    \node[blockchain] (blockchain) at (0,0){Blockchain};
+
+    \begin{scope}
+      \node[node, anchor=west] (processor) at (0,5) {Data Processor};
+      \draw[->] ([xshift=0em]processor.south) -- ([xshift=0em]2,0.5) node[midway,right] {$Tx(\{requestID, Enc_{pk_R}(\pi, y)\}, "notify\_requester")$};
+    \end{scope}
+
+    \node[node, process] (compute) [above of=processor, yshift=3cm] {$Compute$};
+
+    \draw[->] ([xshift=-1em]compute.south) -- ([xshift=-1em]2,5.5) node[midway,left] {$(y, \pi)$};
+    \draw[<-] ([xshift=1em]compute.south) -- ([xshift=1em]2,5.5)  node[midway,right] {$dataset$};
+
+    \begin{scope}
+      \node[node, anchor=east] (requester) at (\textwidth,-5) {Requester};
+      \draw[<-] (requester.north) -- (14.45,-0.5) node[midway,right] {$Verify_{vk}(\pi, y)$};
+    \end{scope}
+
+  \end{tikzpicture}
+  \caption{Data processing}
+  \label{fig:arch:process}
+\end{figure}
+
 \section{Processor Selection}
 \label{solution:pr_selection}
 
