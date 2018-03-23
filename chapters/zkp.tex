@@ -169,9 +169,17 @@ but makes additional computations~\cite{kiagias:crypto}.
 
 Since computational power is often limited to devices such as mobiles or IoT (clients) the need of outsourcing computation to one or more powerful workers on the cloud emerges. Yet, confidence is needed at the working entity for proper computation. For this reason, the client should be able to verify the correctness of the results returned. That way not only the client is protected from malicious or malfunctioning workers but also the legitimate worker is benefit by shedding liability~\cite{pinocchio-nearly-practical-verifiable-computation}. This scheme is called public verifiable computation (VC).
 
-In a public verifiable computation scheme the client outsource the evaluation of a function $F$ on input $u$ known to the client (e.g. a query). The client then can verify the correctness of the computation of $F(u)$ with less work than required for the computation of $F(u)$. When the outsource function $F$ consist of two inputs $u$ and $w$, where $w$ is the worker's private input (e.g a data set), then the scheme is a Zero-Knowledge Verifiable Computation (or non-interactive zero knowledge (NIZK) proof~\cite{Blum:1991:NZ:123137.123145}) if the client learns nothing about workers input expect the output of the computation~\cite{pinocchio-nearly-practical-verifiable-computation}.
+In a public verifiable computation scheme the client outsource the evaluation of a function $F$ on input $u$ known to the client (e.g. a query). The client then can verify the correctness of the computation of $F(u)$ with less work than required for the computation of $F(u)$. When the outsource function $F$ consist of two inputs $u$ and $w$, where $w$ is the worker's private input (e.g a data set), then the scheme is a Zero-Knowledge Verifiable Computation (or non-interactive zero knowledge (NIZK) proof~\cite{Blum:1991:NZ:123137.123145}) if the client learns nothing about worker's input expect the output of the computation~\cite{pinocchio-nearly-practical-verifiable-computation}.
 
-Such schemes are not interactive meaning no interaction is necessary between prover and verifier (worker and client) and a common reference string shared between them is enough to achieve computational zero-knowledge~\cite{Blum:1991:NZ:123137.123145}.
+Such schemes are not interactive meaning no interaction is necessary between prover and verifier (worker and client) and a common reference string (CRS) shared between them is enough to achieve computational zero-knowledge~\cite{Blum:1991:NZ:123137.123145}.
+
+Formally, as defined by Parno et. al~\cite{pinocchio-nearly-practical-verifiable-computation} a public Zero-Knowledge verifiable computation scheme $\calv \calc$ consist of a set of three polynomial-time algorithms:
+
+\begin{itemize}
+  \item $(EK_F, VK_F) \leftarrow \text{KeyGen}(F, 1^{\lambda})$: The randomized key generation algorithm. It takes as input the outsourced function $F$ and a security parameter ${\lambda}$; it outputs a public evaluation key $EK_F$ and a public verification key $VK_F$.
+  \item $(y, \pi_y) \leftarrow \text{Compute}(EK_F, u)$: The deterministic worker algorithm. It takes as input the public evaluation key $EK_F$ and a public input $u$; it outputs $y \leftarrow F(u, w)$, where $w$ is an auxiliary private input, and a proof $\pi$ of $y$'s correctness.
+  \item $\{0, 1\} \leftarrow \text{Verify}(VK_F, u, y, \pi_y)$:  The deterministic verification algorithm. It takes as input the public verification key $VK_F$, the public input $u$, the output $y$ and the proof $\pi_y$; It outputs $1$ if $F(u) = y$ and $0$ otherwise.
+\end{itemize}
 
 The acronym zk-SNARK stands for `Zero-Knowledge Succinct Non-Interactive Argument of Knowledge` in which each individual part, informally, have the following meaning~\cite{zksnarks_nutshell, zcash, 184425, Bitansky:2012:ECR:2090236.2090263}:
 
@@ -196,7 +204,7 @@ The main idea for constructing zkSNARKs is firstly to transform the generic prog
 
 Succinctness is achieved by random sampling. The verifier chooses a secret evaluation point $x_0$ to reduce the problem from polynomial multiplication and equality to simple number arithmetic checks: $p(x_0)q(x_0) = s(x_0)r(x_0)$. To allow the prover to compute the evaluation of the polynomials at $x_0$, without revealing $x_0$, Homomorphic encryption is used:  $E(p(x_0))E(q(x_0)) = E(s(x_0))E(r(x_0))$
 
-Finally the prover obfuscates the encrypted values by multiplying with a number so that the verifier can still check their correct structure without knowing the actual
+Finally the prover obfuscates the encrypted values by multiplying with a number so that the verifier can still check the correctness of the structure without knowing the actual
 encrypted values: $E(k + p(x_0))E(k + q(x_0)) = E(k + s(x_0))E(k + r(x_0))$
 
 \begin{figure}[ht!]
