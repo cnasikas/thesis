@@ -1,8 +1,27 @@
 %!TEX root = ../thesis.tex
+
+\tikzstyle{database} = [cylinder, shape border rotate=90, aspect=0.5, draw, fill=green!30],
+\tikzstyle{node} = [rectangle, minimum width=4cm, minimum height=1cm, text centered, draw=black, draw, fill=blue!30],
+\tikzstyle{blockchain} = [draw,rectangle,minimum width=\textwidth, minimum height=1cm,anchor=west, fill=orange!30],
+\tikzstyle{process} = [fill=red!30],
+\tikzstyle{txt} = [],
+\tikzstyle{entity} = [draw, minimum height=1cm, minimum width=4cm, fill=blue!30]
+\tikzstyle{com} = [<->]
+\tikzstyle{block} = [draw,thick,inner sep=10pt]
+\tikzset{barstyle/.style 2 args={
+      draw,
+      minimum height=3em,
+      fill=orange!30,
+      fit={(#1.west) (#1.east)}, inner sep=0pt, label={center:#2}
+    }
+}
+
 \chapter{Implementation}
 \label{implemenation}
 
 \section{RESTful API}
+
+
 
 \begin{table}[ht!]
 \centering
@@ -34,30 +53,7 @@
 
 \begin{figure}[ht!]
   \center
-  \begin{tikzpicture}[
-        database/.style={
-        cylinder,
-        shape border rotate=90,
-        aspect=0.5,
-        draw
-      },
-      txt/.style={
-      },
-      entity/.style={
-        draw, minimum height=1cm, minimum width=4cm%, anchor=west
-      },
-      com/.style={
-        <->
-      },
-      block/.style={
-        draw,thick,inner sep=10pt
-      },
-      barstyle/.style 2 args={
-            draw,
-            minimum height=3em,
-            fit={(#1.west) (#1.east)}, inner sep=0pt, label={center:#2}
-      }
-    ]
+  \begin{tikzpicture}
     \begin{scope}[node distance=2cm]
       \node[entity] (api) {API};
       \node[entity] (dapp) [above=of api] {Dapp};
