@@ -105,6 +105,30 @@ Specifically:
 \end{enumerate}
 
 \section{Command-line interface}
+\label{implemenation:cli}
+
+A Command-line interface that provides a set of useful commands for the data sharing application.
+
+Usage:
+
+\begin{verbatim}
+  $ node data-cli <options>
+\end{verbatim}
+
+Options:
+
+\begin{itemize}
+  \item \verb|-v| or \verb|--version|: Output the version number
+  \item \verb|-g| or \verb|--generate-keys|: Generate an asymmetric
+  \item \verb|-k| or \verb|--generate-key|: Generate a symmetric key
+  \item \verb|-d| or \verb|--dummy-file <file>|: Generate a 45MB dummy file
+  \item \verb|-e| or \verb|--encrypt-file <file>|: Encrypt a file
+  \item \verb|-a| or \verb|--evaluation <bytes>|: Evaluate gas cost of bytes on Ethereum
+  \item \verb|-s| or \verb|--hash <hash>|: Hash with SHA256 an array of arguments
+  \item \verb|-f| or \verb|--hash-file <file>|: Hash with SHA256 a file
+  \item \verb|-h| or \verb|--help|: Output usage information
+\end{itemize}
+
 \section{Smart contracts}
 
 \begin{figure}[ht!]
