@@ -130,6 +130,175 @@ Options:
 \end{itemize}
 
 \section{Smart contracts}
+\label{implemenation:contracts}
+
+The data sharing application is governed by a smart contract deployed on the Ethereum network. The smart contract allows data controllers to register new data sets, processor registration and request for data set processing. The Data Sharing smart contract is public available and can be used by any other contract in the network.
+
+\subsection{Data set registration}
+\label{implemenation:contracts:data_reg}
+
+In order to register a new data set to the application the data controller needs to register with the smart contract by sending a \verb|registerDataSet| transaction with the following values:
+
+\begin{itemize}
+  \item \verb|_id|: The id of the data set. Data sets ids must be unique and will be converted to lowercase. It can be any string as long as it have not been already registered and it's length is less that 32
+  \item \verb|name|: The name of the data set. It can be an arbitrary string
+  \item \verb|location|: The URI of the location of the data set
+  \item \verb|category|: The category of the data set. It can be an arbitrary string
+  \item \verb|hashMeta|: The SHA256 of the submitted values
+  \item \verb|_dataOwner|: The address of the owner of the data source
+  \item \verb|digest|: The SHA256 of the raw data set
+\end{itemize}
+
+\begin{lstlisting}[language=Solidity, caption={Data set registration function}]
+  function registerDataSet(
+        bytes32 _id,
+        string name,
+        string location,
+        string category,
+        string hashMeta,
+        address _dataOwner,
+        string digest
+  ) public returns (bool success);
+\end{lstlisting}
+
+\subsection{Request for processing}
+\label{implemenation:contracts:req_pr}
+
+The request for processing consists of two parts: A show of interest by a requestor for data processing and a notification to the processor informing that there is a request that needs attention.
+
+In order to request for data processing a \verb|requestProcessing| transaction needs to be sent with the following values:
+
+\begin{itemize}
+  \item \verb|_dataSetID|: The dataset id of interest
+  \item \verb|_subscriber|: The address of the requestor
+  \item \verb|queryID|: The id of the query that the processor will execute over the data set
+  \item \verb|pubKey|: The public key of the requestor
+\end{itemize}
+
+In order to notify a data processor that there is an available request for processing a \verb|notifyProcessor| transaction needs to be sent with the following values:
+
+\begin{itemize}
+  \item \verb|_providerAddress|: The address of the owner of the data source
+  \item \verb|_subscriber|: The address of the requestor
+  \item \verb|cipher|: The encryption of symmetric key with which the dataset had been encrypted
+\end{itemize}
+
+Normally the \verb|notifyProcessor| transaction is sent internally by the data controller that listen to data requests and want to forward the symmetric key to the processor.
+
+
+\begin{lstlisting}[language=Solidity, caption={Request for processing functions}]
+  function requestProcessing(
+    bytes32 _dataSetID,
+    address _subscriber,
+    bytes32 queryID,
+    string pubKey
+  ) public returns (bool success);
+
+  function notifyProcessor(
+    address _providerAddress,
+    address _subscriber,
+    string cipher
+  ) public returns (bool success);
+
+\end{lstlisting}
+
+\subsection{Processor Registration}
+\label{implemenation:contracts:reg_processor}
+
+In order for a data processor to be register a \verb|registerProcessor| transaction need to be sent with the following values:
+
+\begin{itemize}
+  \item \verb|_processorAddress|: The address of data processor
+  \item \verb|name|: The name of the processor. It can be an arbitrary string
+  \item \verb|pubKey|: The public key of the processor
+\end{itemize}
+
+Only the contract creator can execute the \verb|registerProcessor| function.
+
+\begin{lstlisting}[language=Solidity, caption={Data processor registration function}]
+  function registerProcessor(
+    address _processorAddress,
+    bytes32 name,
+    string pubKey
+  ) public returns (bool success);
+\end{lstlisting}
+
+\subsection{Data Controller Registration}
+\label{implemenation:contracts:reg_processor}
+
+In order for a data processor to be register a \verb|registerProvider| transaction need to be sent with the following values:
+
+\begin{itemize}
+  \item \verb|_providerAddress|: The address of data controller
+  \item \verb|name|: The name of the processor. It can be an arbitrary string
+  \item \verb|pubKey|: The public key of the processor
+\end{itemize}
+
+Only the contract creator can execute the \verb|registerProvider| function.
+
+\begin{lstlisting}[language=Solidity, caption={Data controller registration function}]
+  function registerProvider(
+    address _providerAddress,
+    bytes32 name,
+    string pubKey
+  ) public returns (bool success);
+\end{lstlisting}
+
+\subsection{Process output and Zero Knowledge Proof}
+\label{implemenation:contracts:zkp}
+
+\subsection{Events}
+\label{implemenation:contracts:events}
+
+For every transaction that is sent to the data share smart contract that executes a function an event is being triggered. Every node of the network can register to listen to those events.
+
+Events:
+
+\begin{itemize}
+  \item \verb|NewDataSet|: A data set is being registered
+  \item \verb|NewProvider|: A data controller is being registered
+  \item \verb|NewProcessor|: A data processor is being registered
+  \item \verb|NewRequest|: A request for processing is being made
+  \item \verb|Process|: A notification for data processing is being sent to a specific processor
+\end{itemize}
+
+\begin{lstlisting}[language=Solidity, caption={Data sharing application events}]
+
+  event NewDataSet(
+    bytes32 _id,
+    string name,
+    string location,
+    string category,
+    string hashMeta,
+    address owner,
+    string digest
+  );
+
+  event NewProvider(
+    address _providerAddress,
+    bytes32 name
+  );
+
+  event NewProcessor(
+    address _providerAddress,
+    bytes32 name,
+    string pubKey
+  );
+
+  event NewRequest(
+    bytes32 _dataSetID,
+    address _provider,
+    address _subscriber,
+    bytes32 queryID,
+    string pubKey
+  );
+  event Process(
+    address _providerAddress,
+    address _subscriber,
+    string cipher
+  );
+\end{lstlisting}
+
 \section{Programming details}
 \label{implemenation:details}
 
