@@ -130,6 +130,30 @@ Options:
 \end{itemize}
 
 \section{Smart contracts}
+\section{Programming details}
+\label{implemenation:details}
+
+Building the data sharing ecosystem (§~\ref{solution}) requires the use of various frameworks, technologies, programming languages and libraries.
+
+In particular:
+
+\begin{enumerate}
+  \item RESTful API: \verb|Node.js v8.9.4|, \verb|Express 4.16.2|
+  \item Command-line interface: \verb|Node.js v8.9.4|
+  \item Distributed application: \verb|React 15.6.1|, \verb|Redux 3.7.2| and \verb|Bootstrap 4.0.0|
+  \item Processor node: \verb|Node.js v8.9.4|
+  \item Controller node: \verb|Node.js v8.9.4|
+  \item Libraries:
+    \begin{enumerate}
+      \item Blockchain: \verb|web3 0.20.4|
+      \item Crypto: \verb|SJCL 1.0.7| and \verb|Node.js v8.9.4 Crypto Module|
+    \end{enumerate}
+  \item Smart contracts: \verb|Truffle 4.1.0| and \verb|Solidity 0.4.19|
+  \item Zero Knowledge Proofs: \verb|Pequin| and \verb|libsnark|
+  \item Ethereum Blockchain: \verb|Ganache CLI v6.0.3 (ganache-core: 2.0.2)|
+\end{enumerate}
+
+All code written in \verb|JavaScript| follows the \verb|ES6 (ECMAScript 2015)| standard and the  \verb|StandardJS| style guide.
 
 \begin{figure}[ht!]
   \center
