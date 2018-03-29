@@ -64,9 +64,18 @@ The REST API expose a set of routes each one having an HTTP method and a URI. Al
 \label{table:api_routes}
 \end{table}
 
-\section{Dapp}
-\section{Processor}
+\section{Distributed Application}
+\label{implemenation:dapp}
+
+The distributed application is a web-based application providing a graphical user interface (UI) to facilitate the data sharing platform usage. The goal of the distributed application is to provide to the end-user an easy, self-explanatory and efficient way of interacting with the data sharing ecosystem. As most users are already familiar with the use of web applications and platforms, such as webmails, cloud services and social media, such interfaces makes the user feel accustomed. The user does not and should not need to know that interacts with a Blockchain icosystem.
+
+The distributed application consumes the REST API and yields the same functionalities.
+
 \section{Controller}
+\label{implemenation:controller}
+
+The controller is a data sharing node that is connected to the Blockchain and listens for processing requests. See §~\ref{solution:entities:data_controller} and §~\ref{solution:flow:pr_req} for more information.
+
 \section{Command-line interface}
 \section{Smart contracts}
 
