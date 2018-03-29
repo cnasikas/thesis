@@ -347,19 +347,45 @@ All code written in \verb|JavaScript| follows the \verb|ES6 (ECMAScript 2015)| s
 
     \draw[com] (eth_node.south) ++ (south:0ex) -- ++ (south:1.35cm);
 
+  \end{tikzpicture}
+  \caption{REST API \& Dapp implemenation scheme}
+  \label{fig:implemenation:rest}
+\end{figure}
+
+\begin{figure}[ht!]
+  \center
+  \begin{tikzpicture}
+
+    \begin{scope}[node distance=2cm]
+      \node[entity] (controller) {Controller};
+      \node[entity] (eth_node) [below=of controller] {Ethereum node};
+      \node[database] (db) [right=of controller, yshift=-0.3cm] {Mongodb};
+    \end{scope}
+
+    \draw[com] (controller) -- (eth_node);
+    \draw[com] (controller.east) ++ (right:0ex) -- ++ (right:2cm);
+
+    \node[block,fit=(controller) (eth_node) (db), label={Local Enviroment}] (local) {};
+
+    \node[barstyle={local}{Ethereum Blockchain}, below=of local] (blockchain) {};
+
+    \draw[com] (eth_node.south) ++ (south:0ex) -- ++ (south:1.35cm);
+
     \begin{scope}[node distance=2cm]
       \node[entity] (eth_node_pr) [below=of blockchain, xshift=-2cm, yshift=0.65cm] {Ethereum node};
       \node[entity] (processor) [below=of eth_node_pr] {Processor};
+      \node[entity] (zkp) [below=of processor] {ZKP Oracle};
       \node[database] (db_pr) [right=of processor, yshift=-0.3cm] {Mongodb};
     \end{scope}
 
     \draw[com] (eth_node_pr.north) ++ (north:0ex) -- ++ (north:1.35cm);
     \draw[com] (processor) -- (eth_node_pr);
+    \draw[com] (processor) -- (zkp);
     \draw[com] (processor.east) ++ (right:0ex) -- ++ (right:2cm);
 
-    \node[block,fit=(eth_node_pr) (processor) (db_pr), label={below:Local Enviroment}] (local) {};
+    \node[block,fit=(eth_node_pr) (processor) (db_pr) (zkp), label={below:Local Enviroment}] (local) {};
 
   \end{tikzpicture}
-  \caption{Implementation}
-  \label{fig:implemenation}
+  \caption{Data processor and data controller implemenation scheme}
+  \label{fig:implemenation:con_pr}
 \end{figure}
