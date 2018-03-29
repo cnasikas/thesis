@@ -81,6 +81,29 @@ The controller is a data sharing node that is connected to the Blockchain and li
 
 The controller is a data sharing node that is connected to the Blockchain and listens for processing notifications by a controller node.  See §~\ref{solution:entities:data_processor} and §~\ref{solution:flow:pr_data} for more information.
 
+\section{Libraries}
+\label{implemenation:libs}
+
+\subsection{Blockchain}
+\label{implemenation:libs:bl}
+
+The Blockchain library offers a set of functionalities that makes communication with any Blockchain easier. Is a wrapper library over Blockchain specific libraries, such as Ethereum's \verb|web3|, and it's main purpose is to be Blockchain agnostic allowing the use of different Blockchains. For the moment only the Ethereum Blockchain is supported.
+
+\subsection{Crypto}
+\label{implemenation:libs:cr}
+
+The crypto library provides cryptographic functionality that includes a set of wrappers for \verb|SJCL| and \verb|Node.js Crypto module| functions.
+
+Specifically:
+
+\begin{enumerate}
+  \item Asymmetric encryption key generation
+  \item Symmetric encryption key generation
+  \item HMAC key generation
+  \item Symmetric file encryption
+  \item SHA256 hash function
+\end{enumerate}
+
 \section{Command-line interface}
 \section{Smart contracts}
 
