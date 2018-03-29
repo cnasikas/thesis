@@ -19,6 +19,8 @@
 \chapter{Implementation}
 \label{implemenation}
 
+As mention at §~\ref{solution} the Blockchain act as the controller of the network. As a result, the application is separated in two parts. The off-chain network and the Blockchain network. The dataset storage, transmission and processing lives off-chain while dataset registration, requests for processing, processing outputs and Zero Knowledge proofs leave on the Blockchain. Every node on the network---a data share node--- is connected to the Blockchain and track every transaction specified for the application. That way it can track and index every registered dataset, request for processing and processing outputs and proofs and act accordingly.
+
 \section{RESTful API}
 
 A RESTful API is provided to facilitate communication between any application, that follows the REST architecture, and the data sharing Blockchain ecosystem. The REST API expose the blockchain business network that can be easily consumed by HTTP or REST clients. That way, any developer familiar with existing web technologies and frameworks is not obligated to learn the interval mechanisms of a Blockchain system to develop and deploy applications atop.
