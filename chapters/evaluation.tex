@@ -187,3 +187,59 @@ Table~\ref{table:app_costs} shows the costs of each operation of the application
 \caption{Application Costs.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei}
 \label{table:app_costs}
 \end{table}
+
+\subsection{Zero Knowledge Proofs}
+\label{evaluation:zkp}
+
+Tables~\ref{table:zkp_01} to~\ref{table:zkp_03} provide details of ZKP performance for each query of the application that the data processor executes. The setup step consists of the compilation of a \verb|C| programm to QAP (§~\ref{zkp:snarks}) and the key generation. The compute step consists of circuit evaluation, polynomial solving and proof generation. Lastly, the verification step consists of the verification of the proof.
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+ & Setup (s) & Compute (s) & Verify (ms) & Eval Key (MB) & Ver Key (KB) & Proof (B)  \\ \hline
+ Sum & 10 & 8 & 28 & 0.016 & 100 & 304 \\ \hline
+ Count & 16 & 8 & 26 & 0.005 & 100 & 304 \\ \hline
+ Max & 17 & 9 & 28 & 1.7 & 100 & 304 \\ \hline
+ Median & 65 & 30 & 28 & 64 & 100 & 304 \\ \hline
+ Min & 17 & 9 & 51 & 1.7 & 100 & 304 \\ \hline
+ Mean & 16 & 8 & 19 & 0.054 & 100 & 304 \\ \hline
+\end{tabular}
+\captionsetup{format=hang, justification=centering}
+\caption{ZKP Performance: 100 values}
+\label{table:zkp_01}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+ & Setup (s) & Compute (s) & Verify (ms) & Eval Key (MB) & Ver Key (KB) & Proof (B)  \\ \hline
+ Sum & 10 & 8 & 27 & 0.144 & 100 & 304 \\ \hline
+ Count & 15 & 9 & 37 & 0.036 & 100 & 304 \\ \hline
+ Max & 29 & 14 & 34 & 17 & 100 & 304 \\ \hline
+ Min & 28 & 14 & 49 & 17 & 100 & 304 \\ \hline
+ Mean & 17 & 8 & 41 & 182 & 100 & 304 \\ \hline
+ Median & 1701 & - & 12 & 64 & 100 & 304 \\ \hline
+\end{tabular}
+\captionsetup{format=hang, justification=centering}
+\caption{ZKP Performance: 1.000 values}
+\label{table:zkp_02}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+ & Setup (s) & Compute (s) & Verify (ms) & Eval Key (MB) & Ver Key (KB) & Proof (B)  \\ \hline
+ Sum & 10 & 8 & 21 & 1.44 & 100 & 304 \\ \hline
+ Count & 17 & 8 & 32 & 0.335 & 100 & 304 \\ \hline
+ Max & 130 & 67 & 28 & 171 & 100 & 304 \\ \hline
+ Min & 126 & 67 & 27 & 171 & 100 & 304 \\ \hline
+ Mean & 22 & 9 & 27 & 1.5 & 100 & 304 \\ \hline
+ Median & - & - & - & - & - & - \\ \hline
+\end{tabular}
+\captionsetup{format=hang, justification=centering}
+\caption{ZKP Performance: 10.000 values}
+\label{table:zkp_03}
+\end{table}
