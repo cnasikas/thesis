@@ -87,22 +87,43 @@ The controller is a data sharing node that is connected to the Blockchain and li
 \subsection{Blockchain}
 \label{implemenation:libs:bl}
 
-The Blockchain library offers a set of functionalities that makes communication with any Blockchain easier. Is a wrapper library over Blockchain specific libraries, such as Ethereum's \verb|web3|, and it's main purpose is to be Blockchain agnostic allowing the use of different Blockchains. For the moment only the Ethereum Blockchain is supported.
+The Blockchain library offers a set of functionalities that makes communication with any Blockchain implementation easier. Is a wrapper library over Blockchain specific libraries, such as Ethereum's \verb|web3|, and it's main purpose is to be Blockchain agnostic allowing the use of different Blockchains. For the moment only the Ethereum Blockchain is supported.
+
+Abstract Functions:
+
+\begin{itemize}
+  \item \verb|isConnected|: Return true if a connection to a Blockchain node exists and false otherwise.
+  \item \verb|getProvider|: Get the current provider (Blockchain node)
+  \item \verb|setProvider|: Set provider (Blockchain node)
+  \item \verb|getBalance|: Get the balance of an address
+  \item \verb|setDefaultAccount|: Set the default address
+  \item \verb|getDefaultAccount|: Get the default address
+  \item \verb|getAccounts|: Get all accounts
+  \item \verb|getLibInstance|: Get the Blockchain library
+  \item \verb|getFilter|: Get a filter object
+  \item \verb|toBytes|: Covert string to bytes
+  \item \verb|fromBytes|: Covert bytes to string
+\end{itemize}
 
 \subsection{Crypto}
 \label{implemenation:libs:cr}
 
 The crypto library provides cryptographic functionality that includes a set of wrappers for \verb|SJCL| and \verb|Node.js Crypto module| functions.
 
-Specifically:
+Functions:
 
-\begin{enumerate}
-  \item Asymmetric encryption key generation
-  \item Symmetric encryption key generation
-  \item HMAC key generation
-  \item Symmetric file encryption
-  \item SHA256 hash function
-\end{enumerate}
+\begin{itemize}
+  \item \verb|generateKeyPair|: Generate an asymmetric encryption key pair
+  \item \verb|generateKey|: Generate a symmetric encryption key
+  \item \verb|pubEncrypt|: Encrypt a string with a public key
+  \item \verb|pubDecrypt|: Decrypt a ciphertext with a secret key
+  \item \verb|encryptFile|: Encrypt a file with a symmetric key
+  \item \verb|decryptFile|: Decrypt a file with a symmetric key
+  \item \verb|bytesToHex|: Convert bytes to hex
+  \item \verb|hextoBytes|: Convert hex to bytes
+  \item \verb|hashFile|: Hash a file with SHA256
+  \item \verb|hash|: Hash an array of values with SHA256
+\end{itemize}
 
 \section{Command-line interface}
 \label{implemenation:cli}
@@ -124,8 +145,8 @@ Options:
   \item \verb|-d| or \verb|--dummy-file <file>|: Generate a 45MB dummy file
   \item \verb|-e| or \verb|--encrypt-file <file>|: Encrypt a file
   \item \verb|-a| or \verb|--evaluation <bytes>|: Evaluate gas cost of bytes on Ethereum
-  \item \verb|-s| or \verb|--hash <hash>|: Hash with SHA256 an array of arguments
-  \item \verb|-f| or \verb|--hash-file <file>|: Hash with SHA256 a file
+  \item \verb|-s| or \verb|--hash <hash>|: Hash an array of values with SHA256
+  \item \verb|-f| or \verb|--hash-file <file>|: Hash a file with SHA256
   \item \verb|-h| or \verb|--help|: Output usage information
 \end{itemize}
 
