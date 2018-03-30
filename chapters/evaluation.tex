@@ -21,8 +21,8 @@ Ethereum Testnet Specifications:
   \item Solidity 0.4.19
 \end{enumerate}
 
-\section{Store Data}
-\label{evaluation:store_data}
+\section{Computation Costs}
+\label{evaluation:computation_costs}
 
 Ethreuem use a unit called gas as a measurement of computation use--an internal pricing mechanism used to execute contracts and allocate resources on the network-- and it's price is expressed in ether (Ethereum currency). Every node in the Ethereum network executes instructions (opcodes) within the Ethereum Virtual Machine (EVM) (§~\ref{blockchain:impl:ethereum}) and each of these instructions has an associated cost in gas. The cumulative sum of all the operations is the total gas cost for a transaction and is the fee that is being paid to the miners.
 
@@ -30,7 +30,7 @@ The cost of each opcode (operation code) of EVM is defined on Ethereum's yellow 
 
 For storing data, Ethereum offers two opcodes: SLOAD opcode loads a word from storage and SSTORE opcode saves a word to storage. The size of an EVM word is 32 bytes (256 bit) and to store one EVM word using SSTORE opcode costs 20.000 gas.
 
-\begin{table}[!ht]
+\begin{table}[!hb]
 \centering
 \begin{tabular}{|l|l|l|}
 \hline
@@ -56,8 +56,13 @@ For storing data, Ethereum offers two opcodes: SLOAD opcode loads a word from st
 \label{table:opcode_gas_cost}
 \end{table}
 
+\clearpage
+
 \section{Benchmarks}
 \label{evaluation:benchmarks}
+
+\subsection{Data storage}
+\label{evaluation:data_storage}
 
 The first evaluation test calculates the cost of storing raw data on the blockchain of the following sizes: 32 bytes, 1KB, 1MB, 10MB, 100MB and 1GB. The results are being shown on Table~\ref{table:bytes_usd_cost}. It is worth mentioning that storing 1GB of data on Ethereum costs around \$13.000.000 make it impossible and unpractical to store big data on blockchain technologies.
 
@@ -67,7 +72,7 @@ Ethereum offers a logging mechanism that can be taken advantage of for data stor
 
 Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_05} demonstrate the difference between the four possible ways of storing data for various data sizes: store raw data, store the hash pointer of the data, log raw data and log the has pointer of the data.
 
-\begin{table}[!ht]
+\begin{table}[!htb]
 \centering
 \begin{tabular}{|l|l|l|}
 \hline
@@ -84,7 +89,7 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
 \label{table:bytes_usd_cost}
 \end{table}
 
-\begin{table}[!ht]
+\begin{table}[!htb]
   \centering
   \begin{tabular}{|l|l|l|l|}
   \hline
@@ -99,7 +104,7 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
   \label{table:data_store_comparison_01}
 \end{table}
 
-\begin{table}[!ht]
+\begin{table}[!htb]
   \centering
   \begin{tabular}{|l|l|l|l|}
   \hline
@@ -114,7 +119,7 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
   \label{table:data_store_comparison_02}
 \end{table}
 
-\begin{table}[!ht]
+\begin{table}[!htb]
   \centering
   \begin{tabular}{|l|l|l|l|}
     \hline
@@ -129,7 +134,7 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
   \label{table:data_store_comparison_03}
 \end{table}
 
-\begin{table}[!ht]
+\begin{table}[!htb]
   \centering
   \begin{tabular}{|l|l|l|l|}
     \hline
@@ -145,7 +150,7 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
 \end{table}
 
 
-\begin{table}[!ht]
+\begin{table}[!htb]
   \centering
   \begin{tabular}{|l|l|l|l|}
     \hline
@@ -160,10 +165,14 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
   \label{table:data_store_comparison_05}
 \end{table}
 
-\section{Application costs}
+\clearpage
+
+\subsection{Application costs}
 \label{evaluation:app_costs}
 
-\begin{table}[!ht]
+Table~\ref{table:app_costs} shows the costs of each operation of the application.
+
+\begin{table}[!htb]
 \centering
 \begin{tabular}{|l|l|l|l|}
 \hline
