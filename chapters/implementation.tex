@@ -244,6 +244,60 @@ Only the contract creator can execute the \verb|registerProvider| function.
   ) public returns (bool success);
 \end{lstlisting}
 
+\subsection{General functions}
+\label{implemenation:contracts:general}
+
+\begin{itemize}
+  \item \verb|getDataSetInfo|: Given a data set id it returns all the information of the data set
+  \item \verb|getRequestInfo|: Given a requestor address it returns all the information of the request
+  \item \verb|getDataProviderInfo|: Given a data controller address it returns all the information of the data controller
+  \item \verb|getDataProcessorInfo|: Given a data processor address it returns all the information of the data processor
+\end{itemize}
+
+\begin{lstlisting}[language=Solidity, caption={General functions}]
+  function getDataSetInfo(bytes32 _dataSetID)
+    public
+    view
+    returns(
+          string name,
+          string location,
+          string category,
+          address owner,
+          string hashMeta,
+          string digest
+      );
+
+  function getRequestInfo(address _subscriber)
+    public
+    view
+    returns(
+      bytes32 dataSetID,
+      address provider,
+      bool hasProof,
+      bool processed,
+      bytes32 queryID,
+      string pubKey
+  );
+
+  function getDataProviderInfo(address provider)
+    public
+    view
+    returns(
+      address owner,
+      bytes32 name,
+      string pubKey
+  );
+
+  function getDataProcessorInfo(address _dataProcessorAddress)
+  public
+  view
+  returns(
+      address owner,
+      bytes32 name,
+      string pubKey
+  );
+\end{lstlisting}
+
 \subsection{Process output and Zero Knowledge Proof}
 \label{implemenation:contracts:zkp}
 
