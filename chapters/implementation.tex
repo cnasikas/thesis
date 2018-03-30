@@ -356,6 +356,8 @@ Events:
 \section{Zero Knowledge Proofs}
 \label{implemenation:zkp}
 
+For zkSNARKs proof generation and verification the \verb|Pequin| library~\cite{pequin} was used. \verb|Pequin| is a toolchain to verifiably execute programs expressed in the C programming language. \verb|Pequin| consists of a front-end and a back-end. The front-end takes C programs and transforms them to a set of arithmetic constraints. The back-end in Pequin is a zk-SNARK. Pequin uses \verb|SCIPR Lab's libsnark|~\cite{libsnark}, which is an optimized implementation of the back-end of \verb|Pinocchio|~\cite{pinocchio-nearly-practical-verifiable-computation}, itself a refinement and implementation of \verb|GGPR|~\cite{ggpr}.
+
 \section{Programming details}
 \label{implemenation:details}
 
