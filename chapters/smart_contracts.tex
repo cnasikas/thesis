@@ -15,3 +15,42 @@ With Ethereum launch, the notion of DApps (decentralized applications) arisen
 and a lot of developers and companies are building numerous applications atop Ethereum such as prediction markets~\cite{augur,gnosis}, social media platforms~\cite{akasha,backfeed},
 online gambling~\cite{etheroll,coinpoker} and video games~\cite{cryptokitties}. As of January 2018, there are more than 250 live DApps,
 with hundreds more under development~\cite{wiki:ethereum}.
+
+\clearpage
+
+\begin{lstlisting}[language=Solidity, caption={An Ethereum Smart Contract}]
+pragma solidity ^0.4.16;
+
+contract Namespace{
+
+  struct NameEntry {
+      address owner;
+  }
+
+  uint32 constant REGISTRATION_COST = 100;
+  uint32 constant UPDATE_COST = 10;
+  mapping(bytes32 => NameEntry) data;
+
+  function nameNew(bytes32 hash){
+      if (msg.value >= REGISTRATION_COST){
+          data[hash].owner = msg.sender;
+      }
+  }
+
+  function nameUpdate(bytes32 name, bytes32 newValue, address newOwner){
+      bytes32 hash = sha3(name);
+      if (data[hash].owner == msg.sender && msg.value >= UPDATE_COST) {
+          data[hash].value = newValue;
+          if(newOwner != 0) {
+              data[hash].owner = newOwner;
+          }
+      }
+  }
+
+  function nameLookup (bytes32 name) {
+      return data[sha3(name)]
+  }
+}
+\end{lstlisting}
+
+\clearpage
