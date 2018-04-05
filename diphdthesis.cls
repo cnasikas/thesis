@@ -733,6 +733,10 @@ publications}\gdef\@lopfileinternal{#1}}
     \listoftables
     \thispagestyle{empty}
 
+    % list of listings
+    \lstlistoflistings
+    \thispagestyle{empty}
+
     % preface page (english version only, OPTIONAL)
     \ifprefacepage
 	    \@preface
