@@ -378,23 +378,21 @@ PBFT has only been scaled and studied up to 20 replicas~\cite{bl_consensus,Vukol
 such as Ripple and Stellar, partition the network into smaller groups called federates and each one runs a local consensus protocol among its members and
 global consensus is achieved when certain conditions are being met~\cite{DBLP:journals/corr/abs-1708-05665}.
 
-\begin{table}[]
+\begin{table}[!ht]
   \centering
-  \resizebox{\textwidth}{!}{
-    \begin{tabular}{|l|l|l|l|}
-      \hline
-      & PoW &	PoS &	PBFT \\ \hline
-      Blockchain Type &	Permissionless &	Both &	Permissioned \\ \hline
-      Scalability of nodes &	High &	High &	Low \\ \hline
-      Scalability of clients &	High &	High &	High \\ \hline
-      Transaction rate &	Low &	High &	High \\ \hline
-      Latency &	High &	Low &	Minimal \\ \hline
-      Power consumption &	High &	Low &	Low \\ \hline
-      Token needed &	Yes &	Yes &	No \\ \hline
-      Cost of participation &	Yes &	Yes &	No \\ \hline
-      Adversary tolerance &	<= 25\%	& Depends &	<= 33\% \\ \hline
-    \end{tabular}
-  }
+  \begin{tabular}{|l|l|l|l|}
+    \hline
+    & PoW &	PoS &	PBFT \\ \hline
+    Blockchain Type &	Permissionless &	Both &	Permissioned \\ \hline
+    Scalability of nodes &	High &	High &	Low \\ \hline
+    Scalability of clients &	High &	High &	High \\ \hline
+    Transaction rate &	Low &	High &	High \\ \hline
+    Latency &	High &	Low &	Minimal \\ \hline
+    Power consumption &	High &	Low &	Low \\ \hline
+    Token needed &	Yes &	Yes &	No \\ \hline
+    Cost of participation &	Yes &	Yes &	No \\ \hline
+    Adversary tolerance &	<= 25\%	& Depends &	<= 33\% \\ \hline
+  \end{tabular}
   \caption{Blockchain consensus mechanisms. Adapted and modified from~\cite{bl_consensus,Vukolić2016}}
   \label{table:blockchain_consensus}
 \end{table}
@@ -424,17 +422,15 @@ Each one has its own advantages and disadvantages.
   \item Permissioned blockchain: A permissioned blockchain is a blockchain, in which transaction processing is performed by a predefined list of subjects with known identities~\cite{prbc_vs_pubbc}.
 \end{itemize}
 
-\begin{table}[]
+\begin{table}[!ht]
   \centering
-  \resizebox{\textwidth}{!}{
-    \begin{tabular}{|l|l|l|l|}
-      \hline
-       & Public & Permissioned (Multiple Entities) & Private (Single Entity) \\ \hline
-       Participants & Permissionless - Anonymous & Permissioned - Identified, Trusted & Permissioned - Identified, Trusted \\ \hline
-       Data Access & Public & Public or Restricted & Restricted \\ \hline
-       Consensus & PoW, PoS & FBTA, PoS & FBTA \\ \hline
-    \end{tabular}
-  }
+  \begin{tabular}{|l|l|l|l|}
+    \hline
+     & Public & \makecell[cl]{Permissioned \\ (Multiple Entities)} & \makecell[cl]{Private \\ (Single Entity)} \\ \hline
+     Participants & \makecell[cl]{Permissionless \\ Anonymous} & \makecell[cl]{Permissioned \\ Identified \\ Trusted} & \makecell[cl]{Permissioned \\ Identified \\ Trusted} \\ \hline
+     Data Access & Public & Public or Restricted & Restricted \\ \hline
+     Consensus & PoW, PoS & FBTA, PoS & FBTA \\ \hline
+  \end{tabular}
   \caption{Blockchain Types. Source~\cite{hub-bl-types}}
   \label{table:blockchain_types}
 \end{table}
