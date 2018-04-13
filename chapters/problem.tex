@@ -76,6 +76,25 @@ Finally, to empower the data subject and have total control over her data, conse
 
 \section{Motivations for applications}\label{problem:motivations}
 
+Blockchain has a very useful set of properties that can been utilized and leveraged. Above all, Blockchain is decentralized: there is no central authority regulating and governing the recording of the transactions on the ledger. The ledger is maintained by the participants of the network, where participation is free, and the global state of the ledger is agreed by a consensus mechanism (§~\ref{blockchain:consensus_mechanisms}). That empowers the users of the network with total ownership over their assets---assets can be anything ranging form a token, a contract, datasets, medical records, chain-of-evidence documents, or citizenship documents---through a system that guarantees security where any node can be malicious. The elimination of the need for a trusted central authority has the effect of making the system more trustworthy and reliable.
 
+Blockchain provides digital timestamping. All the transaction in the Blockchain are stored in chronological order so anyone can see if a transaction A precedes transaction B. Timestamping could be useful in financial contracts, establishing precedence for copyright and auction bids~\cite{bl_auditability}.
 
-banking, healthcare, national security, citizenship documentation or online retailing
+Another important feature of Blockchain is that of immutability (or transaction finality): all transactions can not be altered or deleted once they are confirmed and recorded on the Blockchain; transactions are irreversible.
+
+The combination of timestamping and immutability, along with Blockchain's consensus mechanism, leads to  accountability~\cite{10.1007/978-3-540-46588-1_20}, auditability and non-repudiation~\cite{wiki:non_repudiation}---the ability
+to definitively verify authenticity of statements recorded on the Blockchain~\cite{bl_auditability}.
+
+Those very useful properties make Blockchain a distributed immutable, tamper-proof, transparent and audit log that any attempt to tamper Blockchain is immediately evident and easily detectable allowing the users to confirm whether the service operates in the intended way and have a proof of malicious behavior otherwise.
+
+Data on the Blockchain are stored on every node of the network and every node keeps a copy of the public ledger. Due to data replication there is no single point of failure (SPOF) and the system is fault-tolerant and resistant to malicious and denial-of-service attacks (DoS attacks).
+
+Blockchain technology can be used for a wide variety of applications including document provenance tracking, digital assets, financial services, copyright, voting, distributed storage, donation, education, medical records, data exchange, Internet of Things (IoT) to name a few.
+
+Blockchain technology is a perfect candidate for addressing the problem of personal data privatization and privacy. Blockchain can play an increasingly significant and fundamental role in enable data sharing in compliance with the GDPR.
+
+A dynamic consent mechanism promoting users empowerment can be built with the use of smart contracts determining data accessibility. The immutability and auditability of blockchain blocks and transactions, and cryptographical guarantees provided, can enforce liability, transparency and accountability without compromising privacy and security.
+
+Furthermore, distributed consent for research trials can increase anonymous data samples~\cite{ibm} allowing Big Data Analytics in compliance with GDPR. In addition, blockchain can significantly reduce data transaction costs between entities and increase transaction efficiency
+
+Like all technology, blockchain has limitations. It is argued that blockchain is not suited for high performance transactions or as a database replacement. Due to the decentralized nature of blockchain and its necessity for a consensus mechanism the transaction rate remains quite low compared to financial services~\cite{Sompolinsky2015, Zohar:2015:BUH:2817191.2701411}. Blockchain is not made for big data. The amount of data that blockchain can store and process is very limited so off-chain data frameworks are needed.
