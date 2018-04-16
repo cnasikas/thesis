@@ -2,9 +2,10 @@
 \chapter{Solution}
 \label{solution}
 
-In our solution the blockchain is used as the controller of the application. It is responsible for keeping an
-audit immutable log of all actions of the participants. All interaction are being made
-through the blockchain supporting data accountability and provenance tracking. It should be mention that blockchain does not offers an extra security layer as the data are off-chain and data silos remain a single point of failure.
+In our solution the Blockchain is used as the controller of the application. It is responsible for keeping an
+audit, immutable, tamper-proof and transparent log of all actions of the participants.
+
+Blockchain does not provides an extra security layer concerning datasets. The datasets are stored off-chain, data controllers are responsible for the security of their system and the participants can still collaborate outside the Blockchain network. Nevertheless, the use of the Blockchain can guarantee accountability, auditability and provenance tracking of the data increasing the trust for the system.
 
 \section{Trust model}
 \label{solution:trust_model}
@@ -16,9 +17,8 @@ In our model we assume that the involved entities that interact with a data set-
 
 There are three main roles consisting the application: the data controller, the data processor
 and the data requester. The first two are also defined in the context of GDPR (§~\ref{problem:regulations}).
-GDPR defines another role, that of data subject-the owner of the data.
-In our scheme we assume that the data controller already has permission to access the data or
-she is at the same time the data subject and the data controller.
+GDPR defines another role, that of data subject; the owner of the data.
+In our scheme we assume that the data controller already has consent to access or forward the data or she is at the same time the data subject and the data controller.
 
 \subsection{Data Controller}
 \label{solution:entities:data_controller}
@@ -30,13 +30,12 @@ them to a data processor that will be responsible for processing the data on beh
 \subsection{Data Processor}
 \label{solution:entities:data_processor}
 
-The data processor is responsible for processing data on behalf of the data requester. She listens
-for data processing requests and returns, along with the output of the process, a Zero Knowledge Proof of correct computation over the requested data set.
+The data processor is responsible for processing data on behalf of the data controller. She listens for data processing requests and returns, along with the output of the process, a Zero Knowledge Proof of correct computation over the requested data set.
 
 \subsection{Data Requester}
 \label{solution:entities:data_req}
 
-The requester can be any entity that requests a computation over a data set. It can be a research center, a university, a machine learning algorithm or any individual. The requester expects, along with the output, a proof of correct computation over the requested data set that verifies when the result of the processing is available.
+The requester can be any entity that requests a computation over a data set. It can be a research center, a university, a machine learning algorithm or any individual. The requester expects, along with the output, a proof of correct computation over the requested data set that verifies at the end of the processing.
 
 \section{Queries}
 \label{solution:queries}
@@ -77,6 +76,8 @@ The first contract is more adequate for sensitive data~\cite{DBLP:journals/corr/
 \subsection{Dataset Registration}
 \label{solution:flow:reg_data}
 
+A data controller:
+
 \begin{enumerate}
   \item Encrypts a data set with a symmetric key and save it to a specific location
   \item Registers the data set by initiating a transaction that saves the data set's metadata (name, location, category, digest) on the Blockchain.
@@ -99,12 +100,37 @@ The first contract is more adequate for sensitive data~\cite{DBLP:journals/corr/
   \label{fig:arc:reg}
 \end{figure}
 
-\subsection{Processor Registration}
+\subsection{Data Controller Registration}
+\label{solution:flow:con_reg}
+
+\begin{enumerate}
+  \item Data controller generates an asymmetric encryption key pair
+  \item A trusted entity registers data controller's availability by initiating a transaction that saves processors name and public key on the blockchain
+\end{enumerate}
+
+\begin{figure}[ht!]
+  \begin{tikzpicture}
+
+    \node[blockchain] (blockchain) at (0,0){Blockchain};
+
+
+    \begin{scope}
+      \node[node, anchor=west] (controller) at (0,5) {Data Controller};
+      \draw[<-] ([xshift=-1em]controller.south) -- ([xshift=-1em]2,0.5);
+      \draw[->] ([xshift=1em]controller.south) -- ([xshift=1em]2,0.5) node[midway,right] {$Tx(\{name, pubKey, address\}, "register\_controller")$};
+    \end{scope}
+
+  \end{tikzpicture}
+  \caption{Controller Registration}
+  \label{fig:arch:con_reg}
+\end{figure}
+
+\subsection{Data Processor Registration}
 \label{solution:flow:pr_reg}
 
 \begin{enumerate}
-  \item Generates an asymmetric encryption key pair
-  \item Registers availability by initiating a transaction that saves processors name and public key on the blockchain
+  \item Data processor generates an asymmetric encryption key pair
+  \item A trusted entity registers processor's availability by initiating a transaction that saves processors name and public key on the blockchain
 \end{enumerate}
 
 \begin{figure}[ht!]
@@ -165,10 +191,13 @@ The first contract is more adequate for sensitive data~\cite{DBLP:journals/corr/
 \subsection{Data set processing}
 \label{solution:flow:pr_data}
 
+A data processor:
+
 \begin{enumerate}
   \item Process the data
+  \item Creates a Zero Knowledge Proof (§~\ref{zkp}) of the correctness of the computation for the specific dataset
   \item Encrypts the results with the public key of the requestor
-  \item Submits the encrypted result of the computation on the Blockchain along with a Zero Knowledge Proof (§~\ref{zkp}) of the correctness of the computation.
+  \item Submits the encrypted result of the computation on the Blockchain along with the proof.
 \end{enumerate}
 
 \begin{figure}[ht!]
@@ -199,12 +228,24 @@ The first contract is more adequate for sensitive data~\cite{DBLP:journals/corr/
 \section{Processor Selection}
 \label{solution:pr_selection}
 
+The choice of the data processor that will satisfy the current processing request is done sequentially. Every time a request for processing is made the data controller choose the next in line data processor.
+
 \section{Proof of correctness of computation}
 \label{solution:proof}
 
-Let $d$ be a private dataset, $H$ a cryptographic hash function and $h = H(d)$ the digest of $d$ over $H$. Let $\calp$ be a prover (data processor) and $\calv$ the verifier (data requester). $\calp$ wants to prove to $\calv$ that
+Let $d$ be a private dataset, $H$ a cryptographic hash function and $h = H(d)$ the digest of $d$ over $H$. Let $\calp$ be a prover (data processor) and $\calv$ the verifier (data requester). Prover $\calp$ produces a zk-SNARK proof (§~\ref{zkp:snarks}) $\pi$ for the following NP statement:
 
-$\calp$ zk-SNARK proof(§~\ref{zkp:snarks}) consists of two parts: a) Knowledge of a pre-image $d$ such that $H(d) = h$ and b) a correct computation over $d$.
+\blockquote{
+  Given the digest $h$, an outsourced function $F$ and an output $y$ I know a private dataset $d$ such that:
+    \begin{itemize}
+      \item $H(d) = h$
+      \item $F(d) = y$
+    \end{itemize}
+}
+
+The proof $\pi$ allows to a prover $\calp$ to prove to a verifier $\calv$ that computation is done at the specific dataset $d$, the verifier chose, without revealing the dataset itself.
+
+The irreversibility of cryptographic hash function in conjunction with the immutability of Blockchain and the trust for data integrity to data controller, that produced the digest of the dataset in the first place, guarantees that indeed the prover $\calp$ processed the requested dataset.
 
 \begin{figure}[ht!]
   \begin{tikzpicture}
