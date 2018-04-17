@@ -726,15 +726,18 @@ publications}\gdef\@lopfileinternal{#1}}
     \makeatother
 
     \pagestyle{empty}
+    \addcontentsline{toc}{chapter}{\listfigurename}
     \listoffigures
     %\cleardoublepage
     \endgroup
 
     % list of tables
+    \addcontentsline{toc}{chapter}{\listtablename}
     \listoftables
     \thispagestyle{empty}
 
     % list of listings
+    \addcontentsline{toc}{chapter}{\lstlistlistingname}
     \lstlistoflistings
     \thispagestyle{empty}
 
