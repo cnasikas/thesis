@@ -691,8 +691,8 @@ publications}\gdef\@lopfileinternal{#1}}
     \@committeepage
 
     % abstract (greek and english version)
-    \@absGr
     \@absEn
+    \@absGr
 
     % thesis synopsis (greek version only, OPTIONAL)
     % \@synopsis
