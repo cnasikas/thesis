@@ -5,9 +5,23 @@
 \section{Secure Multi party computation}
 \label{future_work:mpc}
 
-In the setting of multiparty computation, sets of two or more parties with private inputs wish to jointly compute some (predetermined) function of their inputs~\cite{mpc}. Secure multiparty computation assume malicious behaviour by a subset of participant entities.
+In the setting of multiparty computation~\cite{Ben-Or:1988:CTN:62212.62213}, sets of two or more parties with private inputs wish to jointly compute some (predetermined) function of their inputs~\cite{mpc}. Secure multiparty computation assume malicious behavior by a subset of participant entities.
 
 The two important requirements of any secure computation protocol are privacy and correctness. The privacy requirement states that the parties should not learn anything else than the output of the computation and the correctness requirement states that that each party should receive its correct output~\cite{mpc}.
+
+Informally, consider $n$ parties with private inputs $x_1, x_2, \dots$. The parties want to compute the outcome of the function $f(x_1, x_2, \dots)$ where the respective inputs remain private.
+
+The first secure multiparty computation problem was described by Yao in~\cite{Yao:1982:PSC:1398511.1382751} and is called the Yao's Millionaires' problem. The problem discusses two millionaires, Alice and Bob, who are interested in knowing which of them is richer without revealing their actual wealth. Specifically, Yao’s millionaires’ problem is the problem of computing the predicate, $a \geq b$ where $a$ is Alice's holding and $b$ Bob's holding, without disclosing anything more than the result to either party~\cite{mpc_ioannidis}.
+
+Multi-party computation protocols a have a wide range of applications. They can be used in voting systems where each party votes for a candidate and they want to compute the winner of the voting without revealing their vote. Another use case it that of auctions. Several parties are bidding for a product where the winning party and maximum bid should be determined, without revealing bids of other parties
+
+Most MPC protocols make use of secret sharing. A secret sharing scheme allows a value to be shared among $n$ parties where some of the parts or all of them are needed in order to reconstruct the secret~\cite{Kamm:2015:ASM:2836836}. Usually, there is a threshold $t$ so that at least $t$ part of the secret are needed to reconstruct the original secret.
+
+Using an MPC protocol based on secret sharing the need for transferring the symmetric key to the data processor and the decryption of the data (§~\ref{solution:flow:pr_req}, §~\ref{solution:flow:handle_request}, §~\ref{solution:flow:pr_data})---so the processing can be applied---can be eliminated.
+
+Data queries can be computed in a distributed way, using an MPC cluster of data processors. Data can be split between data processors without having access to the data in its entirety~\cite{DBLP:journals/corr/ZyskindNP15}.
+
+That way, there is no need for the data processor to be a trusted entity as the data processor never have access to the dataset, as data are encrypted and shared among the other processors, and and still compute the data query.
 
 \section{Privacy Preserving Queries}
 \label{future_work:ppq}
