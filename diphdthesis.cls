@@ -701,9 +701,9 @@ publications}\gdef\@lopfileinternal{#1}}
     % \fi
 
     % acknowledgements (english version only, OPTIONAL)
-    % \ifackpage
-    % 	\@acks
-    % \fi
+    \ifackpage
+     	\@acks
+    \fi
 
     % list of publications (english version only, OPTIONAL)
     \ifloppage
