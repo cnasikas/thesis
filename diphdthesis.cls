@@ -633,6 +633,7 @@ publications}\gdef\@lopfileinternal{#1}}
 %
 \def\@acks{
   \chapter*{Acknowledgements}
+  \addcontentsline{toc}{chapter}{Acknowledgements}
   \thispagestyle{empty}
   \@acksEn{}
   \clearpage
