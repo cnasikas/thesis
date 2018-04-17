@@ -37,6 +37,8 @@ Any deterministic cryptosystem can not be secure~\cite{Katz:2014:IMC:2700550, ki
 \subsection{Public Key Cryptography}
 \label{preliminaries:crypto_block:pub}
 
+As we see in~\ref{preliminaries:crypto_block:sym} a secret key has to been agreed prior to communication. In 1976, Whitfield Diffie and Martin Hellman published a paper called New Directions in Cryptography~\cite{Diffie:2006:NDC:2263321.2269104} that changed the way of communication. They proposed a protocol that enables two parties, having no prior communication, to establish a secret key over a insecure channel in the presence of eavesdropping adversaries. The protocol uses two keys, one for encryption and one for decryption. The encryption key is called the public key and the decryption key is called the secret key. Every party has a key pair consist of a public and a secret key. The public key could be post online beforehand. When a party wants to send a message to another party she use the public key of the person of interest and encrypts the message using that key. The receiver of the message decrypts the ciphertext with the use of her secret key. Only the rightful owner of the secret key can decrypt a message that was encrypt with the corresponding public key. In an essence, a key pair is an identity and Blockchain technology smartly utilizes that to provide anonymity to the users of the system.
+
 \subsubsection{The RSA Cryptosystem}
 \label{preliminaries:crypto_block:pub:rsa}
 
