@@ -13,7 +13,7 @@ Cryptography is the art and science of secure communication in the presence of t
 In a symmetric cryptosystem, two parties share a common secret key that has been agreed prior to communication. The key is used for both encryption and decryption. When a party wants to securely send a message uses the key to encrypt it and the receiver uses the same key to decrypt and recover the message. More formally, a symmetric cryptosystem is composed of the following algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
 \begin{itemize}
-  \item A key generation probabilistic algorithm $\calg$ that takes as input a security parameter $\lambda$ it and outputs a key $k$.
+  \item A key generation algorithm $\calg$ that takes as input a security parameter $1^{n}$ it and outputs a key $k$.
   \item An encryption algorithm $\cale$ that takes as input a key $k$ and a plaintext $m$ and outputs a ciphertext $c$.
   \item A decryption algorithm $\cald$ that takes as input a key $k$ and a ciphertext $c$ and outputs a plaintext $m$.
 \end{itemize}
@@ -26,7 +26,7 @@ A symmetric cryptosystem must satisfy the correctness property: for all $m \in \
   \cald_{k}(\cale_{k}(m)) = m
 \end{equation*}
 
-Any deterministic cryptosystem can not be secure~\cite{Katz:2014:IMC:2700550, kiagias:crypto}. To this end, randomness is essential to an encryption function.
+Any deterministic cryptosystem can not be secure~\cite{Katz:2014:IMC:2700550, kiagias:crypto}. To this end, randomness is essential to any encryption scheme.
 
 \subsubsection{Block Ciphers}
 \label{preliminaries:crypto_block:sym:block}
@@ -37,10 +37,31 @@ Any deterministic cryptosystem can not be secure~\cite{Katz:2014:IMC:2700550, ki
 \subsection{Public Key Cryptography}
 \label{preliminaries:crypto_block:pub}
 
-As we see in~\ref{preliminaries:crypto_block:sym} a secret key has to been agreed prior to communication. In 1976, Whitfield Diffie and Martin Hellman published a paper called New Directions in Cryptography~\cite{Diffie:2006:NDC:2263321.2269104} that changed the way of communication. They proposed a protocol that enables two parties, having no prior communication, to establish a secret key over a insecure channel in the presence of eavesdropping adversaries. The protocol uses two keys, one for encryption and one for decryption. The encryption key is called the public key and the decryption key is called the secret key. Every party has a key pair consist of a public and a secret key. The public key could be post online beforehand. When a party wants to send a message to another party she use the public key of the person of interest and encrypts the message using that key. The receiver of the message decrypts the ciphertext with the use of her secret key. Only the rightful owner of the secret key can decrypt a message that was encrypt with the corresponding public key. In an essence, a key pair is an identity and Blockchain technology smartly utilizes that to provide anonymity to the users of the system.
+As we see in~\ref{preliminaries:crypto_block:sym} a secret key has to been agreed prior to communication. In 1976, Whitfield Diffie and Martin Hellman published a paper called New Directions in Cryptography~\cite{Diffie:2006:NDC:2263321.2269104} that changed the way of communication. They proposed a protocol that enables two parties, having no prior communication, to establish a secret key over an insecure channel in the presence of eavesdropping adversaries. The protocol uses two keys, one for encryption and one for decryption. The encryption key is called the public key and the decryption key is called the secret key. Every party has a key pair consist of a public and a secret key. The public key is made available for anyone that want to encrypt a message for the receiver; The receiver may post the public key online beforehand. When a party wants to send a message to another party she use the public key of the person of interest and encrypts the message using that key. The receiver of the message decrypts the ciphertext with the use of her secret key. Only the rightful owner of the secret key can decrypt a message that was encrypt with the corresponding public key. In an essence, a key pair is an identity and Blockchain technology smartly utilizes that to provide anonymity to the users of the system.
+
+More formally, a public-key encryption scheme is composed of the following probabilistic, polynomial-time algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
+
+\begin{itemize}
+  \item A key generation probabilistic algorithm $\calg$ that takes as input a security parameter $1^{n}$ it and outputs a key pair ($p_k$, $s_k$).
+  \item An encryption algorithm $\cale$ that takes as input a public key $p_k$ and a plaintext $m$ and outputs a ciphertext $c$.
+  \item A decryption algorithm $\cald$ that takes as input a secret key $s_k$ and a ciphertext $c$ and outputs a plaintext $m$.
+\end{itemize}
+
+Likewise, a public-key cryptosystem must satisfy the correctness property: for all $m \in \calm$ and $(p_k, s_k) \in \calk$, it holds that
+
+\begin{equation*}
+  \cald_{s_k}(\cale_{p_k}(m)) = m
+\end{equation*}
+
+\subsubsection{Diffie–Hellman key exchange}
+\label{preliminaries:crypto_block:pub:dh}
+
+The protocol is based on the difficulty of the discrete log problem (DLOG)
 
 \subsubsection{The RSA Cryptosystem}
 \label{preliminaries:crypto_block:pub:rsa}
+
+
 
 \subsubsection{The El Gamal Cryptosystem}
 \label{preliminaries:crypto_block:pub:el_gamal}

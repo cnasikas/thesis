@@ -352,8 +352,8 @@ publications}\gdef\@lopfileinternal{#1}}
 % should be set by the user.
 %
 \providecommand{\abbreviations}{
-  \chapter*{ABBREVIATIONS - ACRONYMS}
-  \addcontentsline{toc}{chapter}{ABBREVIATIONS - ACRONYMS}
+  \chapter*{Abbreviations - Acronyms}
+  \addcontentsline{toc}{chapter}{Abbreviations - Acronyms}
 }
 
 %
@@ -715,7 +715,7 @@ publications}\gdef\@lopfileinternal{#1}}
 
     % table of contents
     % add TOC as bookmark
-    \addtocontents{toc}{\protect{\pdfbookmark[0]{CONTENTS}{toc}}}
+    \addtocontents{toc}{\protect{\pdfbookmark[0]{Contents}{toc}}}
     \tableofcontents
 
     % list of figures
@@ -780,14 +780,14 @@ publications}\gdef\@lopfileinternal{#1}}
 
       % add appendix line to ToC
       \phantomsection
-      \addcontentsline{toc}{chapter}{APPENDICES}
+      \addcontentsline{toc}{chapter}{Appendices}
 
       \include{chapters/appendixA}
     \end{appendix}
     \bibliographystyle{plain}
     % \bibliography{./references.bib} - Moved to root due to cite autocomplete bugs with atom-latextools package
     % include it also in ToC (do sth on your own)
-    \addcontentsline{toc}{chapter}{REFERENCES}
+    \addcontentsline{toc}{chapter}{References}
 }
 
 %
@@ -819,7 +819,7 @@ publications}\gdef\@lopfileinternal{#1}}
 %
 % Rename Bibliography to References
 %
-\renewcommand{\bibname}{REFERENCES}
+\renewcommand{\bibname}{References}
 
 %
 % Set ToC depth
