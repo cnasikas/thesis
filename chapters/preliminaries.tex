@@ -129,6 +129,12 @@ Another way to express the security of El Gamal scheme is under the decisional D
 \subsection{Homomorphic Encryption}
 \label{preliminaries:crypto_block:homo}
 
+Homomorphic encryption allows computation on encrypted data. It allows, without having access to unencrypted data, to perform computations over ciphertexts and return encrypted results that when decrypted matches the result of the operations as if they had been performed on the plaintext.
+
+\begin{equation*}
+  Enc(m_1) \otimes Enc(m_2) = Enc(m_1 \oplus m_2)
+\end{equation*}
+
 \subsection{Commitment Schemes}
 \label{preliminaries:crypto_block:comm}
 
