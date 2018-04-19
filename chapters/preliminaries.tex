@@ -59,7 +59,7 @@ Likewise, a public-key cryptosystem must satisfy the correctness property: for a
 The protocol works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
 \begin{enumerate}
-  \item Alice and Bob  with the use of a group generation algorithm $\calg$ agree on the description of a finite group $\G$ with input $1^{n}$. The common input for Alice and Bob is the tuple $<p, m, g>$ where $p$ is a large prime and $g$ is the generator of the finite group $\G$ of order $m$.
+  \item Alice and Bob  with the use of a group generation algorithm $\calg$ agree on the description of a finite group $\G$ with input $1^{n}$. The common input for Alice and Bob is the tuple $(p, m, g)$ where $p$ is a large prime and $g$ is the generator of the finite group $\G$ of order $m$.
   \item Alice choose a random index $x_a \rselect{\Z_m}$ and computes $y_a \leftarrow{g^{x_a}}modp$. Alice sends $y_a$ to Bob.
   \item Alice choose a random index $x_b \rselect{\Z_m}$ and computes $y_b \leftarrow{g^{x_b}}modp$. Alice sends $y_b$ to Bob.
   \item Alice outputs $k = y_b^{x_a} = g^{{x_a}{x_b}}modp$
@@ -73,7 +73,7 @@ The security of Diffie–Hellman key exchange is based on the difficulty of the 
 
 The RSA cryptosystem~\cite{rsa} was developed in 1977 at MIT by Ron Rivest, Adi Shamer, and Leonard Adleman and is still the most widely used. It was the first public-key encryption scheme that could both encrypt and sign messages~\cite{kiagias:crypto}.
 
-It works as follows~\cite{Katz:2014:IMC:2700550}:
+It works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
 \begin{itemize}
   \item Key Generation:
@@ -96,11 +96,37 @@ The above mention protocol is not secure as the encryption function is determini
 \subsubsection{The El Gamal Cryptosystem}
 \label{preliminaries:crypto_block:pub:el_gamal}
 
+The El Gamal Cryptosystem~\cite{el_gamal} is another popular and wide-used encryption scheme. It is based on the Diffie–Hellman key exchange and the security of the system is based on the hardness of discrete log problem. It works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
+
+\begin{itemize}
+  \item Key generation:
+    \begin{enumerate}
+        \item Run a group generation algorithm $\calg$ to produce the description of a finite group $\G$ with input $1^{n}$. The output is the tuple $(p, m, g)$ where $p$ is a large prime and $g$ is the generator of the finite group $\G$ of order $m$.
+        \item Select randomly $x \rselect{\Z_m}$
+        \item Calculate $h = g^{x}modp$
+        \item The public key is $((p, m, g), h>$
+        \item The secret key is $x$
+    \end{enumerate}
+  \item Encryption: Encrypts a message $m \in \G$
+    \begin{enumerate}
+      \item Choose randomly $r \rselect{\Z_m}$
+      \item Compute $G = g^{r}modp$
+      \item Compute $M = mh^{r}modp$
+      \item Return $c = (G, M)$
+    \end{enumerate}
+  \item Decryption: Decrypts a ciphertext $c = (G, M)$
+    \begin{enumerate}
+      \item Compute $m = M / G^{x} modp$
+      \item Return $m$
+    \end{enumerate}
+\end{itemize}
+
+Another way to express the security of El Gamal scheme is under the decisional Diffie Hellman problem (DDH) which states that the tuples $(g^a, g^b, g^c)$ and $(g^a, g^b, g^{ab})$ are indistinguishable by a probabilistic polynomial-time (PPT) adversary.
 
 \subsubsection{Elliptic-curves}
 \label{preliminaries:crypto_block:pub:el_curves}
 
-\subsection{Homomorphic Cryptosystems}
+\subsection{Homomorphic Encryption}
 \label{preliminaries:crypto_block:homo}
 
 \subsection{Commitment Schemes}
