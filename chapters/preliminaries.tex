@@ -7,8 +7,32 @@
 
 Cryptography is the art and science of secure communication in the presence of third parties. As such, it has an immediate relationship with the privacy and anonymity requirement of data. Blockchain is a strong paradigm of cryptography embracement to enable the sought trust needed for exchanging digital assets. In this section we shall review the basic building blocks that cryptography provides to a data sharing system with the use of Blockchain. The purpose of the section is not about cryptography in itself but to merely lay the ground for the forthcoming chapters. As a result, the exposition style will not be formal in well know cases.
 
-\section{Hash Functions}
+\section{Cryptographic Hash Functions}
 \label{preliminaries:hash}
+
+A hash function is a function that take an input of arbitrary length and returns a fixed-length value~\cite{crypto_101,boneh_crypto,kiagias:crypto,Katz:2014:IMC:2700550}. The output value is called digest.
+
+Hash functions has many application. They are used in data structures such as hash tables, authentication schemes, password verification and data identifiers to name a few.
+
+A hash function at minimum guarantees that for the same input yields the same output. Since the size of the output is fixed, the output range is finite. As a result, it is possible that for two different inputs a hash function produce the same output. This phenomenon is called collision.
+
+Cryptographic hash functions have much stronger properties than regular hash function~\cite{crypto_101}. The ideal cryptographic hash function should be easily computable, noninvertible and collision-resistant~\cite{Katz:2014:IMC:2700550, kiagias:crypto}.
+
+More formally, a cryptographic hash function $H$ is a deterministic polynomial algorithm that takes as input any string $x \in \{0, 1\}^{*}$ and outputs a string $H(x) \in \{0, 1\}^{k}$ where $k$ is of fixed size. A collision for a hash function $H$ is a pair of distinct messages $m_0, m_1$ where $m_0 \neq m_1$ and $H(m_0) = H(m_1)$. A hash function $H$ is collision-resistant if finding collisions is infeasible for any polynomial-time algorithm.
+
+Typically there are three levels of security~\cite{Katz:2014:IMC:2700550}:
+
+\begin{itemize}
+  \item Preimage resistance: Given a digest $h$ it is hard to find any message $m$ with $H(m) = h$
+  \item Second preimage resistance: For any given message $m_0$ it is hard to find a second message $m_1 \neq m_0$ such as $H(m_0) = H(m_1)$
+  \item Collision resistance: It is hard to find a pair of messages $m_0, m_1$ where $m_0 \neq m_1$ and $H(m_0) = H(m_1)$
+\end{itemize}
+
+Above three, collision resistance is the strongest property and a strong security requirement.
+
+In a data sharing system, cryptographic hash functions can be used to provide verification of file integrity and trackability~\cite{10.1109/SPW.2015.27, Azaria2016}. Anyone can detect file modification in transit as changing even a bit will result in the output of a different digest. A digest of a dataset or the dataset's metadata can also serve as means of unique file identification; unique persistent identifiers (PID) that can be used as pointers to data location. Any change to the PID will be visible and trackable~\cite{dist_pid}.
+
+Blockchain make heavy use of cryptographic hash functions. They are used to create unique transactions and blocks IDs, to provide proof of inclusions--a proof that a transaction is contained in a block---and above all to prevent Sybil and double-spend attacks. It is evident, that cryptographic hash function play an important role to the Blockchain ecosystem.
 
 \section{Commitment Schemes}
 \label{preliminaries:comm}
