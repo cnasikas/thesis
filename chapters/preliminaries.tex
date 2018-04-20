@@ -61,12 +61,34 @@ The protocol works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 \begin{enumerate}
   \item Alice and Bob  with the use of a group generation algorithm $\calg$ agree on the description of a finite group $\G$ with input $1^{n}$. The common input for Alice and Bob is the tuple $(p, m, g)$ where $p$ is a large prime and $g$ is the generator of the finite group $\G$ of order $m$.
   \item Alice choose a random index $x_a \rselect{\Z_m}$ and computes $y_a \leftarrow{g^{x_a}}modp$. Alice sends $y_a$ to Bob.
-  \item Alice choose a random index $x_b \rselect{\Z_m}$ and computes $y_b \leftarrow{g^{x_b}}modp$. Alice sends $y_b$ to Bob.
-  \item Alice outputs $k = y_b^{x_a} = g^{{x_a}{x_b}}modp$
-  \item Bob outputs $k = y_a^{x_b} = g^{{x_a}{x_b}}modp$
+  \item Bob choose a random index $x_b \rselect{\Z_m}$ and computes $y_b \leftarrow{g^{x_b}}modp$. Alice sends $y_b$ to Bob.
+  \item Alice outputs $k = y_b^{x_a}modp = g^{{x_a}{x_b}}modp$
+  \item Bob outputs $k = y_a^{x_b}modp = g^{{x_a}{x_b}}modp$
 \end{enumerate}
 
 The security of Diffie–Hellman key exchange is based on the difficulty of the discrete log problem (DLOG), which is the problem of computing $x$ given $g^{x}$ in a cyclic group $\G$. A passive adversary cannot compute the private key $k$ because she does not know $x_a$ or $x_b$. To find them she have to compute the discrete log which is assumed to be hard.
+
+\begin{figure}[!hb]
+  \centering
+  \begin{tikzpicture}
+    \matrix (m)[matrix of nodes, column  sep=2cm,row  sep=4mm, nodes={draw=none, anchor=center,text depth=0pt} ]{
+    Alice & & Bob\\
+    $x_a \rselect{\Z_m}$ & & $x_b \rselect{\Z_m}$ \\
+    $y_a \leftarrow{g^{x_a}}modp$ & & $y_b \leftarrow{g^{x_b}}modp$ \\
+     & $y_a$ & \\
+     & $y_b$ & \\
+     $k = y_b^{x_a}modp$ & & $k = y_a^{x_b}modp$ \\
+    };
+
+    \draw[shorten <=-1.5cm,shorten >=-1.5cm] (m-1-1.south east)--(m-1-1.south west);
+    \draw[shorten <=-1.5cm,shorten >=-1.5cm] (m-1-3.south east)--(m-1-3.south west);
+    \draw[shorten <=-1cm,shorten >=-1cm,-latex] (m-4-2.south west)--(m-4-2.south east);
+    \draw[shorten <=-1cm,shorten >=-1cm,-latex] (m-5-2.south east)--(m-5-2.south west);
+
+  \end{tikzpicture}
+  \caption{Diffie–Hellman key exchange}
+  \label{fig:crypto:dh}
+\end{figure}
 
 \subsubsection{The RSA Cryptosystem}
 \label{preliminaries:crypto_block:pub:rsa}
