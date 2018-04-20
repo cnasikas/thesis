@@ -48,9 +48,9 @@ As we see in~\ref{preliminaries:sym} a secret key has to been agreed prior to co
 More formally, a public-key encryption scheme is composed of the following probabilistic, polynomial-time algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
 \begin{itemize}
-  \item A key generation probabilistic algorithm $\calg$ that takes as input a security parameter $1^{n}$ it and outputs a key pair ($p_k$, $s_k$).
-  \item An encryption algorithm $\cale$ that takes as input a public key $p_k$ and a plaintext $m$ and outputs a ciphertext $c$.
-  \item A decryption algorithm $\cald$ that takes as input a private key $s_k$ and a ciphertext $c$ and outputs a plaintext $m$.
+  \item The key generation algorithm $\calg$: Take as input a security parameter $1^{n}$ it and outputs a key pair ($p_k$, $s_k$).
+  \item The encryption algorithm $\cale$: Take as input a public key $p_k$ and a plaintext $m$ and outputs a ciphertext $c$.
+  \item The decryption algorithm $\cald$: Take as input a private key $s_k$ and a ciphertext $c$ and outputs a plaintext $m$.
 \end{itemize}
 
 Likewise, a public-key cryptosystem must satisfy the correctness property: for all $m \in \calm$ and $(p_k, s_k) \in \calk$, it holds that
@@ -111,10 +111,10 @@ It works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
       \item Calculate $\phi(N) = (p - 1)(q - 1)$
       \item Find $e$ such that $gcd(e, \phi(N)) = 1$
       \item Compute $d = e^{-1} mod\phi(N)$
-      \item Public key is $(N, e)$ and private key is $(N, e)$
+      \item Public key is $(N, e)$ and private key is $(N, d)$
     \end{enumerate}
   \item Encryption: On input a public key $p_k = (N, e)$ and a message $m$ it computes the ciphertext $c$ as $ Enc_{p_k}(m) = m^{e}modN$
-  \item Decryption: On input a private key $p_k = (N, d)$ and a ciphertext $c$ it computes the message $m$ as $ Dec_{s_k}(c) = c^{d}modN = m^{ed}modN = m$
+  \item Decryption: On input a private key $s_k = (N, d)$ and a ciphertext $c$ it computes the message $m$ as $ Dec_{s_k}(c) = c^{d}modN = m^{ed}modN = m$
 \end{itemize}
 
 If $p, q$ are known or obvious any interested party can compute $\phi(N)$ and therefore $d$. The RSA Cryptosystem is secure under the assumption that factorization of $N$ is believed to be hard.
@@ -156,6 +156,51 @@ Another way to express the security of El Gamal scheme is under the decisional D
 
 \section{Digital signatures}
 \label{preliminaries:sign}
+
+A digital signature is a fundamental cryptographic primitive. It can be considered as the equivalent to a handwritten signature. It is a scheme from presenting the authenticity of digital messages or documents.
+
+In a digital signature scheme, each party holds a unique key pair $(p_k, s_k)$. The signing key $s_k$ is used to uniquely sign a message $m$ and the verification key $p_k$ to verify the signature. Only someone with knowledge of $s_k$ can sign a message, but all parties having access to $p_k$ can verify a signature.
+
+Digital signatures have the following important properties:
+
+\begin{itemize}
+  \item Authentication: The message was signed by a known sender
+  \item Non-repudiation: The sender cannot deny having sent the message
+  \item Integrity: The message was not altered in transit
+\end{itemize}
+
+Digital signatures are commonly used for software distribution and financial transactions and in cases where forgery detection is important. Blockchain is empowered with digital signatures to provide asset ownership; the rightful owner sign the transaction to prove possession of the asset.
+
+More formally, a digital signature scheme is composed of the following probabilistic polynomial-time algorithms~\cite{Katz:2014:IMC:2700550,kiagias:crypto}:
+
+\begin{itemize}
+  \item The key generation algorithm $Gen$: Take as input a security parameter $1^{n}$ and outputs a key pair ($p_k$, $s_k$).
+  \item A signing algorithm $Sign$: Take a signing key $s_k$ and a message $m$ and produce a digital signature $\sigma$ of $m$
+  \item A deterministic verification algorithm $Verify$: Take a verification key $p_k$ and a signature $\sigma$. It outputs $b=1$ or $b=0$ ($true$ or $false$) to indicate if the signature is valid.
+\end{itemize}
+
+The primary goal of digital signatures is unforgeability; an adversary cannot create a new valid message-signature pair without the corresponding sign key.
+
+\subsection{RSA signatures}
+\label{preliminaries:sign:rsa}
+
+As describes in~\ref{preliminaries:pub:rsa} the RSA cryptosystem can be used to sign messages. The RSA digital signature scheme works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
+
+\begin{itemize}
+  \item Key Generation:
+    \begin{enumerate}
+      \item Select randomly to large primes $p, q$ of length $n$ bits
+      \item Compute $N = p*q$
+      \item Calculate $\phi(N) = (p - 1)(q - 1)$
+      \item Find $e$ such that $gcd(e, \phi(N)) = 1$
+      \item Compute $d = e^{-1} mod\phi(N)$
+      \item Verification key is $(N, e)$ and signing key is $(N, d)$
+    \end{enumerate}
+  \item Sign: On input a sign key $s_k = (N, d)$ and a message $m \in \Z^{*}_{N}$ it computes the signature $\sigma$ as $ Sign_{s_k}(m) = m^{d}modN$
+  \item Verify: On input a verification key $p_k = (N, e)$, a message $m \in \Z^{*}_{N}$ and a signature $\sigma \in \Z^{*}_{N}$ it outputs $1$ if and only if $m \stackrel{?}{=} Verify_{p_k}(\sigma, m) = \sigma^{e}modN$
+\end{itemize}
+
+The above signature scheme is not secure as an adversary can forge a sign, based on the public key alone, by choosing an arbitrary $\sigma \in \Z^{*}_{N}$ and compute $m = \sigma^{e}modN$. Another attack on the RSA signature scheme allows the adversary to output a forgery on any message of the adversary's choice. One proposal to protect against those attacks, that can be proven secure under certain assumptions, is by applying a cryptographic hash function $H$ to the message before sign it. The minimal requirement for the system to be secure is that $H$ must be collision-resistant.
 
 \section{Homomorphic Encryption}
 \label{preliminaries:homo}
