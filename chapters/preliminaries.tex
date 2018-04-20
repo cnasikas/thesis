@@ -2,13 +2,19 @@
 \chapter{Preliminaries}
 \label{preliminaries}
 
-\section{Cryptography Building Blocks}
-\label{preliminaries:crypto_block}
+\section{Overview}
+\label{preliminaries:overview}
 
-Cryptography is the art and science of secure communication in the presence of third parties; the adversaries. As such it has an immediate relationship with the privacy and anonymity requirement of data. Blockchain is a strong paradigm of cryptography embracement to enable the sought trust needed for exchanging digital assets. In this section we shall review the basic building blocks that cryptography provides to a data sharing system with the use of Blockchain. The purpose of the section is not about cryptography in itself but to merely lay the ground for the forthcoming chapters. As a result, the exposition style will not be formal in well know cases.
+Cryptography is the art and science of secure communication in the presence of third parties. As such, it has an immediate relationship with the privacy and anonymity requirement of data. Blockchain is a strong paradigm of cryptography embracement to enable the sought trust needed for exchanging digital assets. In this section we shall review the basic building blocks that cryptography provides to a data sharing system with the use of Blockchain. The purpose of the section is not about cryptography in itself but to merely lay the ground for the forthcoming chapters. As a result, the exposition style will not be formal in well know cases.
 
-\subsection{Symmetric-key cryptography}
-\label{preliminaries:crypto_block:sym}
+\section{Hash Functions}
+\label{preliminaries:hash}
+
+\section{Commitment Schemes}
+\label{preliminaries:comm}
+
+\section{Symmetric-key cryptography}
+\label{preliminaries:sym}
 
 In a symmetric cryptosystem, two parties share a common secret key that has been agreed prior to communication. The key is used for both encryption and decryption. When a party wants to securely send a message uses the key to encrypt it and the receiver uses the same key to decrypt and recover the message. More formally, a symmetric cryptosystem is composed of the following algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
@@ -28,16 +34,16 @@ A symmetric cryptosystem must satisfy the correctness property: for all $m \in \
 
 Any deterministic cryptosystem can not be secure~\cite{Katz:2014:IMC:2700550, kiagias:crypto}. To this end, randomness is essential to any encryption scheme.
 
-\subsubsection{Block Ciphers}
-\label{preliminaries:crypto_block:sym:block}
+\subsection{Block Ciphers}
+\label{preliminaries:sym:block}
 
-\subsubsection{Stream Ciphers}
-\label{preliminaries:crypto_block:sym:stream}
+\subsection{Stream Ciphers}
+\label{preliminaries:sym:stream}
 
-\subsection{Public Key Cryptography}
-\label{preliminaries:crypto_block:pub}
+\section{Public Key Cryptography}
+\label{preliminaries:pub}
 
-As we see in~\ref{preliminaries:crypto_block:sym} a secret key has to been agreed prior to communication. In 1976, Whitfield Diffie and Martin Hellman published a paper called New Directions in Cryptography~\cite{Diffie:2006:NDC:2263321.2269104} that changed the way of communication. They proposed a protocol that enables two parties, having no prior communication, to establish a secret key over an insecure channel in the presence of eavesdropping adversaries. The protocol uses two keys, one for encryption and one for decryption. The encryption key is called the public key and the decryption key is called the private key. Every party has a key pair consist of a public and a private key. The public key is made available for anyone that want to encrypt a message for the receiver; The receiver may post the public key online beforehand. When a party wants to send a message to another party she use the public key of the person of interest and encrypts the message using that key. The receiver of the message decrypts the ciphertext with the use of her private key. Only the rightful owner of the private key can decrypt a message that was encrypt with the corresponding public key. In an essence, a key pair is an identity and Blockchain technology smartly utilizes that to provide anonymity to the users of the system.
+As we see in~\ref{preliminaries:sym} a secret key has to been agreed prior to communication. In 1976, Whitfield Diffie and Martin Hellman published a paper called New Directions in Cryptography~\cite{Diffie:2006:NDC:2263321.2269104} that changed the way of communication. They proposed a protocol that enables two parties, having no prior communication, to establish a secret key over an insecure channel in the presence of eavesdropping adversaries. The protocol uses two keys, one for encryption and one for decryption. The encryption key is called the public key and the decryption key is called the private key. Every party has a key pair consist of a public and a private key. The public key is made available for anyone that want to encrypt a message for the receiver; The receiver may post the public key online beforehand. When a party wants to send a message to another party she use the public key of the person of interest and encrypts the message using that key. The receiver of the message decrypts the ciphertext with the use of her private key. Only the rightful owner of the private key can decrypt a message that was encrypt with the corresponding public key. In an essence, a key pair is an identity and Blockchain technology smartly utilizes that to provide anonymity to the users of the system.
 
 More formally, a public-key encryption scheme is composed of the following probabilistic, polynomial-time algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
@@ -53,8 +59,8 @@ Likewise, a public-key cryptosystem must satisfy the correctness property: for a
   \cald_{s_k}(\cale_{p_k}(m)) = m
 \end{equation*}
 
-\subsubsection{Diffie–Hellman key exchange}
-\label{preliminaries:crypto_block:pub:dh}
+\subsection{Diffie–Hellman key exchange}
+\label{preliminaries:pub:dh}
 
 The protocol works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
@@ -90,8 +96,8 @@ The security of Diffie–Hellman key exchange is based on the difficulty of the 
   \label{fig:crypto:dh}
 \end{figure}
 
-\subsubsection{The RSA Cryptosystem}
-\label{preliminaries:crypto_block:pub:rsa}
+\subsection{The RSA Cryptosystem}
+\label{preliminaries:pub:rsa}
 
 The RSA cryptosystem~\cite{rsa} was developed in 1977 at MIT by Ron Rivest, Adi Shamer, and Leonard Adleman and is still the most widely used. It was the first public-key encryption scheme that could both encrypt and sign messages~\cite{kiagias:crypto}.
 
@@ -115,8 +121,8 @@ If $p, q$ are known or obvious any interested party can compute $\phi(N)$ and th
 
 The above mention protocol is not secure as the encryption function is deterministic and for the same input is produces the same output. As mention, a deterministic cryptosystem is not secure. One way to randomize the encryption function, is by appending random padding to message.
 
-\subsubsection{The El Gamal Cryptosystem}
-\label{preliminaries:crypto_block:pub:el_gamal}
+\subsection{The El Gamal Cryptosystem}
+\label{preliminaries:pub:el_gamal}
 
 The El Gamal Cryptosystem~\cite{el_gamal} is another popular and wide-used encryption scheme. It is based on the Diffie–Hellman key exchange and the security of the system is based on the hardness of discrete log problem. It works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
@@ -145,23 +151,17 @@ The El Gamal Cryptosystem~\cite{el_gamal} is another popular and wide-used encry
 
 Another way to express the security of El Gamal scheme is under the decisional Diffie Hellman problem (DDH) which states that the tuples $(g^a, g^b, g^c)$ and $(g^a, g^b, g^{ab})$ are indistinguishable by a probabilistic polynomial-time (PPT) adversary.
 
-\subsubsection{Elliptic-curves}
-\label{preliminaries:crypto_block:pub:el_curves}
+\subsection{Elliptic-curves}
+\label{preliminaries:pub:el_curves}
 
-\subsection{Digital signatures}
-\label{preliminaries:crypto_block:sign}
+\section{Digital signatures}
+\label{preliminaries:sign}
 
-\subsection{Homomorphic Encryption}
-\label{preliminaries:crypto_block:homo}
+\section{Homomorphic Encryption}
+\label{preliminaries:homo}
 
 Homomorphic encryption allows computation on encrypted data. It allows, without having access to unencrypted data, to perform computations over ciphertexts and return encrypted results that when decrypted matches the result of the operations as if they had been performed on the plaintext.
 
 \begin{equation*}
   Enc(m_1) \otimes Enc(m_2) = Enc(m_1 \oplus m_2)
 \end{equation*}
-
-\subsection{Commitment Schemes}
-\label{preliminaries:crypto_block:comm}
-
-\subsubsection{Hash Functions}
-\label{preliminaries:crypto_block:pub:comm:hash}
