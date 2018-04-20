@@ -175,6 +175,10 @@ Another way to express the security of El Gamal scheme is under the decisional D
 \subsection{Elliptic-curves}
 \label{preliminaries:pub:el_curves}
 
+Elliptic curves (ECC) have been playing an import role in cryptography~\cite{elliptic_curves}. All previous cryptosystems are built over multiplicative groups of integers modulo a sufficient large prime p~\cite{kiagias:crypto, boneh_crypto}. Elliptic curves are additive Abelian groups~\cite{kiagias:crypto}.
+
+There are two apparent benefits for using curves over modular groups that many cryptosystem use~\cite{kiagias:crypto}. The first is their cost efficiency. In practice, cryptosystems that their security depends on the discrete log problem or the factorisation problem on a modular group, such as the El Gamal or the RSA, the primes have to be at least 2048 bits for the system to be secure. On the other hand, elliptic curves offer similar security using much smaller key sizes. A 233-bit elliptic curve key provides the same security as a 2,240-bit RSA key~\cite{ecc_rsa_bits, ecc_rsa_bits_1}. The second reason is that for the moment there is no know way to generalize the attacks against the discrete logarithm problem on a modular group to an attack on an elliptic curve.
+
 \section{Digital signatures}
 \label{preliminaries:sign}
 
