@@ -32,7 +32,7 @@ Above three, collision resistance is the strongest property and a strong securit
 
 In a data sharing system, cryptographic hash functions can be used to provide verification of file integrity and trackability~\cite{10.1109/SPW.2015.27, Azaria2016}. Anyone can detect file modification in transit as changing even a bit will result in the output of a different digest. A digest of a dataset or the dataset's metadata can also serve as means of unique file identification; unique persistent identifiers (PID) that can be used as pointers to data location. Any change to the PID will be visible and trackable~\cite{dist_pid}.
 
-Blockchain make heavy use of cryptographic hash functions. They are used to create unique transactions and blocks IDs, to provide proof of inclusions--a proof that a transaction is contained in a block---and above all to prevent Sybil and double-spend attacks. It is evident, that cryptographic hash function play an important role to the Blockchain ecosystem.
+Blockchain make heavy use of cryptographic hash functions. They are used to create unique transactions and blocks IDs, to provide proof of inclusions--a proof that a transaction is contained in a block---and above all to prevent Sybil and double-spend attacks. It is evident, that cryptographic hash function play an important role in the Blockchain ecosystem.
 
 \section{Symmetric-key cryptography}
 \label{preliminaries:sym}
@@ -45,7 +45,7 @@ In a symmetric cryptosystem, two parties share a common secret key that has been
   \item A decryption algorithm $\cald$ that takes as input a key $k$ and a ciphertext $c$ and outputs a plaintext $m$.
 \end{itemize}
 
-The set of all possible keys derived from the key generation algorithm $\calg$ is called the key space $\calk$. Respectively, the set of all possible plaintext is called the plaintext message space, denoted $\calm$, and the set of all possible ciphettexts is called ciphertext message space, denoted $\calc$.
+The set of all possible keys derived from the key generation algorithm $\calg$ is called the key space $\calk$. Respectively, the set of all possible plaintext is called the plaintext message space, denoted $\calm$, and the set of all possible ciphettexts is called ciphertext message space, denoted $\calc$. In practice keys are usually of some fixed length; 256-bit keys are very common. On the other hand, messages and ciphertexts can be of arbitrary length. For example, a message may be a video or a music file or even a single bit.
 
 A symmetric cryptosystem must satisfy the correctness property: for all $m \in \calm$ and $k \in \calk$, it holds that
 
@@ -55,11 +55,27 @@ A symmetric cryptosystem must satisfy the correctness property: for all $m \in \
 
 Any deterministic cryptosystem can not be secure~\cite{Katz:2014:IMC:2700550, kiagias:crypto}. To this end, randomness is essential to any encryption scheme.
 
-\subsection{Block Ciphers}
-\label{preliminaries:sym:block}
+\subsection{One-time pad}
+\label{preliminaries:sym:otp}
+
+A one-time pad (OTP) is an symmetric encryption scheme where the keys, messages, and ciphertexts are of the same length and the key is never reused or repeated. The scheme is defined as follows~\cite{kiagias:crypto, boneh_crypto}:
+
+\begin{itemize}
+  \item Space: $\calm = \calc = \calk = \{0, 1\}^{n}$
+  \item Encryption: $Enc_k(m) = k \xor m$
+  \item Decryption: $Dec_k(c) = k \xor c$
+\end{itemize}
+
+The one-time pad is a \textbf{perfectly secure} scheme~\cite{kiagias:crypto, boneh_crypto}. The main drawback lies in the fact that the
+key must be at least the length of the original message. If a party wants to encrypt and sent 1GB video to another party, they must have already share a 1GB key. It is proven~\cite{shannon_otp} that perfect security (or perfect secrecy) can only be achieved when the key size is at least as long as the size of the message. As a consequence, perfect security schemes are impossible to use in practice.
 
 \subsection{Stream Ciphers}
 \label{preliminaries:sym:stream}
+
+In~\ref{preliminaries:sym:otp} we saw that for a symmetric scheme to be perfectly secure, keys and messages must have at least the same length.
+
+\subsection{Block Ciphers}
+\label{preliminaries:sym:block}
 
 \section{Public Key Cryptography}
 \label{preliminaries:pub}
@@ -285,7 +301,7 @@ The Diffie-Hellman key exchange protocol we saw in~\ref{preliminaries:pub:dh} ca
   \item Bob computes $k = bP_a = abP$
 \end{enumerate}
 
-The security of the protocol is again based on the computational discrete logarithm problem which amounts to finding an $a \in Z_q$ such that $Q = aP$ and is assumed to be infeasible. 
+The security of the protocol is again based on the computational discrete logarithm problem which amounts to finding an $a \in Z_q$ such that $Q = aP$ and is assumed to be infeasible.
 
 \section{Digital signatures}
 \label{preliminaries:sign}
