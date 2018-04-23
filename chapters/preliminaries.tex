@@ -45,7 +45,7 @@ In a symmetric cryptosystem, two parties share a common secret key that has been
   \item A decryption algorithm $\cald$ that takes as input a key $k$ and a ciphertext $c$ and outputs a plaintext $m$.
 \end{itemize}
 
-The set of all possible keys derived from the key generation algorithm $\calg$ is called the key space $\calk$. Respectively, the set of all possible plaintext is called the plaintext message space, denoted $\calm$, and the set of all possible ciphettexts is called ciphertext message space, denoted $\calc$. In practice keys are usually of some fixed length; 256-bit keys are very common. On the other hand, messages and ciphertexts can be of arbitrary length. For example, a message may be a video or a music file or even a single bit.
+The set of all possible keys derived from the key generation algorithm $\calg$ is called the key space $\calk$. Respectively, the set of all possible plaintext is called the plaintext message space, denoted $\calm$, and the set of all possible ciphertexts is called ciphertext message space, denoted $\calc$. In practice keys are usually of some fixed length; 256-bit keys are very common. On the other hand, messages and ciphertexts can be of arbitrary length. For example, a message may be a video or a music file or even a single bit.
 
 A symmetric cryptosystem must satisfy the correctness property: for all $m \in \calm$ and $k \in \calk$, it holds that
 
@@ -54,6 +54,8 @@ A symmetric cryptosystem must satisfy the correctness property: for all $m \in \
 \end{equation*}
 
 Any deterministic cryptosystem can not be secure~\cite{Katz:2014:IMC:2700550, kiagias:crypto}. To this end, randomness is essential to any encryption scheme.
+
+In the following chapters, the notions of cipher and symmetric encryption scheme or symmetric scheme are identical and will be used interchangeably.
 
 \subsection{One-time pad}
 \label{preliminaries:sym:otp}
@@ -66,13 +68,14 @@ A one-time pad (OTP) is an symmetric encryption scheme where the keys, messages,
   \item Decryption: $Dec_k(c) = k \xor c$
 \end{itemize}
 
-The one-time pad is a \textbf{perfectly secure} scheme~\cite{kiagias:crypto, boneh_crypto}. The main drawback lies in the fact that the
-key must be at least the length of the original message. If a party wants to encrypt and sent 1GB video to another party, they must have already share a 1GB key. It is proven~\cite{shannon_otp} that perfect security (or perfect secrecy) can only be achieved when the key size is at least as long as the size of the message. As a consequence, perfect security schemes are impossible to use in practice.
+The one-time pad is a \textbf{perfectly secure} scheme~\cite{kiagias:crypto, boneh_crypto}. The main drawback lies in the fact that the key must be at least the length of the original message. If a party wants to encrypt and sent 1GB video to another party, they must have already share a 1GB key. It is proven~\cite{shannon_otp} that perfect security (or perfect secrecy) can only be achieved when the key size is at least as long as the size of the message. As a consequence, perfect security schemes are impossible to use in practice.
 
 \subsection{Stream Ciphers}
 \label{preliminaries:sym:stream}
 
-In~\ref{preliminaries:sym:otp} we saw that for a symmetric scheme to be perfectly secure, keys and messages must have at least the same length.
+In~\ref{preliminaries:sym:otp} we saw that a symmetric scheme to be perfectly secure, keys and messages must have at least the same length. However, with weaker notion of security we can create symmetric encryption schemes where the size of the key $k$ is much shorter than the original message. Stream ciphers can encrypt or decrypt arbitrary long messages with small fixed length size keys. Instead of using a key of size $n$, a shorter seed $s$ of $l$-bits, where $l$ is much smaller than $n$, is used as the symmetric key. Then from the seed $s$ a $n$-bit key is derived and is used for encryption and decryption.
+
+
 
 \subsection{Block Ciphers}
 \label{preliminaries:sym:block}
