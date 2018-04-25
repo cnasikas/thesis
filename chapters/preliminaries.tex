@@ -366,9 +366,6 @@ The elliptic curve analogue of El Gamal cryptosystem defined in~\ref{preliminari
 
 An eavesdropper adversary who wants to obtain $M$ needs to compute $rQ$; given $Q$, $P$ and $G = rP$ find $r \in Z_q$. This is the elliptic curve analogue of the Diffie-Hellman problem.
 
-\subsubsection{Elliptic Curve Digital Signature Algorithm (ECDSA)}
-\label{preliminaries:pub:el_curves:ecdsa}
-
 \section{Digital signatures}
 \label{preliminaries:sign}
 
@@ -416,6 +413,12 @@ As describes in~\ref{preliminaries:pub:rsa} the RSA cryptosystem can be used to 
 \end{itemize}
 
 The above signature scheme is not secure as an adversary can forge a sign, based on the public key alone, by choosing an arbitrary $\sigma \in \Z^{*}_{N}$ and compute $m = \sigma^{e}modN$. Another attack on the RSA signature scheme allows the adversary to output a forgery on any message of the adversary's choice. One proposal to protect against those attacks, that can be proven secure under certain assumptions, is by applying a cryptographic hash function $H$ to the message before sign it. The minimal requirement for the system to be secure is that $H$ must be collision-resistant.
+
+\subsection{Elliptic-curves}
+\label{preliminaries:sign:el_curves}
+
+\subsubsection{Elliptic Curve Digital Signature Algorithm (ECDSA)}
+\label{preliminaries:sign:el_curves:ecdsa}
 
 \section{Homomorphic Encryption}
 \label{preliminaries:homo}
