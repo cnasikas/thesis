@@ -417,8 +417,38 @@ The above signature scheme is not secure as an adversary can forge a sign, based
 \subsection{Elliptic-curves}
 \label{preliminaries:sign:el_curves}
 
+The elliptic curves defined in~\ref{preliminaries:pub:el_curves} can be used to create digital signature schemes.
+
 \subsubsection{Elliptic Curve Digital Signature Algorithm (ECDSA)}
 \label{preliminaries:sign:el_curves:ecdsa}
+
+The Elliptic Curve Digital Signature Algorithm (ECDSA) is a variant of the Digital Signature Algorithm (DSA) which use elliptic Curves. It is the most widely standardised elliptic curve-based signature scheme~\cite{elliptic_curves_2}.
+
+Let $E$ be an elliptic curve over $\F_p$, a generator point $P$ of order $q$ and $H$ a cryptographic hash function where $H: \{0, 1\}^{*} \rightarrow  \{0, 1\}^{q}$. The ECDSA is defined as follows~\cite{elliptic_curves_2}:
+
+\begin{itemize}
+  \item Key generation: Run elliptic curve key generation algorithm defined in~\ref{preliminaries:pub:el_curves:key_gen} and get a key pair $(Q, d)$.
+  \item Sign: Sign a message $m$ with a private key $d$
+    \begin{enumerate}
+      \item Choose randomly $k \rselect{\Z_q}$
+      \item Compute the point $kP = (x_1, y_1)$
+      \item Compute $r = x_1modq$. If $r \stackrel{?}{=} 0$ then go to step 1
+      \item Compute $e = H(m)$
+      \item Compute $s = k^{-1} (e + dr) modq$. If $s \stackrel{?}{=} 0$ then go to step 1
+      \item Return the signature $(r, s)$
+    \end{enumerate}
+  \item Verify: Verifies a signature $(r, s)$ for a message $m$ with a public key $Q$
+    \begin{enumerate}
+      \item Verify that $r \in \Z_q$ and $s \in \Z_q$. Else ouput $0$.
+      \item Compute $e = H(m)$
+      \item Compute $w = s^{-1}modq$
+      \item Compute $u_1 = (ew)modq$ and $u_2 = (rw)modq$
+      \item Compute $X = u_1P + u_2Q$
+      \item If $X \stackrel{?}{=} \infty$ output $0$
+      \item Take $x_1$ cordinate of $X$ and compute $v = x_1modq$
+      \item If $v \stackrel{?}{=} r$ then output $1$ else $0$.
+    \end{enumerate}
+\end{itemize}
 
 \section{Homomorphic Encryption}
 \label{preliminaries:homo}
