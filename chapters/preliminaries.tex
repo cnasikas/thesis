@@ -366,6 +366,8 @@ We can find the third point $R$ as follows~\cite{elliptic_curves}:
 
 Cyclic subgroups of such elliptic curve groups can be used to implement discrete logarithm systems. The parameters that describe an elliptic curve $E$ defined over a finite field $\F_p$, a base (generator) point $P \in E$, and its order $q$ should be chosen carefully so that the elliptic curve discrete logarithm problem (ECDLP) is resistant to all known attacks. ECDLP is the problem of finding $d$ given $Q = dP$ and $P$ and is assumed to be hard.
 
+Blockchain uses only elliptic curves for key pair generation and transaction signing (ECDSA). Bitcoin and Ethereum use a specific elliptic curve for ECDSA which is defined in the secp256k1 standard established by the National Institute of Standards and Technology (NIST).
+
 \subsection[Key generation]{Key generation~\cite{elliptic_curves_2}}
 \label{preliminaries:el_curves:key_gen}
 
