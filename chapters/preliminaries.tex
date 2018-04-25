@@ -321,7 +321,7 @@ Cyclic subgroups of such elliptic curve groups can be used to implement discrete
 Let $E$ be an elliptic curve over $\F_p$ and $P$ a generator point in $E$ of order $q$. The key pair generation algorithm is defined as follows:
 
 \begin{enumerate}
-  \item Select a random integer $d \rselect{\in Z_q}$
+  \item Select a random integer $d \rselect{\in \Z_q}$
   \item Compute $Q = dP$
   \item Return the tuple $(Q, d)$ where $Q$ is the public key and $d$ the secret key
 \end{enumerate}
@@ -352,7 +352,7 @@ The elliptic curve analogue of El Gamal cryptosystem defined in~\ref{preliminari
   \item Key generation: Run elliptic curve key generation algorithm defined in~\ref{preliminaries:pub:el_curves:key_gen} and get a key pair $(Q, d)$.
   \item Encryption: Encrypts a message $m$ represented as a point $M$ in $E$ over $\F_p$
     \begin{enumerate}
-      \item Choose randomly $r \rselect{\in Z_q}$
+      \item Choose randomly $r \rselect{\in \Z_q}$
       \item Compute $G = rP$
       \item Compute $C = M + rQ$
       \item Return $c = (G, C)$
