@@ -318,20 +318,20 @@ Cyclic subgroups of such elliptic curve groups can be used to implement discrete
 \subsubsection[Key generation]{Key generation~\cite{elliptic_curves_2}}
 \label{preliminaries:pub:el_curves:key_gen}
 
-Let $E$ be an elliptic curve over $\F_p$ and $P$ a generator point in $E$ of order $n$. The key pair generation algorithm is defined as follows:
+Let $E$ be an elliptic curve over $\F_p$ and $P$ a generator point in $E$ of order $q$. The key pair generation algorithm is defined as follows:
 
 \begin{enumerate}
-  \item Select a random integer $d \rselect{[1, n - 1]}$
+  \item Select a random integer $d \rselect{\in Z_q}$
   \item Compute $Q = dP$
   \item Return the tuple $(Q, d)$ where $Q$ is the public key and $d$ the secret key
 \end{enumerate}
 
-The prime $p$, the curve $E$ the generator point $P$, its order $n$ and the public key $Q$ are public. The problem of finding $d$ given $Q$ and $P$ is called elliptic curve discrete logarithm problem (ECDLP) which is assumed to be hard.
+The prime $p$, the curve $E$ the generator point $P$, its order $q$ and the public key $Q$ are public. The problem of finding $d$ given $Q$ and $P$ is called elliptic curve discrete logarithm problem (ECDLP) which is assumed to be hard.
 
 \subsubsection{Diffie-Hellman key exchange}
 \label{preliminaries:pub:el_curves:dh}
 
-The Diffie-Hellman key exchange protocol we saw in~\ref{preliminaries:pub:dh} can use elliptic curves instead of multiplicative groups with the following method~\cite{elliptic_curves}:
+The elliptic curve analogue of Diffie-Hellman key exchange protocol defined in~\ref{preliminaries:pub:dh} can implemented as follows~\cite{elliptic_curves}:
 
 \begin{enumerate}
   \item Alice and Bob agree on elliptic curve $E$ over a finite field $F_p$ for a prime $p$ such that the discrete log problem is hard in $E$ over $F_p$. They also agree on a point $P$ on $E$.
@@ -342,6 +342,29 @@ The Diffie-Hellman key exchange protocol we saw in~\ref{preliminaries:pub:dh} ca
 \end{enumerate}
 
 The security of the protocol is based on ECDLP (§~\ref{preliminaries:pub:el_curves:key_gen}).
+
+\subsubsection{The El Gamal Cryptosystem}
+\label{preliminaries:pub:el_curves:el_gamal}
+
+The elliptic curve analogue of El Gamal cryptosystem defined in~\ref{preliminaries:pub:el_gamal} can implemented as follows~\cite{elliptic_curves_2}:
+
+\begin{itemize}
+  \item Key generation: Run elliptic curve key generation algorithm defined in~\ref{preliminaries:pub:el_curves:key_gen} and get a key pair $(Q, d)$.
+  \item Encryption: Encrypts a message $m$ represented as a point $M$ in $E$ over $\F_p$
+    \begin{enumerate}
+      \item Choose randomly $r \rselect{\in Z_q}$
+      \item Compute $G = rP$
+      \item Compute $C = M + rQ$
+      \item Return $c = (G, C)$
+    \end{enumerate}
+  \item Decryption: Decrypts a ciphertext $c$
+    \begin{enumerate}
+      \item Compute $M = C - dG$, and extract $m$ from $M$
+      \item return $M$
+    \end{enumerate}
+\end{itemize}
+
+An eavesdropper adversary who wants to obtain $M$ needs to compute $rQ$; given $Q$, $P$ and $G = rP$ find $r \in Z_q$. This is the elliptic curve analogue of the Diffie-Hellman problem.
 
 \section{Digital signatures}
 \label{preliminaries:sign}
