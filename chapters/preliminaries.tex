@@ -314,6 +314,20 @@ We can find the third point $R$ as follows~\cite{elliptic_curves}:
 \end{figure}
 
 Cyclic subgroups of such elliptic curve groups can be used to implement discrete logarithm systems.
+
+\subsubsection[Key generation]{Key generation~\cite{elliptic_curves_2}}
+\label{preliminaries:pub:el_curves:key_gen}
+
+Let $E$ be an elliptic curve over $\F_p$ and $P$ a generator point in $E$ of order $n$. The key pair generation algorithm is defined as follows:
+
+\begin{enumerate}
+  \item Select a random integer $d \rselect{[1, n - 1]}$
+  \item Compute $Q = dP$
+  \item Return the tuple $(Q, d)$ where $Q$ is the public key and $d$ the secret key
+\end{enumerate}
+
+The prime $p$, the curve $E$ the generator point $P$, its order $n$ and the public key $Q$ are public. The problem of finding $d$ given $Q$ and $P$ is called elliptic curve discrete logarithm problem (ECDLP) which is assumed to be hard.
+
 \subsubsection{Diffie-Hellman key exchange}
 \label{preliminaries:pub:el_curves:dh}
 
@@ -327,7 +341,7 @@ The Diffie-Hellman key exchange protocol we saw in~\ref{preliminaries:pub:dh} ca
   \item Bob computes $k = bP_a = abP$
 \end{enumerate}
 
-The security of the protocol is again based on the computational discrete logarithm problem which amounts to finding an $a \in Z_q$ such that $Q = aP$ and is assumed to be infeasible.
+The security of the protocol is based on ECDLP (§~\ref{preliminaries:pub:el_curves:key_gen}).
 
 \section{Digital signatures}
 \label{preliminaries:sign}
