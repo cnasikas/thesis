@@ -313,7 +313,7 @@ We can find the third point $R$ as follows~\cite{elliptic_curves}:
   \caption{Elliptic curve points addition}
 \end{figure}
 
-Cyclic subgroups of such elliptic curve groups can be used to implement discrete logarithm systems.
+Cyclic subgroups of such elliptic curve groups can be used to implement discrete logarithm systems. The parameters that describe an elliptic curve $E$ defined over a finite field $\F_p$, a base (generator) point $P \in E$, and its order $q$ should be chosen carefully so that the elliptic curve discrete logarithm problem (ECDLP) is resistant to all known attacks. ECDLP is the problem of finding $d$ given $Q = dP$ and $P$ and is assumed to be hard.
 
 \subsubsection[Key generation]{Key generation~\cite{elliptic_curves_2}}
 \label{preliminaries:pub:el_curves:key_gen}
@@ -326,7 +326,7 @@ Let $E$ be an elliptic curve over $\F_p$ and $P$ a generator point in $E$ of ord
   \item Return the tuple $(Q, d)$ where $Q$ is the public key and $d$ the secret key
 \end{enumerate}
 
-The prime $p$, the curve $E$ the generator point $P$, its order $q$ and the public key $Q$ are public. The problem of finding $d$ given $Q$ and $P$ is called elliptic curve discrete logarithm problem (ECDLP) which is assumed to be hard.
+The prime $p$, the curve $E$ the generator point $P$, its order $q$ and the public key $Q$ are public and finding the secret key $d$ is equivalent to solving the ECDLP.
 
 \subsubsection{Diffie-Hellman key exchange}
 \label{preliminaries:pub:el_curves:dh}
