@@ -216,19 +216,19 @@ Another way to express the security of El Gamal scheme is under the decisional D
 \subsection{Elliptic-curves}
 \label{preliminaries:pub:el_curves}
 
-Elliptic curves (ECC) play an import role in cryptography. All previous cryptosystems are built over multiplicative groups of integers modulo a sufficient large prime $p$~\cite{kiagias:crypto, boneh_crypto}. Elliptic curves are additive Abelian groups~\cite{kiagias:crypto}.
+Elliptic curves (ECC) play an import role in cryptography. All previous cryptosystems are built over multiplicative groups of integers modulo a sufficient large prime $p$~\cite{kiagias:crypto, boneh_crypto}. Elliptic curves are additive abelian groups~\cite{kiagias:crypto}; a group satisfying associativity, commutativity, existence of identity element and inverse under the addition group operation~\cite{elliptic_curves_2}.
 
 There are two apparent benefits for using curves over modular groups~\cite{kiagias:crypto}. The first is cost efficiency. In practice, cryptosystems that their security depends on the discrete log problem or the factorisation problem on a modular group, such as the El Gamal or the RSA, the primes have to be at least 2048 bits for the system to be secure. On the other hand, elliptic curves offer similar security using much smaller key sizes. A 233-bit elliptic curve key gives the same level of security as a 2,240-bit RSA key~\cite{ecc_rsa_bits, ecc_rsa_bits_1} and a 333-bit elliptic curve key as a 4096-bit RSA key~\cite{blake1999elliptic}. The second reason is that, for the moment, there is no know way to generalise the attacks against the discrete logarithm problem on a modular group to an attack on an elliptic curve~\cite{kiagias:crypto}.
 
-Cryptography is primarily interested in elliptic curves over a finite field $F$. An elliptic curve is defined by the equation of the form~\cite{elliptic_curves}:
+Cryptography is primarily interested in elliptic curves over $\F_p$: the field of integers modulo $p$ where $p$ is a prime number. An elliptic curve $E$ over $\F_p$ is defined by the equation of the form~\cite{elliptic_curves, elliptic_curves_2}:
 
 \begin{equation*}
   y^2 = x^3 + ax + b
 \end{equation*}
 
-where $a$ and $b$ are constants.
+where $a, b \in \F_p$. A pair $(x, y)$ where $x, y \in \F_p$ is a point on the curve if it satisfies the equation where $E$ is defined. There is a special point, called \textbf{point at infinity} and denoted by $\infty$, where is also on the curve and serve as the identity element~\cite{elliptic_curves_2}.
 
-Let $E$ be an elliptic curve and a finite field $F$ over which $E$ is defined. Let $P = (x_1, y_1)$ and $Q = (x_2, y_2)$ two points on the elliptic curve $E$. Any two points on a curve add to produce a third point on the curve. A third point $R$ on the curve $E$ is defined as~\cite{elliptic_curves}:
+Let $P = (x_1, y_1)$ and $Q = (x_2, y_2)$ two points on the elliptic curve $E$. Any two points on a curve add to produce a third point on the curve. A third point $R$ on the curve $E$ is defined as~\cite{elliptic_curves}:
 
 \begin{equation*}
   R = P + Q
@@ -313,13 +313,14 @@ We can find the third point $R$ as follows~\cite{elliptic_curves}:
   \caption{Elliptic curve points addition}
 \end{figure}
 
+Cyclic subgroups of such elliptic curve groups can be used to implement discrete logarithm systems.
 \subsubsection{Diffie-Hellman key exchange}
 \label{preliminaries:pub:el_curves:dh}
 
 The Diffie-Hellman key exchange protocol we saw in~\ref{preliminaries:pub:dh} can use elliptic curves instead of multiplicative groups with the following method~\cite{elliptic_curves}:
 
 \begin{enumerate}
-  \item Alice and Bob agree on elliptic curve $E$ over a finite field $F_p$ for a prime $p$ such that the discrete log problem is hard in $E$ over $F_p$. They also agree on a point $P$ on $E$
+  \item Alice and Bob agree on elliptic curve $E$ over a finite field $F_p$ for a prime $p$ such that the discrete log problem is hard in $E$ over $F_p$. They also agree on a point $P$ on $E$.
   \item Alice choose a secret integer $a$ and computes $P_a = aP$. Alice sends $P_a$ to Bob
   \item Bob choose a secret integer $b$ and computes $P_b = bP$. Bob sends $P_b$ to Alice
   \item Alice computes $k = aP_b = abP$
