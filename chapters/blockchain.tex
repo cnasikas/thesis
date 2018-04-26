@@ -1,16 +1,14 @@
-%!TEX root = ../thesis.tex
+out-coming%!TEX root = ../thesis.tex
 \chapter{Blockchain}
 \label{blockchain}
 
 A blockchain is a distributed transaction ledger~\cite{nakamoto2012bitcoin}.
 Blockchain consist of a continuously growing list of records, which are called blocks, and are linked, secured and immutable.
-Each block typically contains a hash pointer being a link to a previous block, a timestamp and transaction data~\cite{wiki:blockchain}.
-Blockchain has a high Byzantine fault tolerance~\cite{wiki:byzantine_fault_tolerance} because of a decentralized consensus mechanism.
-This makes blockchains potentially suitable for fincancial activities, the recording of events, medical records~\cite{blockchain_ehr,Azaria2016}, and other records management activities,
-such as identity management, transaction processing or documenting provenance~\cite{wiki:blockchain}. Blockchain could be seen as a distributed immutable, tamper-proof,
+Each block typically contains a hash pointer being a link to a previous block, a timestamp and transaction data. Blockchain has a high Byzantine fault tolerance~\cite{byzantine_fault_tolerance} because of a decentralized consensus mechanism.
+This makes blockchains potentially suitable for financial activities, the recording of events, medical records~\cite{blockchain_ehr,Azaria2016}, and other records management activities, such as identity management, transaction processing or documenting provenance. Blockchain could be seen as a distributed immutable, tamper-proof,
 and audit log that records every data transaction. As a result any attempt to tamper blockchain is immediately evident and easily detectable.
 The first successful financial implementation of blockchain is Bitcoin~\cite{nakamoto2012bitcoin}.
-Bitcoin is the first decentralized digital currency and payment system invented by an unknown person or group of people under the name Satoshi Nakamoto~\cite{nakamoto2012bitcoin,wiki:bitcoin}.
+Bitcoin is the first decentralized digital currency and payment system invented by an unknown person or group of people under the name Satoshi Nakamoto~\cite{nakamoto2012bitcoin}.
 
 \section{History}\label{blockchain:history}
 
@@ -23,26 +21,22 @@ Intermediate services, such as Paypal, sits between the buyer and the seller and
 the transaction and notify the seller. Through this architecture the buyer is not exposed to security risks and can be anonymous improving privacy. On the other hand,
 both the buyer and the seller might have an account to the same service.
 
-A notable intermediate architecture called SET (Secure Electronic Transaction) established in 1996 by VISA and MasterCard~\cite{wiki:set}
-which goal was to combine the card associations' similar but incompatible protocols. SET allowed parties to identity themselves with the use of
+A notable intermediate architecture called SET (Secure Electronic Transaction)~\cite{set} established in 1996 by VISA and MasterCard which goal was to combine the card associations' similar but incompatible protocols. SET allowed parties to identity themselves with the use of
 certificates avoiding that way the need of having to enroll with the intermediary. SET failed to gain attraction in the market and the fundamental
 problem has to do with the end-user certificates issue complexity.
 
-David Chaum~\cite{wiki:david_chaum} is the inventor of the secure digital cash idea which first introduced in his 1983 paper~\cite{Chaum1983}. In
-1990 proposed the first off-line e-cash system~\cite{Chaum:1988:UEC:646753.704915} and founded DigiCash~\cite{wiki:digicash}, an electronic money corporation,
+David Chaum is the inventor of the secure digital cash idea which first introduced in his 1983 paper~\cite{Chaum1983}. In 1990 proposed the first off-line e-cash system~\cite{Chaum:1988:UEC:646753.704915} and founded DigiCash~\cite{chaum1983blind}, an electronic money corporation,
 which in 1994 sent the first electronic payment.
 
-Digital cash shemes have a potential flaw called double-spending~\cite{wiki:double_spend,bitcoin_wiki:double_spend} in which the same digital token can be spent more than once.
+Digital cash shemes have a potential flaw called double-spending~\cite{10.1007/978-3-662-46803-6_10, 7163021} in which the same digital token can be spent more than once.
 Chaum find a way to both keep the system anonymous and prevent double-spending with the use of blind signatures~\cite{Chaum1983,Chaum:1988:UEC:646753.704915}.
-Nevertheless, Chauma's solution needed a centralized trusted oracle that validates the transactions. Many cryptographers tried to improve Chaum's et al. sheme
-such as Okamoto and Ohta~\cite{Watanabe1996} who implemented the subdivisions of coins with the use of Merkle trees~\cite{wiki:merkle_tree}.
+Nevertheless, Chauma's solution needed a centralized trusted oracle that validates the transactions. Many cryptographers tried to improve Chaum's et al. scheme such as Okamoto and Ohta~\cite{Watanabe1996} who implemented the subdivisions of coins with the use of Merkle trees~\cite{merkle_tree}.
 
-About the same time, a group of cryptographers called Cypherpunks~\cite{wiki:cypherpunk,cypherpunks_manifesto} was formed who advocate the widespread
+About the same time, a group of cryptographers called Cypherpunks~\cite{cypherpunk,cypherpunks_manifesto} was formed who advocate the widespread
 use of strong cryptography and privacy-enhancing technologies~\cite{cypherpunks_manifesto} as a route to social and political change. Cypherpunks electronic mailing list,
-through which they communicating originally, was the predecessor to the mailing list where Satoshi Nakamoto~\cite{wiki:satoshi_nakamoto} would announce later Bitcoin~\cite{nakamoto2012bitcoin}.
+through which they communicating originally, was the predecessor to the mailing list where Satoshi Nakamoto would announce later Bitcoin~\cite{nakamoto2012bitcoin}.
 
-It is worth mentioning that Chaum's~\cite{wiki:david_chaum} ideas have been described as the technical roots of the vision of the Cypherpunks~\cite{wiki:cypherpunk}
-movement.
+It is worth mentioning that Chaum's ideas have been described as the technical roots of the vision of the Cypherpunks movement~\cite{cypherpunk}.
 
 Chaum patented the blind-signature scheme preventing others from developing ecash system that use the same protocol. As a respond,
 Cypherpunks implemented an e-cash system called Magic Money~\cite{magic_money} which violated Chaum's patents.
@@ -58,11 +52,11 @@ At 1992 cryptographers Dwork and Naor proposed solutions to computational puzzle
 creating the idea of Proof-of-Work. Later, at 1997, Adam Back proposed a similar idea called Hashcash~\cite{hash_cash}.
 A similar Proof-of-Work system as Hashcash is used in Bitcoin for its consensus mechanism.
 
-Wei Dai~\cite{bitcoin_wiki:wei_dai} at 1998 created b-money~\cite{bitcoin_wiki:b_money}, an anonymous distributed electronic cash system, in which everyone
+Wei Dai at 1998 created b-money~\cite{b_money}, an anonymous distributed electronic cash system, in which everyone
 could create money using a Proof-of-Work mechanism like hashcash. B-money used the notion of a secured timestamp ledger as used by Haber et al. for digital documents.
 
 Bitcoin was invented by Satoshi Nakamoto in 2008 where he published a paper with the title ``Bitcoin: A Peer-to-Peer Electronic Cash System'' on The Cryptography Mailing list at metzdowd.com~\cite{satoshi_mailing_list} describing the Bitcoin protocol. The Bitcoin network came into existence on 3 January 2009 with the release of the first Bitcoin client, \verb|wxBitcoin|, and the issuance of the first Bitcoins~\cite{btc_client, btc_first_block}. Bitcoin represents the culmination of decades of research in cryptography~\cite{antonopoulos2014mastering} and combines several prior inventions such as b-money and HashCash~\cite{antonopoulos2014mastering}. Bitcoin is the first decentralized electronic cash system that does not relies on a central authority and
-provided for the first time a practical solution to the Byzantine Generals' Problem~\cite{wiki:byzantine_fault_tolerance} with the use of a consensus mechanism
+provided for the first time a practical solution to the Byzantine Generals' Problem~\cite{byzantine_fault_tolerance} with the use of a consensus mechanism
 based on Proof-of-Work which can be used to achieve consensus on decentralized networks for elections, lotteries, assets registries and more~\cite{antonopoulos2014mastering}. As of April 2018, it is the most widely used alternative currency~\cite{10.1007/978-3-642-39884-1_2} with a total market cap around 116 billion US dollars~\cite{btc_cap}.
 
 \section{Identity}\label{blockchain:identity}
@@ -87,14 +81,12 @@ On the other hand, CryptoNote uses ring signatures creating a mixing protocol sa
 \section{Structure}\label{blockchain:structure}
 
 The first blockchain was conceptualized and implemented as a core component of bitcoin where it serves as the public ledger for all transactions.
-The invention of the blockchain for bitcoin made it the first digital currency to solve the double spending problem without the need of a trusted authority or
-central server. The bitcoin design has been the inspiration for other applications~\cite{7163021,10.1007/978-3-662-46803-6_10}. In the next subsections we analyze
-the bitcoin blockchain structure as it was the first blockchain and put the bases for other blockchain systems to be made and involve.
+The invention of the blockchain for bitcoin made it the first digital currency to solve the double spending problem without the need of a trusted authority or central server. The bitcoin design has been the inspiration for other applications~\cite{7163021,10.1007/978-3-662-46803-6_10}. In the next subsections we analyze the bitcoin blockchain structure as it was the first blockchain and put the bases for other blockchain systems to be made and involve.
 
 \subsection{Transaction}\label{blockchain:structure:tx}
 
 The basic data structure of blockchain is a transaction (tx) and transfers money from somebody to somebody else. A blockchain transaction can be described as
-a node with two edges, one incoming edge and one outcoming edge. The incoming edge describes the sender (from) and the outcoming edge the recipient (to).
+a node with two edges, one incoming edge and one out-coming edge. The incoming edge describes the sender (from) and the outcoming edge the recipient (to).
 Every bitcoin transaction has a unique transaction id (txid) which comes from the double hash of the transaction with the use of SHA-256 cryptographic hash function.
 
 \begin{figure}[!ht]
@@ -217,7 +209,7 @@ of the new outgoing edge.
 
 \subsection{Block}\label{blockchain:structure:block}
 
-To prevent double-spending~\cite{wiki:double_spend,bitcoin_wiki:double_spend} the transaction must be put in chronological order so that it can be answered
+To prevent double-spending the transaction must be put in chronological order so that it can be answered
 if transaction A happen before transaction B. Furthermore, the order must be common for everyone in the network.
 This global agreement on a common truth is named consensus (§~\ref{blockchain:consensus_mechanisms}) and this is where the bitcoin novelty is.
 
@@ -314,7 +306,7 @@ wait for it to be confirmed. So, the need of a consensus-a single universal “t
 
 The consensus mechanism is the core mechanism of the blockchain. Through consensus, the shared state of the ledger comes to an agreement upon a global state,
 allowing all the nodes of the network to reach the same ledger state. Achieving consensus in a distributed system is challenging.
-A consensus mechanism has to be resilient to node failures, network delays and the existence of malicious nodes~\cite{wiki:byzantine_fault_tolerance}.
+A consensus mechanism has to be resilient to node failures, network delays and the existence of malicious nodes.
 
 There are three basic consensus mechanism categories:
 
@@ -366,7 +358,7 @@ is needed to build a PoS blockchain~\cite{Kiayias2017}. Ouroboros is the first p
 
 \subsection{Practical Byzantine Fault Tolerance (PBFT)}\label{blockchain:consensus:PBFT}
 
-The Practical Byzantine Fault Tolerance algorithm~\cite{Castro:1999:PBF:296806.296824} is the first practical consensus algorithm with Byzantine Fault Tolerance~\cite{wiki:byzantine_fault_tolerance}.
+The Practical Byzantine Fault Tolerance algorithm~\cite{Castro:1999:PBF:296806.296824} is the first practical consensus algorithm with Byzantine Fault Tolerance~\cite{byzantine_fault_tolerance}.
 It is based on the concept of state machine replication and replication state voting, and is able to process tens of thousands of requests per second with minimal latency.
 The algorithm has only a 3\% overhead over a typical filesystem~\cite{Castro:1999:PBF:296806.296824}.
 
@@ -436,17 +428,17 @@ Each one has its own advantages and disadvantages.
 
 \subsection{Bitcoin}\label{blockchain:impl:bitcoin}
 
-Bitcoin is the first decentralized digital currency. The main currency is called Bitcoin and is used to store and transmit value among participants in the Bitcoin network. The Bitcoin network is a fully distributed peer-to-peer network where anyone can freely join running an open source implementation of the bitcoin protocol and there is no need for trust to the network; in the network any node may be malicious. As a result, Bitcoin is a public permissionless blockchain. Bitcoin's use a Proof-of-Work consensus mechanism for keeping consistent the public ledger, preventing double spend and confirm transactions. Bitcoin is the oldest digital currency decentralized network running from 3 January 2009~\cite{wiki:bitcoin, btc_first_block}. As a result, Bitcoin is the most well studied Blockchain network~\cite{10.1007/978-3-662-46803-6_10} with various published papers on different topics such as privacy~\cite{10.1007/978-3-319-70278-0_8, 10.1007/978-3-642-39884-1_2, Bonneau14e.w.:mixcoin, 10.1007/978-3-662-44774-1_9}, economics\cite{Babaioff:2012:BRB:2229012.2229022, 10.1007/978-3-319-70278-0_17, Bentov2017DecentralizedPM, Carlsten:2016:IBW:2976749.2978408}, attacks~\cite{DBLP:journals_corr_Bahack13, DBLP:journals_corr_EyalS13}, network~\cite{10.1007/978-3-662-44774-1_7, 190890} and scalability~\cite{kiayias2017non, 10.1007/978-3-662-53357-4_5, 10.1007/978-3-662-53357-4_8}. Due to the years Bitcoin's blockchain has grow significantly is size making difficult to some devices to store the entire blockchain and run as a full node leading to network centralization. Specifically, as of April 2018 the Bitcoin's blockchain size is over 160GB~\cite{btc_bl_size}.
+Bitcoin is the first decentralized digital currency. The main currency is called Bitcoin and is used to store and transmit value among participants in the Bitcoin network. The Bitcoin network is a fully distributed peer-to-peer network where anyone can freely join running an open source implementation of the bitcoin protocol and there is no need for trust to the network; in the network any node may be malicious. As a result, Bitcoin is a public permissionless blockchain. Bitcoin's use a Proof-of-Work consensus mechanism for keeping consistent the public ledger, preventing double spend and confirm transactions. Bitcoin is the oldest digital currency decentralized network running from 3 January 2009~\cite{btc_first_block}. As a result, Bitcoin is the most well studied Blockchain network~\cite{10.1007/978-3-662-46803-6_10} with various published papers on different topics such as privacy~\cite{10.1007/978-3-319-70278-0_8, 10.1007/978-3-642-39884-1_2, Bonneau14e.w.:mixcoin, 10.1007/978-3-662-44774-1_9}, economics\cite{Babaioff:2012:BRB:2229012.2229022, 10.1007/978-3-319-70278-0_17, Bentov2017DecentralizedPM, Carlsten:2016:IBW:2976749.2978408}, attacks~\cite{DBLP:journals_corr_Bahack13, DBLP:journals_corr_EyalS13}, network~\cite{10.1007/978-3-662-44774-1_7, 190890} and scalability~\cite{kiayias2017non, 10.1007/978-3-662-53357-4_5, 10.1007/978-3-662-53357-4_8}. Due to the years Bitcoin's blockchain has grow significantly is size making difficult to some devices to store the entire blockchain and run as a full node leading to network centralization. Specifically, as of April 2018 the Bitcoin's blockchain size is over 160GB~\cite{btc_bl_size}.
 
-Bitcoin suffers from scalability due to the limit on the amount of transactions the bitcoin network can process. The transaction processing capacity maximum is estimated between 3.3 and 7 transactions per second~\cite{10.1007/978-3-662-53357-4_8}. The limit is related to the block size limit---the total number of transactions a block can contain--- that was introduces as an anti-spam measure. There are various proposed and activated solutions to address this issue. One activated solution is Segregated Witness (SegWit, BIP 141)~\cite{wiki:segwit} which performed as a soft fork and increased the block size by a factor of approximately of two.
+Bitcoin suffers from scalability due to the limit on the amount of transactions the bitcoin network can process. The transaction processing capacity maximum is estimated between 3.3 and 7 transactions per second~\cite{10.1007/978-3-662-53357-4_8}. The limit is related to the block size limit---the total number of transactions a block can contain--- that was introduces as an anti-spam measure. There are various proposed and activated solutions to address this issue. One activated solution is Segregated Witness (SegWit, BIP 141)~\cite{segwit} which performed as a soft fork and increased the block size by a factor of approximately of two.
 
-As of April 2018, Bitcoin is the most widely used crypto currency~\cite{10.1007/978-3-642-39884-1_2} with over of 100,000 merchants that accept Bitcoin~\cite{wiki:bitcoin} and with the biggest total market cap~\cite{btc_cap}.
+As of April 2018, Bitcoin is the most widely used crypto currency~\cite{10.1007/978-3-642-39884-1_2} with over of 100,000 merchants that accept Bitcoin~\cite{btc_merchants} and with the biggest total market cap~\cite{btc_cap}.
 
 \subsection{Ethereum}\label{blockchain:impl:ethereum}
 
 Ethereum is an open-source, public, blockchain-based distributed computing platform featuring smart contract functionality.
 It provides a decentralized Turing-complete virtual machine, the Ethereum Virtual Machine (EVM), which can execute scripts using an
-international network of public nodes~\cite{wiki:ethereum}. Ethereum provides a cryptocurrency called ether which can be transferred between accounts and gas,
+international network of public nodes~\cite{ethereum_yellowpaper}. Ethereum provides a cryptocurrency called ether which can be transferred between accounts and gas,
 an internal pricing mechanism used to execute contracts and allocate resources on the network. Through EVM, Ethereum provides Solidity a
 Turing-complete language for writing smart contracts that enables anyone to build distributed applications making the process much easier and efficient than ever before.
 Ethereum use a Proof-of-Work consensus mechanism called Ethash and has been designed to be ASIC-resistant~\cite{ethash}.
@@ -484,19 +476,18 @@ The data are stored off-chain, encrypted in a distributed database, and a modifi
 \section{Smart Contracts}
 \label{smart_contracts}
 
-A smart contract is a computer protocol intended to facilitate, verify, or enforce the negotiation or performance of a contract~\cite{FM548,wiki:smart_contract}.
+A smart contract is a computer protocol intended to facilitate, verify, or enforce the negotiation or performance of a contract~\cite{FM548,szabo1996smart}.
 The idea of smart contracts proposed in the early 1990s~\cite{FM548}, by Nick Szabo, and have been used primarily in association with cryptocurrencies enabling
 parties to formally specify a cryptographically enforceable agreements~\cite{7163021}. A smart contract consists of a set of promises including protocols within which the parties perform on these promises. It can define rules and penalties around an agreement and automatically enforce those obligations. The contractual rules may be partially or fully self-executed, self-enforcing or both. On blockchain technologies a smart contract is any computer program that is executed on blockchain---a general purpose computation.
 
-Bitcoin is the first blockchain that provides a scripting language for expressing simple smart contracts such as ownership of an amount of coins by one or multiple entities. Bitcoin's language is a stack-based scripting language inspired by Forth~\cite{wiki:forth} and offers a set of simple serial commands supporting cryptographic primitives such as hash functions and signature verification. The main disadvantage of Bitcoin's language is that is not Turing-complete limiting the type of smart contracts one can create. Furthermore, adding new commands to extent functionality requires either a soft-fork which has to be decided by the majority of bitcoin network or to fork Bitcoin's code and implement a new blockchain supporting the new features in which the Bitcoin's network power is lost. Numerous previous smart contract application atop Bitcoin (e.g., lottery\cite{Andrychowicz:2014:SMC:2650286.2650764,10.1007/978-3-662-44381-1_24},
+Bitcoin is the first blockchain that provides a scripting language for expressing simple smart contracts such as ownership of an amount of coins by one or multiple entities. Bitcoin's language is a stack-based scripting language inspired by Forth~\cite{forth_lang} and offers a set of simple serial commands supporting cryptographic primitives such as hash functions and signature verification. The main disadvantage of Bitcoin's language is that is not Turing-complete limiting the type of smart contracts one can create. Furthermore, adding new commands to extent functionality requires either a soft-fork which has to be decided by the majority of bitcoin network or to fork Bitcoin's code and implement a new blockchain supporting the new features in which the Bitcoin's network power is lost. Numerous previous smart contract application atop Bitcoin (e.g., lottery\cite{Andrychowicz:2014:SMC:2650286.2650764,10.1007/978-3-662-44381-1_24},
 verifiable computation~\cite{Kumaresan:2014:UBI:2660267.2660380}) have demonstrated the difficulty of Bitcoin's scripting language~\cite{cryptoeprint:2015:675}.
 
-The need of user defined open source blockchain applications emerged. As a result, Ethereum was born which is the first Turing-complete decentralized smart contract framework. In Ethereum, one can create smart contracts in a high level language such as Solidity~\cite{wiki:solidity} which in turn is compiled to bytecode that is executable on the Ethereum.
+The need of user defined open source blockchain applications emerged. As a result, Ethereum was born which is the first Turing-complete decentralized smart contract framework. In Ethereum, one can create smart contracts in a high level language such as Solidity~\cite{solidity} which in turn is compiled to bytecode that is executable on the Ethereum.
 
 With Ethereum launch, the notion of DApps (decentralized applications) arisen
 and a lot of developers and companies are building numerous applications atop Ethereum such as prediction markets~\cite{augur,gnosis}, social media platforms~\cite{akasha,backfeed},
-online gambling~\cite{etheroll,coinpoker} and video games~\cite{cryptokitties}. As of January 2018, there are more than 250 live DApps,
-with hundreds more under development~\cite{wiki:ethereum}.
+online gambling~\cite{etheroll,coinpoker} and video games~\cite{cryptokitties}. As of January 2018, there are more than 250 live DApps, with hundreds more under development.
 
 \clearpage
 

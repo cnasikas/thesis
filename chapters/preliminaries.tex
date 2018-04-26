@@ -551,9 +551,8 @@ Homomorphic encryption allows computation on encrypted data. It allows, without 
 \label{zkp}
 
 A proof of knowledge is a protocol that enables one party to convince another of the validity of a statement.
-In a zero-knowledge proof, this is accomplished without revealing any information beyond the legitimacy of the proof~\cite{kiagias:crypto},
-meaning that one party can prove to another party that a given statemnet is true, without conveying any information apart from
-the fact that the statement is indeed true~\cite{wiki:zkp}.
+In a zero-knowledge proof~\cite{zkp}, this is accomplished without revealing any information beyond the legitimacy of the proof~\cite{kiagias:crypto},
+meaning that one party can prove to another party that a given statement is true, without conveying any information apart from the fact that the statement is indeed true.
 
 Let $\calp$ be a prover and $\calv$ the verifier. $\calp$ must convince $\calv$ that she has some
 knowledge of a statement $x$ without explicitly stating what she knows. We call this knowledge a witness $w$.
@@ -586,7 +585,7 @@ $k$ times the probability of Bob convincing Alice that he knows the secret passw
 
 \subsubsection{The colour-blind friend}
 
-Let's bring again our friends Alice and Bob. Suppose Bob is color-blind~\cite{wiki:zkp,zkp:colour_blind} and Alice has two balls: one red and one green but otherwise identical when you touch them.
+Let's bring again our friends Alice and Bob. Suppose Bob is color-blind~\cite{zkp:colour_blind} and Alice has two balls: one red and one green but otherwise identical when you touch them.
 To Alice they seem complete identical and she is not sure if they are actually distinguishable. Bob wants to prove to Alice that indeed the are differently-coloured
 without revealing which one is red and which is green. To prove his knowledge, Bob gives to Alice the two balls so that she is holding one in each hand. Bob can see
 at this point which ball is in which hand. Next, Alice either switches the ball behind her hands or leaves them be, with probability $1/2$. Finally, she brings
@@ -742,7 +741,7 @@ The acronym zk-SNARK stands for `Zero-Knowledge Succinct Non-Interactive Argumen
 At high level, zkSNARKs consist of four basic steps (Figure ~\ref{fig:zkp:zksnark_flow}):
 
 \begin{enumerate}
-  \item Computation to Arithmetic circuit~\cite{wiki:circuits}
+  \item Computation to Arithmetic circuit~\cite{pinocchio-nearly-practical-verifiable-computation}
   \item Arithmetic circuit to Rank 1 Constraint System (R1CS)~\cite{ggpr}
   \item R1CS to Quadratic Span Program (QAP)~\cite{ggpr}
   \item QAP to zkSNARK~\cite{pinocchio-nearly-practical-verifiable-computation}

@@ -22,14 +22,6 @@
   year   = {1995},
 }
 
-@Misc{wiki:blockchain,
-  author = {Wikipedia},
-  title  = {Blockchain --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2016},
-  note   = {[Online; accessed 12-October-2017]},
-  url    = {https://en.wikipedia.org/wiki/Blockchain},
-}
-
 @Misc{wiki:as,
   author = {Wikipedia},
   title  = {Anthem Medical Data Breach --- {W}ikipedia{,} The Free Encyclopedia},
@@ -38,20 +30,23 @@
   url    = {https://en.wikipedia.org/wiki/Anthem_medical_data_breach},
 }
 
-@Misc{wiki:byzantine_fault_tolerance,
-  author = {Wikipedia},
-  title  = {Byzantine fault tolerance --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 2017]},
-  url    = {https://en.wikipedia.org/wiki/Byzantine_fault_tolerance},
-}
-
-@Misc{wiki:ethereum,
-  author = {Wikipedia},
-  title  = {Ethereum --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 2017]},
-  url    = {https://en.wikipedia.org/wiki/Ethereum},
+@article{byzantine_fault_tolerance,
+ author = {Lamport, Leslie and Shostak, Robert and Pease, Marshall},
+ title = {The Byzantine Generals Problem},
+ journal = {ACM Trans. Program. Lang. Syst.},
+ issue_date = {July 1982},
+ volume = {4},
+ number = {3},
+ month = jul,
+ year = {1982},
+ issn = {0164-0925},
+ pages = {382--401},
+ numpages = {20},
+ url = {http://doi.acm.org/10.1145/357172.357176},
+ doi = {10.1145/357172.357176},
+ acmid = {357176},
+ publisher = {ACM},
+ address = {New York, NY, USA},
 }
 
 @Misc{cardano_site,
@@ -127,20 +122,19 @@
   url    = {https://ethereum.github.io/yellowpaper/paper.pdf},
 }
 
-@Misc{wiki:smart_contract,
-  author = {Wikipedia},
-  title  = {Smart contract --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 12-October-2017]},
-  url    = {https://en.wikipedia.org/wiki/Smart_contract},
+@article{szabo1996smart,
+  title={Smart contracts: building blocks for digital markets},
+  author={Szabo, Nick},
+  journal={EXTROPY: The Journal of Transhumanist Thought,(16)},
+  year={1996}
 }
 
-@Misc{wiki:bitcoin,
-  author = {Wikipedia},
-  title  = {Bitcoin --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 12-October-2017]},
-  url    = {https://en.wikipedia.org/wiki/Bitcoin},
+@article{btc_merchants,
+  title={Bitcoin now accepted by 100,000 merchants worldwide},
+  author={Cuthbertson, Anthony},
+  journal={International Business Times},
+  volume={4},
+  year={2015}
 }
 
 @TechReport{bl_consensus,
@@ -426,52 +420,32 @@
  address = {Princeton, NJ, USA},
 }
 
-@Misc{wiki:set,
-  author = {Wikipedia},
-  title  = {Secure Electronic Transaction --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 01-December-2017]},
-  url    = {https://en.wikipedia.org/wiki/Secure_Electronic_Transaction},
+@article{set,
+  title={Secure electronic transactions (SET)},
+  author={Merkow, Mark S},
+  journal={The internet encyclopedia},
+  year={2004},
+  publisher={Wiley Online Library}
 }
 
-@Misc{wiki:david_chaum,
-  author = {Wikipedia},
-  title  = {David Chaum --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 01-December-2017]},
-  url    = {https://en.wikipedia.org/wiki/David_Chaum},
+@inproceedings{chaum1983blind,
+  title={Blind signatures for untraceable payments},
+  author={Chaum, David},
+  booktitle={Advances in cryptology},
+  pages={199--203},
+  year={1983},
+  organization={Springer}
 }
 
-@Misc{wiki:digicash,
-  author = {Wikipedia},
-  title  = {DigiCash --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 01-December-2017]},
-  url    = {https://en.wikipedia.org/wiki/DigiCash},
-}
-
-@Misc{wiki:cypherpunk,
-  author = {Wikipedia},
-  title  = {Cypherpunk --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 01-December-2017]},
-  url    = {https://en.wikipedia.org/wiki/Cypherpunk},
-}
-
-@Misc{wiki:double_spend,
-  author = {Wikipedia},
-  title  = {Double-spending --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 01-December-2017]},
-  url    = {https://en.wikipedia.org/wiki/Double-spending},
-}
-
-@Misc{wiki:blind_signature,
-  author = {Wikipedia},
-  title  = {Blind signature --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 01-December-2017]},
-  url    = {https://en.wikipedia.org/wiki/Blind_signature},
+@article{cypherpunk,
+  title={What happened to the crypto dream?, part 1},
+  author={Narayanan, Arvind},
+  journal={IEEE security \& privacy},
+  volume={11},
+  number={2},
+  pages={75--76},
+  year={2013},
+  publisher={IEEE}
 }
 
 @Inbook{Chaum1983,
@@ -526,12 +500,13 @@ doi="10.1007/BFb0009520",
 url="https://doi.org/10.1007/BFb0009520"
 }
 
-@Misc{wiki:merkle_tree,
-  author = {Wikipedia},
-  title  = {Merkle tree --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 01-December-2017]},
-  url    = {https://en.wikipedia.org/wiki/Merkle_tree},
+@inproceedings{merkle_tree,
+  title={A digital signature based on a conventional encryption function},
+  author={Merkle, Ralph C},
+  booktitle={Conference on the Theory and Application of Cryptographic Techniques},
+  pages={369--378},
+  year={1987},
+  organization={Springer}
 }
 
 @Misc{magic_money,
@@ -540,14 +515,6 @@ url="https://doi.org/10.1007/BFb0009520"
   year   = {1994},
   note   = {[Online; accessed 2017]},
   url    = {https://cypherpunks.venona.com/date/1994/02/msg00247.html},
-}
-
-@Misc{wiki:satoshi_nakamoto,
-  author = {Wikipedia},
-  title  = {Satoshi Nakamoto --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 09-December-2017]},
-  url    = {https://en.wikipedia.org/wiki/Satoshi_Nakamoto},
 }
 
 @Misc{cypherpunks_manifesto,
@@ -596,28 +563,11 @@ doi="10.1007/BF00196791",
 url="https://doi.org/10.1007/BF00196791"
 }
 
-@Misc{bitcoin_wiki:wei_dai,
-  author = {Bitcoin Wiki},
-  title  = {Wei Dai --- Bitcoin Wiki},
-  year   = {2016},
-  note   = {[Online; accessed 09-December-2017]},
-  url    = {https://en.bitcoin.it/wiki/Wei_Dai},
-}
-
-@Misc{bitcoin_wiki:b_money,
-  author = {Bitcoin Wiki},
-  title  = {B-money --- Bitcoin Wiki},
-  year   = {2016},
-  note   = {[Online; accessed 09-December-2017]},
-  url    = {https://en.bitcoin.it/wiki/B-money},
-}
-
-@Misc{bitcoin_wiki:double_spend,
-  author = {Bitcoin Wiki},
-  title  = {Double-spending --- Bitcoin Wiki},
-  year   = {2017},
-  note   = {[Online; accessed 25-January-2018]},
-  url    = {https://en.bitcoin.it/wiki/B-money},
+@article{b_money,
+  title={b-money, 1998},
+  author={Dai, Wei},
+  journal={URL http://www. weidai. com/bmoney. txt},
+  year={1998}
 }
 
 @unpublished{kiagias:crypto,
@@ -626,12 +576,15 @@ url="https://doi.org/10.1007/BF00196791"
   note         = {Based on notes by S. Pehlivanoglu, J. Todd, K. Samari, T. Zacharias and H.S. Zhou}
 }
 
-@Misc{wiki:zkp,
-  author = {Wikipedia},
-  title  = {Zero-knowledge proof --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 23-January-2017]},
-  url    = {https://en.wikipedia.org/wiki/Zero-knowledge_proof},
+@article{zkp,
+  title={The knowledge complexity of interactive proof systems},
+  author={Goldwasser, Shafi and Micali, Silvio and Rackoff, Charles},
+  journal={SIAM Journal on computing},
+  volume={18},
+  number={1},
+  pages={186--208},
+  year={1989},
+  publisher={SIAM}
 }
 
 @inproceedings{Quisquater:1989:EZP:118209.118269,
@@ -1001,14 +954,6 @@ abstract="Hada and Tanaka [11,12] showed the existence of 3-round, negligible-er
 isbn="978-3-540-28628-8"
 }
 
-@Misc{wiki:circuits,
-  author = {Wikipedia},
-  title  = {Arithmetic circuit complexity --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 09-February-2018]},
-  url    = {https://en.wikipedia.org/wiki/Blockchain},
-}
-
 @Misc{big_data_better_worse,
   author = {ScienceDaily},
   title  = {Big Data, for better or worse: 90% of world's data generated over last two years},
@@ -1086,13 +1031,12 @@ isbn="978-3-540-28628-8"
   url    = {https://medium.com/twenty-one-hundred/data-is-the-new-oil-a-ludicrous-proposition-1d91bba4f294},
 }
 
-@Misc{wiki:pii,
-  author = {Wikipedia},
-  title  = {Personally identifiable information --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2018},
-  note   = {[Online; accessed 12-February-2018]},
-  url    = {https://en.wikipedia.org/wiki/Personally_identifiable_information},
+@techreport{pii,
+  title={Guide to protecting the confidentiality of personally identifiable information (PII)},
+  author={McCallister, Erika and Grance, Timothy and Scarfone, Karen A},
+  year={2010}
 }
+
 
 @TechReport{ipfs,
   author      = {Juan Benet},
@@ -1151,20 +1095,15 @@ isbn="978-3-540-28628-8"
  address = {New York, NY, USA},
 }
 
-@Misc{wiki:forth,
-  author = {Wikipedia},
-  title  = {Forth (programming language) --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2018},
-  note   = {[Online; accessed 15-March-2018]},
-  url    = {https://en.wikipedia.org/wiki/Forth_(programming_language)},
-}
-
-@Misc{wiki:solidity,
-  author = {Wikipedia},
-  title  = {Solidity --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2018},
-  note   = {[Online; accessed 15-March-2018]},
-  url    = {https://en.wikipedia.org/wiki/Solidity},
+@inproceedings{forth_lang,
+  title={The evolution of Forth},
+  author={Rather, Elizabeth D and Colburn, Donald R and Moore, Charles H},
+  booktitle={ACM Sigplan Notices},
+  volume={28},
+  number={3},
+  pages={177--199},
+  year={1993},
+  organization={ACM}
 }
 
 @TECHREPORT{Samarati98protectingprivacy,
@@ -1588,12 +1527,12 @@ abstract="The increasing popularity of blockchain-based cryptocurrencies has mad
 isbn="978-3-662-53357-4"
 }
 
-@Misc{wiki:segwit,
-  author = {Wikipedia},
-  title  = {SegWit --- {W}ikipedia{,} The Free Encyclopedia},
+@Misc{segwit,
+  author = {Bitcoin},
+  title  = {BIP141 --- Bitcoin Improvement Proposals},
   year   = {2018},
   note   = {[Online; accessed 2018]},
-  url    = {https://en.wikipedia.org/wiki/SegWit},
+  url    = {https://github.com/bitcoin/bips/},
 }
 
 @Misc{datum,
@@ -1659,12 +1598,14 @@ isbn="978-3-662-53357-4"
   url         = {http://bitfury.com/content/5-white-papers-research/bitfury_white_paper_on_blockchain_auditability.pdf}
 }
 
-@Misc{wiki:non_repudiation,
-  author = {Wikipedia},
-  title  = {Non-repudiation --- {W}ikipedia{,} The Free Encyclopedia},
-  year   = {2017},
-  note   = {[Online; accessed 13-April-2018]},
-  url    = {https://en.wikipedia.org/wiki/Non-repudiation},
+@article{non_repudiation,
+  title={Non-repudiation in the digital environment},
+  author={McCullagh, Adrian and Caelli, William},
+  journal={First Monday},
+  volume={5},
+  number={8},
+  year={2000},
+  publisher={Valauskas, Edward J.}
 }
 
 @InProceedings{10.1007/978-3-540-46588-1_20,
