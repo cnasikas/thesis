@@ -97,31 +97,28 @@ The basic data structure of blockchain is a transaction (tx) and transfers money
 a node with two edges, one incoming edge and one outcoming edge. The incoming edge describes the sender (from) and the outcoming edge the recipient (to).
 Every bitcoin transaction has a unique transaction id (txid) which comes from the double hash of the transaction with the use of SHA-256 cryptographic hash function.
 
-\begin{figure}[h]
-  \begin{subfigure}[t]{0.50\textwidth}
-    \centering
-    \begin{tikzpicture}
-      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
-      \draw [->] (-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
-      \draw [->] (A) -- (3, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
-    \end{tikzpicture}
-    \caption{A bitcoin transaction}
-    \label{fig:bl_tx:tx}
-  \end{subfigure}
-  \begin{subfigure}[t]{0.50\textwidth}
-    \centering
-    \begin{tikzpicture}
-      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
-      \draw [->] (-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
-      \draw [->] (A) -- (3, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
-      \node (txid) at (-5,0) {$txid = SHA256^{2}($};
-      \node (txid) at (3.3,0) {$)$};
-    \end{tikzpicture}
-    \caption{Bitcoin Transaction ID}
-    \label{fig:bl_tx:id}
-  \end{subfigure}
-  \caption{Transactions}
-  \label{fig:bl_transaction}
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}
+    \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+    \draw [->] (-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
+    \draw [->] (A) -- (3, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
+  \end{tikzpicture}
+  \caption{A bitcoin transaction}
+  \label{fig:bl_tx:tx}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+    \draw [->] (-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
+    \draw [->] (A) -- (3, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
+    \node (txid) at (-5,0) {$txid = SHA256^{2}($};
+    \node (txid) at (3.3,0) {$)$};
+  \end{tikzpicture}
+  \caption{Bitcoin Transaction ID}
+  \label{fig:bl_tx:id}
 \end{figure}
 
 Payments are done throught linking transaction nodes and money is a chain of transactions. All transactions together form a transaction graph which is public and everyone participating in
