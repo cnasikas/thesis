@@ -76,7 +76,7 @@ The one-time pad is a \textbf{perfectly secure} scheme~\cite{kiagias:crypto, bon
 In~\ref{preliminaries:sym:otp} we saw that a symmetric scheme to be perfectly secure, keys and messages must have at least the same length. However, with weaker notion of security we can create symmetric encryption schemes where the size of the key $k$ is much shorter than the original message. Stream ciphers can encrypt or decrypt arbitrary long messages with small fixed length size keys. Instead of using a key of size $n$, a shorter seed $s$ of $l$-bits, where $l$ is much smaller than $n$, is used as the symmetric key. Then from the seed $s$ a $n$-bit key is derived and is used for encryption and decryption. The seed $s$ is expanded to $n$ by a deterministic polynomial algorithm $G$ that maps $l$-bit strings to $n$-bit strings. The algorithm $G$ is called \textbf{pseudorandom generator} (PRG) and the following condition must hold for any PRG~\cite{Katz:2014:IMC:2700550}:
 
 \begin{itemize}
-  \item Expansion: On input $s \in \{0, 1\}^{l}$ outputs $k \in \{0, 1\}^{n}$ where $\forall l, n > l$
+  \item Expansion: On input $s \in \{0, 1\}^{l}$ outputs $k \in \{0, 1\}^{n}$ where $\forall l: n > l$
   \item Pseudorandomness: Lets $\cald$ be a distribution over strings of length $n$. $\cald$ is indistinguishable from the uniform distribution over strings of length $n$. In other words, it is infeasible for any polynomial-time algorithm to tell whether it is given a string sampled according to $\cald$ or uniformly at random.
 \end{itemize}
 
@@ -88,8 +88,30 @@ So, with the use of PRGs we can construct encryption schemes with short key size
   \item The decryption algorithm $\cald$: Takes as input a seed $s \in \{0, 1\}^{l}$ and a cipher $c \in \{0, 1\}^{n}$ and outputs the plaintext $m = Dec_s(c) = G(s) \xor c$
 \end{itemize}
 
+An important point, is that $s$ must be chosen uniformly at random and be long enough to withstand brute-force attacks.
+
+There is a number of practical constructed stream ciphers. The most wide used are Salsa20~\cite{Salsa20}, ChaCha~\cite{chacha} and RC4.
+
 \subsection{Block Ciphers}
 \label{preliminaries:sym:block}
+
+A block cipher is a deterministic algorithm that encrypts blocks---a sequence of bits---of fixed length. The plaintext and the ciphertext is always of the same size. The size is fixed by the block cipher and is called the \textbf{block size}. The message space $\calm$ and ciphertext space $\calc$ are the same finite set $\{ 0, 1\}^{n}$ and the key space $\calk = \{ 0, 1\}^{l}$.
+
+Formally, a block cipher is a keyed permutation function $F: \{ 0, 1\}^{n} \times \{ 0, 1\}^{l} \rightarrow \{ 0, 1\}^{n}$ where $n$ is the block size and $l$ the key size. Usually, the block size and the key size is the same. Common key and block sizes are from $128$ to $512$ bits. The function $F$ must be \textbf{one-to-one} for every key $k \in \calk$. Both $F$ and its inverse $F^{-1}$ should be efficient; there is polynomial-time algorithm that given $k$ computes $F$ and $F^{-1}$. The number of total permutation a block cipher can produce is $n!$.
+
+The security of a block cipher is much stronger than semantic security~\cite{boneh_crypto}: A permutation produced by $F$ is indistinguishable from a random permutation. That allows the build of cryptographic schemes based on block ciphers with rigorous proofs of security.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{tikzpicture}[node distance=2.5cm,auto,>=latex']
+      \node [draw, minimum size=7em, align=center] (a) {AES};
+      \draw[<-] (a.west)  -- node[above]{$128$ bits} node[left, xshift=-2em]{$m$} ++(-4em,0em);
+      \draw[->] (a.east)  -- node[above]{$128$ bits} node[right, xshift=2em]{$c$} ++(4em,0em);
+      \draw[<-] (a.north)  -- node[right]{$128$ bits} node[above, yshift=2em]{$k$} ++(0em,4em);
+    \end{tikzpicture}
+  \caption{Block cipher AES}
+  \label{fig:sym:block:aes}
+\end{figure}
 
 \subsubsection{Modes of Operation}
 \label{preliminaries:sym:modes}
