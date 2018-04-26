@@ -194,7 +194,7 @@ The El Gamal Cryptosystem~\cite{el_gamal} is another popular and wide-used encry
         \item Run a group generation algorithm $\calg$ to produce the description of a finite group $\G$ with input $1^{n}$. The output is the tuple $(p, m, g)$ where $p$ is a large prime and $g$ is the generator of the finite group $\G$ of order $m$.
         \item Select randomly $x \rselect{\Z_m}$
         \item Calculate $h = g^{x}modp$
-        \item The public key is $((p, m, g), h>$
+        \item The public key is $((p, m, g), h)$
         \item The secret key is $x$
     \end{enumerate}
   \item Encryption: Encrypts a message $m \in \G$
@@ -245,6 +245,40 @@ The primary goal of digital signatures is unforgeability; an adversary cannot cr
 
 \subsection{Digital Signature Algorithm (DSA)}
 \label{preliminaries:sign:dsa}
+
+The Digital Signature Algorithm (DSA)~\cite{dsa_nist} has been standardised by the National Institute of Standards and Technology (NIST). DSA is a variant of the El Gamal signature scheme. The main advantage of DSA over El Gamal Signature is the size of the signature. DSA produce signatures of size $320$-bit in comparison to El Gamal that needs at least signatures of size $2048$-bit to be secure given todays security standards~\cite{dsa}.
+
+The algorithm work as follows~\cite{dsa}:
+
+\begin{itemize}
+  \item Key Generation:
+    \begin{enumerate}
+      \item Choose a cryptographic hash function $H$ where $H: \{0, 1\}^{*} \rightarrow \{0, 1\}^{n}$
+      \item Choose a prime $q$ of size $n$
+      \item Choose a prime $p$ such that $p - 1$ is a multiple of $q$ of size $l$. The size of $l$ must be a multiple of $64$ between $512$ and $1,024$
+      \item Choose randomly $a \rselect{\Z_p}$
+      \item Compute $g = a^{(p - 1)/q} mod p$
+      \item Choose randomly $x \rselect{\Z_q}$
+      \item Compute $h = g^{x} modp$
+      \item Return $((p, q, g), h, x)$ where $(p, q, g)$ is the public parameters of the algorithm, $h$ is the public key and $x$ the private key.
+    \end{enumerate}
+  \item Sign: Sign a message $m \in \{0, 1\}^{*}$ with a private key $x$
+    \begin{enumerate}
+      \item Choose randomly $k \rselect{\Z_q}$
+      \item Compute $r = (g^{k}modp)modq$
+      \item Compute $s = k^{-1}(H(m) + xr) modq$
+      \item Return the signature $(r, s)$
+    \end{enumerate}
+  \item Verify: Verify a signature $(r, s)$ of the message $m$ with a public key $h$
+    \begin{enumerate}
+      \item Verify that $r \in \Z_q$ and $s \in \Z_q$. Else ouput $0$.
+      \item Calculate $w = s^{-1}modq$
+      \item Calculate $u_1 = (H(m)w)modq$
+      \item Calculate $u_2 = (rw)modq$
+      \item Calculate $v = ((g^{u_1}h^{u_2})modp)modq$
+      \item If $v \stackrel{?}{=} r$ then output $1$ else $0$.
+    \end{enumerate}
+\end{itemize}
 
 \subsection{RSA signatures}
 \label{preliminaries:sign:rsa}
@@ -440,7 +474,7 @@ Let $E$ be an elliptic curve over $\F_p$, a generator point $P$ of order $q$ and
       \item Compute $s = k^{-1} (e + dr) modq$. If $s \stackrel{?}{=} 0$ then go to step 1
       \item Return the signature $(r, s)$
     \end{enumerate}
-  \item Verify: Verifies a signature $(r, s)$ for a message $m$ with a public key $Q$
+  \item Verify: Verifies a signature $(r, s)$ of the message $m$ with a public key $Q$
     \begin{enumerate}
       \item Verify that $r \in \Z_q$ and $s \in \Z_q$. Else ouput $0$.
       \item Compute $e = H(m)$
