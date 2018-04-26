@@ -480,3 +480,59 @@ Enigma is a decentralized computation platform with guaranteed privacy~\cite{DBL
 different parties to store and run computation on data while keeping privacy. Enigma uses a highly optimized version of secure multi-party computation (MPC)
 guaranteed by a verifiable secret-sharing scheme~\cite{DBLP:journals/corr/ZyskindNP15}. A blockchain is utilized as the controller of the network, managing access to the data and identities.
 The data are stored off-chain, encrypted in a distributed database, and a modified distributed hash table (DTH), accessible through the blockchain, is used for holding only references to the data.
+
+\section{Smart Contracts}
+\label{smart_contracts}
+
+A smart contract is a computer protocol intended to facilitate, verify, or enforce the negotiation or performance of a contract~\cite{FM548,wiki:smart_contract}.
+The idea of smart contracts proposed in the early 1990s~\cite{FM548}, by Nick Szabo, and have been used primarily in association with cryptocurrencies enabling
+parties to formally specify a cryptographically enforceable agreements~\cite{7163021}. A smart contract consists of a set of promises including protocols within which the parties perform on these promises. It can define rules and penalties around an agreement and automatically enforce those obligations. The contractual rules may be partially or fully self-executed, self-enforcing or both. On blockchain technologies a smart contract is any computer program that is executed on blockchain---a general purpose computation.
+
+Bitcoin is the first blockchain that provides a scripting language for expressing simple smart contracts such as ownership of an amount of coins by one or multiple entities. Bitcoin's language is a stack-based scripting language inspired by Forth~\cite{wiki:forth} and offers a set of simple serial commands supporting cryptographic primitives such as hash functions and signature verification. The main disadvantage of Bitcoin's language is that is not Turing-complete limiting the type of smart contracts one can create. Furthermore, adding new commands to extent functionality requires either a soft-fork which has to be decided by the majority of bitcoin network or to fork Bitcoin's code and implement a new blockchain supporting the new features in which the Bitcoin's network power is lost. Numerous previous smart contract application atop Bitcoin (e.g., lottery\cite{Andrychowicz:2014:SMC:2650286.2650764,10.1007/978-3-662-44381-1_24},
+verifiable computation~\cite{Kumaresan:2014:UBI:2660267.2660380}) have demonstrated the difficulty of Bitcoin's scripting language~\cite{cryptoeprint:2015:675}.
+
+The need of user defined open source blockchain applications emerged. As a result, Ethereum was born which is the first Turing-complete decentralized smart contract framework. In Ethereum, one can create smart contracts in a high level language such as Solidity~\cite{wiki:solidity} which in turn is compiled to bytecode that is executable on the Ethereum.
+
+With Ethereum launch, the notion of DApps (decentralized applications) arisen
+and a lot of developers and companies are building numerous applications atop Ethereum such as prediction markets~\cite{augur,gnosis}, social media platforms~\cite{akasha,backfeed},
+online gambling~\cite{etheroll,coinpoker} and video games~\cite{cryptokitties}. As of January 2018, there are more than 250 live DApps,
+with hundreds more under development~\cite{wiki:ethereum}.
+
+\clearpage
+
+\begin{lstlisting}[language=Solidity, caption={An Ethereum Smart Contract}]
+pragma solidity ^0.4.16;
+
+contract Namespace{
+
+  struct NameEntry {
+      address owner;
+  }
+
+  uint32 constant REGISTRATION_COST = 100;
+  uint32 constant UPDATE_COST = 10;
+  mapping(bytes32 => NameEntry) data;
+
+  function nameNew(bytes32 hash){
+      if (msg.value >= REGISTRATION_COST){
+          data[hash].owner = msg.sender;
+      }
+  }
+
+  function nameUpdate(bytes32 name, bytes32 newValue, address newOwner){
+      bytes32 hash = sha3(name);
+      if (data[hash].owner == msg.sender && msg.value >= UPDATE_COST) {
+          data[hash].value = newValue;
+          if(newOwner != 0) {
+              data[hash].owner = newOwner;
+          }
+      }
+  }
+
+  function nameLookup (bytes32 name) {
+      return data[sha3(name)]
+  }
+}
+\end{lstlisting}
+
+\clearpage
