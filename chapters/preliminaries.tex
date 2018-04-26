@@ -243,6 +243,35 @@ The primary goal of digital signatures is unforgeability; an adversary cannot cr
 \subsection{El Gamal Signature Scheme}
 \label{preliminaries:sign:el_gamal}
 
+The El Gamal Signature Scheme~\cite{el_gamal} is a digital signature scheme based on the difficulty of the discrete logarithm problem as in~\ref{preliminaries:pub:el_gamal}.
+
+The scheme works as follows:
+
+\begin{itemize}
+  \item Key Generation:
+    \begin{enumerate}
+      \item Choose a cryptographic hash function $H$ where $H: \{0, 1\}^{*} \rightarrow \{0, 1\}^{n}$
+      \item Choose a prime $p$ such as the DLOG problem is difficult
+      \item Find a generator $g$ of the group $\Z^{*}_{p}$
+      \item Choose randomly $x \rselect{\Z_q}$
+      \item Compute $h = g^{x} modp$
+      \item Return $(h, x)$ where $h$ is the public key and $x$ the private key
+    \end{enumerate}
+  \item Sign: Sign a message $m \in \{0, 1\}^{*}$ with a private key $x$
+    \begin{enumerate}
+      \item Choose randomly $k \rselect{\Z_q}$ such that $gcd(k, p − 1) = 1$
+      \item Compute $r = g^{k}modp$
+      \item Compute $s = k^{-1}(H(m) + xr) mod(p - 1)$
+      \item Return the signature $(r, s)$
+    \end{enumerate}
+  \item Verify: Verify a signature $(r, s)$ of the message $m$ with a public key $h$
+    \begin{enumerate}
+      \item Verify that $r \in \Z_q$ and $s \in \Z_q$. Else ouput $0$.
+      \item Compute $v = H(m)$
+      \item If $v \stackrel{?}{=} (h^{r}r^{s}) modp$ then output $1$ else $0$.
+    \end{enumerate}
+\end{itemize}
+
 \subsection{Digital Signature Algorithm (DSA)}
 \label{preliminaries:sign:dsa}
 
