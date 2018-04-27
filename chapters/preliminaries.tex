@@ -62,14 +62,14 @@ In the following chapters, the notions of cipher and symmetric encryption scheme
 
 A block cipher is a deterministic algorithm that encrypts blocks---a sequence of bits---of fixed length. The plaintext and the ciphertext is always of the same size. The size is fixed by the block cipher and is called the \textbf{block size}. The message space $\calm$ and ciphertext space $\calc$ are the same finite set $\{ 0, 1\}^{n}$ and the key space $\calk = \{ 0, 1\}^{l}$.
 
-Formally, a block cipher is a keyed permutation function $F: \{ 0, 1\}^{n} \times \{ 0, 1\}^{l} \rightarrow \{ 0, 1\}^{n}$ where $n$ is the block size and $l$ the key size. Usually, the block size and the key size is the same. Common key and block sizes are from $128$ to $512$ bits. The function $F$ must be \textbf{one-to-one} for every key $k \in \calk$. Both $F$ and its inverse $F^{-1}$ should be efficient; there is polynomial-time algorithm that given $k$ computes $F$ and $F^{-1}$. The number of total permutation a block cipher can produce is $n!$.
+Formally, a block cipher is a keyed permutation function $F: \{ 0, 1\}^{n} \times \{ 0, 1\}^{l} \rightarrow \{ 0, 1\}^{n}$ where $n$ is the block size and $l$ the key size. Usually, the block size and the key size is the same. Common key and block sizes are from $128$ to $512$ bits. The function $F$ must be \textbf{one-to-one} for every key $k \in \calk$. Both $F$ and its inverse $F^{-1}$ should be efficient; there is polynomial-time algorithm that given $k$ computes $F$ and $F^{-1}$. The number of total permutation a block cipher can produce is $2^{n}!$.
 
 The security of a block cipher is much stronger than semantic security~\cite{boneh_crypto}: A permutation produced by $F$ is indistinguishable from a random permutation. That allows the build of cryptographic schemes based on block ciphers with rigorous proofs of security.
 
 \begin{figure}[!ht]
     \centering
     \begin{tikzpicture}[node distance=2.5cm,auto,>=latex']
-      \node [draw, minimum size=7em, align=center] (a) {AES};
+      \node [cipher, minimum size=7em] (a) {AES};
       \draw[<-] (a.west)  -- node[above]{$128$ bits} node[left, xshift=-2em]{$m$} ++(-4em,0em);
       \draw[->] (a.east)  -- node[above]{$128$ bits} node[right, xshift=2em]{$c$} ++(4em,0em);
       \draw[<-] (a.north)  -- node[right]{$128$ bits} node[above, yshift=2em]{$k$} ++(0em,4em);
@@ -78,16 +78,161 @@ The security of a block cipher is much stronger than semantic security~\cite{bon
   \label{fig:sym:block:aes}
 \end{figure}
 
-\subsubsection{Modes of Operation}
+\subsubsection[Modes of Operation]{Modes of Operation~\cite{Katz:2014:IMC:2700550}}
 \label{preliminaries:sym:modes}
 
-\begin{itemize}
-  \item ECB
-  \item CBC
-  \item CFB
-  \item OFB
-  \item CTR
-\end{itemize}
+A mode of operation is a way of encrypting arbitrary-length messages using block ciphers of fixed message length. A message is broken into $l$ blocks each of size equal to the block size $n$ and the block cipher operates on each block. If the size of the last block is less than the block size, the block is padded to a full size block. In most modes, a random initial vector (IV) of length $n$ is required. The IV ensures distinct ciphertexts to each encryption even for the same plaintext and same key. The IV is not secret, as is crucial for completing decryption. For a mode to be secure, the IV must be distinct and random for each encryption~\cite{Katz:2014:IMC:2700550}
+
+All the modes presented next, are vulnerable either to padding oracle attacks~\cite{padding_attacks}---an attack that exploits the padding validation to decrypt the ciphertext---or are malleable~\cite{malleability}; the property of transforming a ciphertext into another which decrypts to a different plaintext. To countermeasure padding oracle attacks or changes to the ciphertext, message authentication~\cite{Katz:2014:IMC:2700550} should be used along with encryption to detect tampering with the ciphertext. Notable modes that combine encryption with authentication are CCM, OCB and GCM.
+
+\epar{Electronic Codebook (ECB)}
+\label{preliminaries:sym:modes:ecb}
+
+The Electronic Codebook (ECB) is the simplest mode of operation. Given a plaintext $m = m_1, m_2, \dots, m_l$ each block is encrypted---direct application of the pseudorandom permutation on the plaintext block---separately. The ciphertext is $c = F_k(m_1), F_k(m_2), \dots, F_k(m_l)$. ECB mode is not secure and should never be used.
+
+\epar{Cipher Block Chaining (CBC)}
+\label{preliminaries:sym:modes:cbc}
+
+The Cipher Block Chaining (CBC) mode outputs a sequence of cipher blocks where each plaintext block is XORed with the previous ciphertext block. Each ciphertext is dependent on all preceding blocks. First, a random IV of length $n$ is selected. The first plaintext block is XORed with the IV. The second block is XORed with the first cipher block $c_1$. In general, let $c_0 = IV$ then $c_i = F_k(c_{i-1} \xor m_i) \mbox{, } \forall i \in [1, l]$.
+
+The main drawback of CBC mode is that encryption and decryption is sequential and cannot be parallelized.
+
+\epar{Output Feedback (OFB)}
+\label{preliminaries:sym:modes:ofb}
+
+The Output Feedback mode uses the block cipher to generate a pseudorandom stream which is then XORed with the plaintext. The stream is generated only by repeatedly encrypting the IV independently of the plaintext. The stream is generated as follows: Set the $i$th block of the stream to $r_i = F_k(r_{i-1})$ where $r_0 = IV \rselect{\{ 0, 1 \}^{n}}$. The ciphertext is produced by XORing the plaintext with the appropriate stream block; that is, $c_i = m_i \xor r_i$.
+
+As in CBC, the encryption and decryption cannot be parallelized. On the other hand, the pseudorandom stream can be computed independently of the actual message encryption and can be prepared ahead of time.
+
+\epar{Counter (CTR)}
+\label{preliminaries:sym:modes:ctr}
+
+The Counter mode, as with OFB, generates also a pseudorandom stream. First, a random $CTR \rselect{\{ 0, 1 \}^{n}}$ is chosen; as the IV in previous modes. The stream is generated as $r_i = F_k(CTR + i)$ where $r_0 = CTR$. Again, the ciphertext is computed as $c_i = m_i \xor r_i$.
+
+CTR mode has many advantages. One of the main advantages of CTR mode is that both encryption and decryption can be fully parallelized. Secondly, as with OFB stream can be computed in advance. Finally, it is possible to decrypt the $i$-th block of the ciphertext without decrypting anything else. This property is called random access.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{tikzpicture}[node distance=2.5cm,auto,>=latex']
+      \node [cipher] (a) {$F_k$};
+      \node [cipher, right of=a] (b) {$F_k$};
+      \node [cipher, right of=b] (c) {$F_k$};
+      \draw[<-] (a.north)  -- node[above, yshift=2em]{$m_1$} ++(0em,4em);
+      \draw[<-] (b.north)  -- node[above, yshift=2em]{$m_2$} ++(0em,4em);
+      \draw[<-] (c.north)  -- node[above, yshift=2em]{$m_3$} ++(0em,4em);
+      \draw[->] (a.south)  -- node[below, yshift=-2em]{$c_1$} ++(0em,-4em);
+      \draw[->] (b.south)  -- node[below, yshift=-2em]{$c_2$} ++(0em,-4em);
+      \draw[->] (c.south)  -- node[below, yshift=-2em]{$c_3$} ++(0em,-4em);
+    \end{tikzpicture}
+  \caption{ECB mode}
+  \label{fig:sym:block:ecb}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \begin{tikzpicture}[node distance=3cm,auto,>=latex']
+      \node [cipher] (a) {$F_k$};
+      \node [cipher, right of=a] (b) {$F_k$};
+      \node [cipher, right of=b] (c) {$F_k$};
+      \node [above of=a, node distance=2cm] (xor1) {$\xor$};
+      \node [above of=b, node distance=2cm] (xor2) {$\xor$};
+      \node [above of=c, node distance=2cm] (xor3) {$\xor$};
+
+      \node[left of=a] (iv) {$IV$};
+
+      \draw[<-] (xor1.north)  -- node[above, yshift=1em]{$m_1$} ++(0em,2em);
+      \draw[<-] (a.north)  -- (xor1.south) node[above, yshift=1em]{};
+
+      \draw[<-] (xor2.north)  -- node[above, yshift=1em]{$m_2$} ++(0em,2em);
+      \draw[<-] (b.north)  -- (xor2.south) node[above, yshift=1em]{};
+
+      \draw[<-] (xor3.north)  -- node[above, yshift=1em]{$m_3$} ++(0em,2em);
+      \draw[<-] (c.north)  -- (xor3.south) node[above, yshift=1em]{};
+
+      \draw[->] (a.south)  -- node[below, yshift=-2em]{$c_1$} ++(0em,-4em);
+      \draw[->] (b.south)  -- node[below, yshift=-2em]{$c_2$} ++(0em,-4em);
+      \draw[->] (c.south)  -- node[below, yshift=-2em]{$c_3$} ++(0em,-4em);
+
+      \draw[->] (iv.south)  -- node[below, yshift=-2.5em]{$IV$} ++(0em,-5em);
+
+      \draw[->] ([yshift=-4em]a.center) -- ++(3.5em,0em) -- ++(0em,8.7em) -- (xor2.west);
+      \draw[->] ([yshift=-4em]b.center) -- ++(3.5em,0em) -- ++(0em,8.7em) -- (xor3.west);
+
+      \draw[->] (iv.north) -- ++(0em, 3.95em) -- (xor1.west);
+
+    \end{tikzpicture}
+  \caption{CBC mode}
+  \label{fig:sym:block:cbc}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \begin{tikzpicture}[node distance=3cm,auto,>=latex']
+      \node [cipher] (a) {$F_k$};
+      \node [cipher, right of=a] (b) {$F_k$};
+      \node [cipher, right of=b] (c) {$F_k$};
+      \node [below of=a, node distance=2cm] (xor1) {$\xor$};
+      \node [below of=b, node distance=2cm] (xor2) {$\xor$};
+      \node [below of=c, node distance=2cm] (xor3) {$\xor$};
+
+      \node[left of=a] (iv) {$IV$};
+
+      \draw[->] (a.south)  -- (xor1.north);
+      \draw[->] (xor1.south)  -- node[below, yshift=-1em]{$c_1$} ++(0em,-2em);
+      \draw[<-] (xor1.west)  -- node[left, xshift=-1em]{$m_1$} ++(-2em,0em);
+
+      \draw[->] (b.south)  -- (xor2.north);
+      \draw[->] (xor2.south)  -- node[below, yshift=-1em]{$c_2$} ++(0em,-2em);
+      \draw[<-] (xor2.west)  -- node[left, xshift=-1em]{$m_2$} ++(-2em,0em);
+      \draw[->] ([yshift=-3em]a.center) -- ++(3.5em,0em) -- ++(0em,7.7em) --  ++(3.6em,0em) -- (b.north);
+
+      \draw[->] (c.south)  -- (xor3.north);
+      \draw[->] (xor3.south)  -- node[below, yshift=-1em]{$c_3$} ++(0em,-2em);
+      \draw[<-] (xor3.west)  -- node[left, xshift=-1em]{$m_3$} ++(-2em,0em);
+      \draw[->] ([yshift=-3em]b.center) -- ++(3.5em,0em) -- ++(0em,7.7em) --  ++(3.6em,0em) -- (c.north);
+
+      \draw[->] (iv.north) -- ++(0em, 4em) -- ++(7.1em, 0em) -- (a.north);
+      \draw[->] (iv.south)  -- node[below, yshift=-3.5em]{$IV$} ++(0em,-6em);
+
+    \end{tikzpicture}
+  \caption{OFB mode}
+  \label{fig:sym:block:ofb}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \begin{tikzpicture}[node distance=3cm,auto,>=latex']
+      \node [cipher] (a) {$F_k$};
+      \node [cipher, right of=a] (b) {$F_k$};
+      \node [cipher, right of=b] (c) {$F_k$};
+      \node [below of=a, node distance=2cm] (xor1) {$\xor$};
+      \node [below of=b, node distance=2cm] (xor2) {$\xor$};
+      \node [below of=c, node distance=2cm] (xor3) {$\xor$};
+
+      \draw[<-] (a.north)  -- node[above, yshift=1em]{$CTR + 1$} ++(0em,2em);
+      \draw[<-] (b.north)  -- node[above, yshift=1em]{$CTR + 2$} ++(0em,2em);
+      \draw[<-] (c.north)  -- node[above, yshift=1em]{$CTR + 3$} ++(0em,2em);
+
+      \node[left of=a] (iv) {$CTR$};
+
+      \draw[->] (a.south)  -- (xor1.north);
+      \draw[->] (xor1.south)  -- node[below, yshift=-1em]{$c_1$} ++(0em,-2em);
+      \draw[<-] (xor1.west)  -- node[left, xshift=-1em]{$m_1$} ++(-2em,0em);
+
+      \draw[->] (b.south)  -- (xor2.north);
+      \draw[->] (xor2.south)  -- node[below, yshift=-1em]{$c_2$} ++(0em,-2em);
+      \draw[<-] (xor2.west)  -- node[left, xshift=-1em]{$m_2$} ++(-2em,0em);
+
+      \draw[->] (c.south)  -- (xor3.north);
+      \draw[->] (xor3.south)  -- node[below, yshift=-1em]{$c_3$} ++(0em,-2em);
+      \draw[<-] (xor3.west)  -- node[left, xshift=-1em]{$m_3$} ++(-2em,0em);
+
+      \draw[->] (iv.south)  -- node[below, yshift=-3.5em]{$CTR$} ++(0em,-6em);
+
+    \end{tikzpicture}
+  \caption{CTR mode}
+  \label{fig:sym:block:ctr}
+\end{figure}
 
 \section{Public Key Cryptography}
 \label{preliminaries:pub}

@@ -351,9 +351,13 @@
       minimum height=3em,
       fill=orange!30,
       fit={(#1.west) (#1.east)}, inner sep=0pt, label={center:#2}
-    }
+    },
+    cipher/.style={%
+      draw, minimum size=4em, align=center
+    },
 }
 
 % Various %
 
 \newcommand*\xor{\oplus}
+\newcommand{\epar}[1]{\paragraph{#1}\mbox{}\\}
