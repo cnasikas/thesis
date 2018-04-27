@@ -354,7 +354,20 @@
     },
     cipher/.style={%
       draw, minimum size=4em, align=center
-    },
+    }
+}
+
+\pgfplotsset{%
+  bar/.style={%
+  ybar,
+  enlargelimits=0.15,
+  legend style={at={(0.5,-0.35)},
+  anchor=north,legend columns=-1},
+  ylabel={Gas},
+  symbolic x coords={Store raw data,Store hash pointer,Log raw data, Log hash pointer},
+  x tick label style={font=\small,text width=1.7cm,align=center}, xtick=data, nodes near coords,
+  nodes near coords align={vertical}
+}
 }
 
 % Various %

@@ -89,6 +89,27 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
 \label{table:bytes_usd_cost}
 \end{table}
 
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[xlabel=Gas,ylabel=Size]
+      \addplot[
+        color=red,
+        mark=x
+      ] coordinates {
+        (0.032, 20000)
+        (1, 724664)
+        (1e+3, 697325562)
+        (1e+4, 7e+10)
+        (1e+5, 7e+11)
+        (1e+6, 7e+12)
+      };
+    \end{axis}
+  \end{tikzpicture}
+  \caption{}
+  \label{}
+\end{figure}
+
 \begin{table}[!htb]
   \centering
   \begin{tabular}{|l|l|l|l|}
@@ -149,7 +170,6 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
   \label{table:data_store_comparison_04}
 \end{table}
 
-
 \begin{table}[!htb]
   \centering
   \begin{tabular}{|l|l|l|l|}
@@ -164,6 +184,88 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
   \caption{Comparing methods of storing data.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 1MB}
   \label{table:data_store_comparison_05}
 \end{table}
+
+\begin{figure}
+  \begin{subfigure}[t]{0.475\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \begin{axis}[bar]
+            \addplot coordinates {
+            (Store raw data,34916)
+            (Store hash pointer,34850)
+            (Log raw data,25995)
+            (Log hash pointer, 25995)
+            };
+            \legend{Type}
+          \end{axis}
+        \end{tikzpicture}
+        \caption{Size: 32 bytes}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.475\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \begin{axis}[bar]
+            \addplot coordinates {
+              (Store raw data,724730)
+              (Store hash pointer,34850)
+              (Log raw data,104310)
+              (Log hash pointer, 25995)
+            };
+            \legend{Type}
+          \end{axis}
+        \end{tikzpicture}
+        \caption{Size: 1KB}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.475\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \begin{axis}[bar]
+            \addplot coordinates {
+              (Store raw data,6668509)
+              (Store hash pointer,34850)
+              (Log raw data,832604)
+              (Log hash pointer, 25995)
+            };
+            \legend{Type}
+          \end{axis}
+        \end{tikzpicture}
+        \caption{Size: 10KB}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.475\textwidth}
+        \centering
+        \begin{tikzpicture}
+          \begin{axis}[bar]
+            \addplot coordinates {
+              (Store raw data,66454178)
+              (Store hash pointer,34850)
+              (Log raw data,8186883)
+              (Log hash pointer, 25995)
+            };
+            \legend{Type}
+          \end{axis}
+        \end{tikzpicture}
+        \caption{Size: 100KB}
+    \end{subfigure}
+  \caption{Charts}
+  \label{Storage methods}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[bar]
+      \addplot coordinates {
+        (Store raw data,666092228)
+        (Store hash pointer,34850)
+        (Log raw data,88857033)
+        (Log hash pointer, 25995)
+      };
+      \legend{Type}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Size: 1MB}
+  \label{}
+\end{figure}
 
 \clearpage
 
