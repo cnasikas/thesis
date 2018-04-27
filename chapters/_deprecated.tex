@@ -33,6 +33,157 @@ An important point, is that $s$ must be chosen uniformly at random and be long e
 
 There is a number of practical constructed stream ciphers. The most wide used are Salsa20~\cite{Salsa20}, ChaCha~\cite{chacha} and RC4.
 
+\subsection{Diffie–Hellman key exchange}
+\label{preliminaries:pub:dh}
+
+The protocol works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
+
+\begin{enumerate}
+  \item Alice and Bob  with the use of a group generation algorithm $\calg$ agree on the description of a finite group $\G$ with input $1^{n}$. The common input for Alice and Bob is the tuple $(p, m, g)$ where $p$ is a large prime and $g$ is the generator of the finite group $\G$ of order $m$.
+  \item Alice choose a random index $x_a \rselect{\Z_m}$ and computes $y_a \leftarrow{g^{x_a}}modp$. Alice sends $y_a$ to Bob.
+  \item Bob choose a random index $x_b \rselect{\Z_m}$ and computes $y_b \leftarrow{g^{x_b}}modp$. Alice sends $y_b$ to Bob.
+  \item Alice outputs $k = y_b^{x_a}modp = g^{{x_a}{x_b}}modp$
+  \item Bob outputs $k = y_a^{x_b}modp = g^{{x_a}{x_b}}modp$
+\end{enumerate}
+
+The security of Diffie–Hellman key exchange is based on the difficulty of the discrete log problem (DLOG), which is the problem of computing $x$ given $g^{x}$ in a cyclic group $\G$. A passive adversary cannot compute the private key $k$ because she does not know $x_a$ or $x_b$. To find them she have to compute the discrete log which is assumed to be hard.
+
+\begin{figure}[!hb]
+  \centering
+  \begin{tikzpicture}
+    \matrix (m)[matrix of nodes, column  sep=2cm,row  sep=4mm, nodes={draw=none, anchor=center,text depth=0pt} ]{
+    Alice & & Bob\\
+    $x_a \rselect{\Z_m}$ & & $x_b \rselect{\Z_m}$ \\
+    $y_a \leftarrow{g^{x_a}}modp$ & & $y_b \leftarrow{g^{x_b}}modp$ \\
+     & $y_a$ & \\
+     & $y_b$ & \\
+     $k = y_b^{x_a}modp$ & & $k = y_a^{x_b}modp$ \\
+    };
+
+    \draw[shorten <=-1.5cm,shorten >=-1.5cm] (m-1-1.south east)--(m-1-1.south west);
+    \draw[shorten <=-1.5cm,shorten >=-1.5cm] (m-1-3.south east)--(m-1-3.south west);
+    \draw[shorten <=-1cm,shorten >=-1cm,-latex] (m-4-2.south west)--(m-4-2.south east);
+    \draw[shorten <=-1cm,shorten >=-1cm,-latex] (m-5-2.south east)--(m-5-2.south west);
+
+  \end{tikzpicture}
+  \caption{Diffie–Hellman key exchange}
+  \label{fig:crypto:dh}
+\end{figure}
+
+\subsection{The RSA Cryptosystem}
+\label{preliminaries:pub:rsa}
+
+The RSA cryptosystem~\cite{rsa} was developed in 1977 at MIT by Ron Rivest, Adi Shamer, and Leonard Adleman and is still the most widely used. It was the first public-key encryption scheme that could both encrypt and sign messages~\cite{kiagias:crypto}.
+
+It works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
+
+\begin{itemize}
+  \item Key Generation:
+    \begin{enumerate}
+      \item Select randomly to large primes $p, q$ of length $n$ bits
+      \item Compute $N = p*q$
+      \item Calculate $\phi(N) = (p - 1)(q - 1)$
+      \item Find $e$ such that $gcd(e, \phi(N)) = 1$
+      \item Compute $d = e^{-1} mod\phi(N)$
+      \item Public key is $(N, e)$ and private key is $(N, d)$
+    \end{enumerate}
+  \item Encryption: On input a public key $p_k = (N, e)$ and a message $m$ it computes the ciphertext $c$ as $ Enc_{p_k}(m) = m^{e}modN$
+  \item Decryption: On input a private key $s_k = (N, d)$ and a ciphertext $c$ it computes the message $m$ as $ Dec_{s_k}(c) = c^{d}modN = m^{ed}modN = m$
+\end{itemize}
+
+If $p, q$ are known or obvious any interested party can compute $\phi(N)$ and therefore $d$. The RSA Cryptosystem is secure under the assumption that factorization of $N$ is believed to be hard.
+
+The above mention protocol is not secure as the encryption function is deterministic and for the same input is produces the same output. As mention, a deterministic cryptosystem is not secure. One way to randomize the encryption function, is by appending random padding to message.
+
+\subsection{The El Gamal Cryptosystem}
+\label{preliminaries:pub:el_gamal}
+
+The El Gamal Cryptosystem~\cite{el_gamal} is another popular and wide-used encryption scheme. The security of the system is based on the hardness of discrete log problem. It works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
+
+\begin{itemize}
+  \item Key generation:
+    \begin{enumerate}
+        \item Run a group generation algorithm $\calg$ to produce the description of a finite group $\G$ with input $1^{n}$. The output is the tuple $(p, m, g)$ where $p$ is a large prime and $g$ is the generator of the finite group $\G$ of order $m$.
+        \item Select randomly $x \rselect{\Z_m}$
+        \item Calculate $h = g^{x}modp$
+        \item The public key is $((p, m, g), h)$
+        \item The secret key is $x$
+    \end{enumerate}
+  \item Encryption: Encrypts a message $m \in \G$
+    \begin{enumerate}
+      \item Choose randomly $r \rselect{\Z_m}$
+      \item Compute $G = g^{r}modp$
+      \item Compute $M = mh^{r}modp$
+      \item Return $c = (G, M)$
+    \end{enumerate}
+  \item Decryption: Decrypts a ciphertext $c = (G, M)$
+    \begin{enumerate}
+      \item Compute $m = M / G^{x} modp$
+      \item Return $m$
+    \end{enumerate}
+\end{itemize}
+
+Another way to express the security of El Gamal scheme is under the decisional Diffie Hellman problem (DDH) which states that the tuples $(g^a, g^b, g^c)$ and $(g^a, g^b, g^{ab})$ are indistinguishable by a probabilistic polynomial-time (PPT) adversary.
+
+\subsection{RSA signatures}
+\label{preliminaries:sign:rsa}
+
+As describes in~\ref{preliminaries:pub:rsa} the RSA cryptosystem can be used to sign messages. The RSA digital signature scheme works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
+
+\begin{itemize}
+  \item Key Generation:
+    \begin{enumerate}
+      \item Select randomly to large primes $p, q$ of length $n$ bits
+      \item Compute $N = p*q$
+      \item Calculate $\phi(N) = (p - 1)(q - 1)$
+      \item Find $e$ such that $gcd(e, \phi(N)) = 1$
+      \item Compute $d = e^{-1} mod\phi(N)$
+      \item Verification key is $(N, e)$ and signing key is $(N, d)$
+    \end{enumerate}
+  \item Sign: On input a sign key $s_k = (N, d)$ and a message $m \in \Z^{*}_{N}$ it computes the signature $\sigma$ as $ Sign_{s_k}(m) = m^{d}modN$
+  \item Verify: On input a verification key $p_k = (N, e)$, a message $m \in \Z^{*}_{N}$ and a signature $\sigma \in \Z^{*}_{N}$ it outputs $1$ if and only if $m \stackrel{?}{=} Verify_{p_k}(\sigma, m) = \sigma^{e}modN$
+\end{itemize}
+
+The above signature scheme is not secure as an adversary can forge a sign, based on the public key alone, by choosing an arbitrary $\sigma \in \Z^{*}_{N}$ and compute $m = \sigma^{e}modN$. Another attack on the RSA signature scheme allows the adversary to output a forgery on any message of the adversary's choice. One proposal to protect against those attacks, that can be proven secure under certain assumptions, is by applying a cryptographic hash function $H$ to the message before sign it. The minimal requirement for the system to be secure is that $H$ must be collision-resistant.
+
+\subsection{Diffie-Hellman key exchange}
+\label{preliminaries:el_curves:dh}
+
+The elliptic curve analogue of Diffie-Hellman key exchange protocol (ECDH) defined in~\ref{preliminaries:pub:dh} can implemented as follows~\cite{elliptic_curves}:
+
+\begin{enumerate}
+  \item Alice and Bob agree on elliptic curve $E$ over a finite field $F_p$ for a prime $p$ such that the discrete log problem is hard in $E$ over $F_p$. They also agree on a point $P$ on $E$.
+  \item Alice choose a secret integer $a$ and computes $P_a = aP$. Alice sends $P_a$ to Bob
+  \item Bob choose a secret integer $b$ and computes $P_b = bP$. Bob sends $P_b$ to Alice
+  \item Alice computes $k = aP_b = abP$
+  \item Bob computes $k = bP_a = abP$
+\end{enumerate}
+
+The security of the protocol is based on ECDLP (§~\ref{preliminaries:el_curves:key_gen}).
+
+\subsection{The El Gamal Cryptosystem}
+\label{preliminaries:el_curves:el_gamal}
+
+The elliptic curve analogue of El Gamal cryptosystem defined in~\ref{preliminaries:pub:el_gamal} can implemented as follows~\cite{elliptic_curves_2}:
+
+\begin{itemize}
+  \item Key generation: Run elliptic curve key generation algorithm defined in~\ref{preliminaries:el_curves:key_gen} and get a key pair $(Q, d)$.
+  \item Encryption: Encrypts a message $m$ represented as a point $M$ in $E$ over $\F_p$
+    \begin{enumerate}
+      \item Choose randomly $r \rselect{\in \Z_q}$
+      \item Compute $G = rP$
+      \item Compute $C = M + rQ$
+      \item Return $c = (G, C)$
+    \end{enumerate}
+  \item Decryption: Decrypts a ciphertext $c$
+    \begin{enumerate}
+      \item Compute $M = C - dG$, and extract $m$ from $M$
+      \item return $M$
+    \end{enumerate}
+\end{itemize}
+
+An eavesdropper adversary who wants to obtain $M$ needs to compute $rQ$; given $Q$, $P$ and $G = rP$ find $r \in Z_q$. This is the elliptic curve analogue of the Diffie-Hellman problem.
+
 \subsection{Enigma}\label{blockchain:impl:enigma}
 
 Enigma is a decentralized computation platform with guaranteed privacy~\cite{DBLP:journals/corr/ZyskindNP15}. It operates through a peer-to-peer network enabling

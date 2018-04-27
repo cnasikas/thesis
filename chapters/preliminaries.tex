@@ -131,98 +131,6 @@ The DLOG problem is believed to be hard for specific group families of $\G$. For
 
 The DDH problem is weaker than the CDH problem and it holds that $DDH \leq CDH$; If an adversary could solve CDH, she can compute $g^{ab}$ and comparing it to $g^{c}$ and easily solves the DDH.
 
-\subsection{Diffie–Hellman key exchange}
-\label{preliminaries:pub:dh}
-
-The protocol works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
-
-\begin{enumerate}
-  \item Alice and Bob  with the use of a group generation algorithm $\calg$ agree on the description of a finite group $\G$ with input $1^{n}$. The common input for Alice and Bob is the tuple $(p, m, g)$ where $p$ is a large prime and $g$ is the generator of the finite group $\G$ of order $m$.
-  \item Alice choose a random index $x_a \rselect{\Z_m}$ and computes $y_a \leftarrow{g^{x_a}}modp$. Alice sends $y_a$ to Bob.
-  \item Bob choose a random index $x_b \rselect{\Z_m}$ and computes $y_b \leftarrow{g^{x_b}}modp$. Alice sends $y_b$ to Bob.
-  \item Alice outputs $k = y_b^{x_a}modp = g^{{x_a}{x_b}}modp$
-  \item Bob outputs $k = y_a^{x_b}modp = g^{{x_a}{x_b}}modp$
-\end{enumerate}
-
-The security of Diffie–Hellman key exchange is based on the difficulty of the discrete log problem (DLOG), which is the problem of computing $x$ given $g^{x}$ in a cyclic group $\G$. A passive adversary cannot compute the private key $k$ because she does not know $x_a$ or $x_b$. To find them she have to compute the discrete log which is assumed to be hard.
-
-\begin{figure}[!hb]
-  \centering
-  \begin{tikzpicture}
-    \matrix (m)[matrix of nodes, column  sep=2cm,row  sep=4mm, nodes={draw=none, anchor=center,text depth=0pt} ]{
-    Alice & & Bob\\
-    $x_a \rselect{\Z_m}$ & & $x_b \rselect{\Z_m}$ \\
-    $y_a \leftarrow{g^{x_a}}modp$ & & $y_b \leftarrow{g^{x_b}}modp$ \\
-     & $y_a$ & \\
-     & $y_b$ & \\
-     $k = y_b^{x_a}modp$ & & $k = y_a^{x_b}modp$ \\
-    };
-
-    \draw[shorten <=-1.5cm,shorten >=-1.5cm] (m-1-1.south east)--(m-1-1.south west);
-    \draw[shorten <=-1.5cm,shorten >=-1.5cm] (m-1-3.south east)--(m-1-3.south west);
-    \draw[shorten <=-1cm,shorten >=-1cm,-latex] (m-4-2.south west)--(m-4-2.south east);
-    \draw[shorten <=-1cm,shorten >=-1cm,-latex] (m-5-2.south east)--(m-5-2.south west);
-
-  \end{tikzpicture}
-  \caption{Diffie–Hellman key exchange}
-  \label{fig:crypto:dh}
-\end{figure}
-
-\subsection{The RSA Cryptosystem}
-\label{preliminaries:pub:rsa}
-
-The RSA cryptosystem~\cite{rsa} was developed in 1977 at MIT by Ron Rivest, Adi Shamer, and Leonard Adleman and is still the most widely used. It was the first public-key encryption scheme that could both encrypt and sign messages~\cite{kiagias:crypto}.
-
-It works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
-
-\begin{itemize}
-  \item Key Generation:
-    \begin{enumerate}
-      \item Select randomly to large primes $p, q$ of length $n$ bits
-      \item Compute $N = p*q$
-      \item Calculate $\phi(N) = (p - 1)(q - 1)$
-      \item Find $e$ such that $gcd(e, \phi(N)) = 1$
-      \item Compute $d = e^{-1} mod\phi(N)$
-      \item Public key is $(N, e)$ and private key is $(N, d)$
-    \end{enumerate}
-  \item Encryption: On input a public key $p_k = (N, e)$ and a message $m$ it computes the ciphertext $c$ as $ Enc_{p_k}(m) = m^{e}modN$
-  \item Decryption: On input a private key $s_k = (N, d)$ and a ciphertext $c$ it computes the message $m$ as $ Dec_{s_k}(c) = c^{d}modN = m^{ed}modN = m$
-\end{itemize}
-
-If $p, q$ are known or obvious any interested party can compute $\phi(N)$ and therefore $d$. The RSA Cryptosystem is secure under the assumption that factorization of $N$ is believed to be hard.
-
-The above mention protocol is not secure as the encryption function is deterministic and for the same input is produces the same output. As mention, a deterministic cryptosystem is not secure. One way to randomize the encryption function, is by appending random padding to message.
-
-\subsection{The El Gamal Cryptosystem}
-\label{preliminaries:pub:el_gamal}
-
-The El Gamal Cryptosystem~\cite{el_gamal} is another popular and wide-used encryption scheme. The security of the system is based on the hardness of discrete log problem. It works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
-
-\begin{itemize}
-  \item Key generation:
-    \begin{enumerate}
-        \item Run a group generation algorithm $\calg$ to produce the description of a finite group $\G$ with input $1^{n}$. The output is the tuple $(p, m, g)$ where $p$ is a large prime and $g$ is the generator of the finite group $\G$ of order $m$.
-        \item Select randomly $x \rselect{\Z_m}$
-        \item Calculate $h = g^{x}modp$
-        \item The public key is $((p, m, g), h)$
-        \item The secret key is $x$
-    \end{enumerate}
-  \item Encryption: Encrypts a message $m \in \G$
-    \begin{enumerate}
-      \item Choose randomly $r \rselect{\Z_m}$
-      \item Compute $G = g^{r}modp$
-      \item Compute $M = mh^{r}modp$
-      \item Return $c = (G, M)$
-    \end{enumerate}
-  \item Decryption: Decrypts a ciphertext $c = (G, M)$
-    \begin{enumerate}
-      \item Compute $m = M / G^{x} modp$
-      \item Return $m$
-    \end{enumerate}
-\end{itemize}
-
-Another way to express the security of El Gamal scheme is under the decisional Diffie Hellman problem (DDH) which states that the tuples $(g^a, g^b, g^c)$ and $(g^a, g^b, g^{ab})$ are indistinguishable by a probabilistic polynomial-time (PPT) adversary.
-
 \section{Digital signatures}
 \label{preliminaries:sign}
 
@@ -319,27 +227,6 @@ The algorithm work as follows~\cite{dsa}:
     \end{enumerate}
 \end{itemize}
 
-\subsection{RSA signatures}
-\label{preliminaries:sign:rsa}
-
-As describes in~\ref{preliminaries:pub:rsa} the RSA cryptosystem can be used to sign messages. The RSA digital signature scheme works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
-
-\begin{itemize}
-  \item Key Generation:
-    \begin{enumerate}
-      \item Select randomly to large primes $p, q$ of length $n$ bits
-      \item Compute $N = p*q$
-      \item Calculate $\phi(N) = (p - 1)(q - 1)$
-      \item Find $e$ such that $gcd(e, \phi(N)) = 1$
-      \item Compute $d = e^{-1} mod\phi(N)$
-      \item Verification key is $(N, e)$ and signing key is $(N, d)$
-    \end{enumerate}
-  \item Sign: On input a sign key $s_k = (N, d)$ and a message $m \in \Z^{*}_{N}$ it computes the signature $\sigma$ as $ Sign_{s_k}(m) = m^{d}modN$
-  \item Verify: On input a verification key $p_k = (N, e)$, a message $m \in \Z^{*}_{N}$ and a signature $\sigma \in \Z^{*}_{N}$ it outputs $1$ if and only if $m \stackrel{?}{=} Verify_{p_k}(\sigma, m) = \sigma^{e}modN$
-\end{itemize}
-
-The above signature scheme is not secure as an adversary can forge a sign, based on the public key alone, by choosing an arbitrary $\sigma \in \Z^{*}_{N}$ and compute $m = \sigma^{e}modN$. Another attack on the RSA signature scheme allows the adversary to output a forgery on any message of the adversary's choice. One proposal to protect against those attacks, that can be proven secure under certain assumptions, is by applying a cryptographic hash function $H$ to the message before sign it. The minimal requirement for the system to be secure is that $H$ must be collision-resistant.
-
 \section{Elliptic-curves}
 \label{preliminaries:el_curves}
 
@@ -354,20 +241,6 @@ Cryptography is primarily interested in elliptic curves over $\F_p$: the field o
 \end{equation*}
 
 where $a, b \in \F_p$. A pair $(x, y)$ where $x, y \in \F_p$ is a point on the curve if it satisfies the equation where $E$ is defined. There is a special point, called \textbf{point at infinity} and denoted by $\infty$, where is also on the curve and serve as the identity element~\cite{elliptic_curves_2}.
-
-Let $P = (x_1, y_1)$ and $Q = (x_2, y_2)$ two points on the elliptic curve $E$. Any two points on a curve add to produce a third point on the curve. A third point $R$ on the curve $E$ is defined as~\cite{elliptic_curves}:
-
-\begin{equation*}
-  R = P + Q
-\end{equation*}
-
-We can find the third point $R$ as follows~\cite{elliptic_curves}:
-
-\begin{enumerate}
-  \item Draw the line $L$ through $P$ and $Q$
-  \item $L$ intersects to a third point $-R$
-  \item Reflect $-R$ across the $x$-axis to obtain $R$
-\end{enumerate}
 
 \begin{figure}
   \centering
@@ -390,13 +263,80 @@ We can find the third point $R$ as follows~\cite{elliptic_curves}:
             ticks=none
         ]
 
-    \addplot[red] {sqrt(x^3-x+1)} node[right, black] {$y^2 = x^3 -x + 1$};
+    \addplot[red] {sqrt(x^3-x+1)} node[right, black] {$y^2 = x^3 - x + 1$};
     \addplot[red] {-sqrt(x^3-x+1)};
 
     \end{axis}
     \end{tikzpicture}
   \caption{Elliptic curve}
 \end{figure}
+
+\subsection[Points addition]{Points addition~\cite{elliptic_curves}}
+\label{preliminaries:el_curves:addition}
+
+Let $P = (x_1, y_1)$ and $Q = (x_2, y_2)$ two points on the elliptic curve $E$ where $P \neq Q$ and $P, Q \neq \infty$. Any two points on a curve add to produce a third point on the curve. A third point $R = (x_3, y_3)$ on the curve $E$ is defined as:
+
+\begin{equation*}
+  R = P + Q
+\end{equation*}
+
+We can find the third point $R$ as follows:
+
+\begin{enumerate}
+  \item Draw the line $L$ through $P$ and $Q$.
+  \item Find the third point $-R$ that $L$ intersects with.
+  \item Reflect $-R$ across the $x$-axis to obtain $R$
+\end{enumerate}
+
+The slope of the line $L$ can be found as
+
+\begin{equation*}
+  m = \dfrac{y_2 - y_1}{x_2 - x_1}
+\end{equation*}
+
+and assuming $x_1 \neq x_2$ the equation of $L$ is
+
+\begin{equation*}
+  y = m(x - x_1) + y_1
+\end{equation*}
+
+To find the intersection with $E$, substitute $y$ to get
+
+\begin{equation*}
+  (m(x - x_1) + y_1)^{2} = x^3 + ax + b
+\end{equation*}
+
+The three roots of cubic polynomial correspond to the three points of intersection of $L$ with $E$. As we already know the two of the tree roots, since $P$ and $Q$ are points on both $L$ and $E$, finding the third root is easy. For a cubic polynomial $x^{3} + ax^{2} + bx + c$ with roots $r, s, t$ it holds that~\cite{elliptic_curves}
+
+\begin{equation*}
+  x^{3} + ax^{2} + bx + c = (x - r)(x - s)(x - t) = x^{3} - (r + s + t)x^{2} + \dots
+\end{equation*}
+
+Therefore,
+
+\begin{equation*}
+  r + s + t = -a
+\end{equation*}
+
+Knowing the two roots $r, s$ we can recover the third as $t = -a - r  - s$.
+
+So, to find the third point where $L$ intersects with $E$ we obtain
+
+\begin{equation*}
+  x = m^{2} + - x_1 - x_2
+\end{equation*}
+
+and
+
+\begin{equation*}
+  y = m(x - x_1) + y_1
+\end{equation*}
+
+Finally, to reflect $-R$ to the $x$-axis to obtain $R$ we change the sign of $y_1$. The final equations that give the third point are
+
+\begin{align*}
+  x_3 = m^{2} + - x_1 - x_2, && y_3 = m(x_1 - x_3) - y_1
+\end{align*}
 
 \begin{figure}
   \centering
@@ -437,12 +377,41 @@ We can find the third point $R$ as follows~\cite{elliptic_curves}:
 
     \end{axis}
     \end{tikzpicture}
-  \caption{Elliptic curve point addition}
+  \caption{Addition of points on elliptic curves}
 \end{figure}
 
-Cyclic subgroups of some such elliptic curve groups can be used to implement discrete logarithm systems. The parameters that describe an elliptic curve $E$ defined over a finite field $\F_p$, a base (generator) point $P \in E$, and its order $q$ should be chosen carefully so that the elliptic curve discrete logarithm problem (ECDLP) is resistant to all known attacks. ECDLP is the problem of finding $d$ given $Q = dP$ and $P$ and is assumed to be hard.
+\subsection[Points doubling]{Points doubling~\cite{elliptic_curves}}
+\label{preliminaries:el_curves:doubling}
 
-Blockchain uses only elliptic curves for key pair generation and transaction signing (ECDSA). Bitcoin and Ethereum use a specific elliptic curve for ECDSA which is defined in the secp256k1 standard established by the National Institute of Standards and Technology (NIST).
+Let $P = (x_1, y_1)$ a points on the elliptic curve $E$ where $P \neq -P$ and $P \neq \infty$. Then $2P = (x_3, y_3)$. Unlike ~\ref{preliminaries:el_curves:addition}, where we have two points, in point doubling we have only one point, thus we cannot draw the line $L$. In that case, we use the tangent line $L$ to the curve $E$ at point $P$.
+
+The slope of $L$ can be found as
+
+\begin{equation*}
+  m = \dfrac{dy}{dx} = \dfrac{3x_1^{2} + a}{2y_1}
+\end{equation*}
+
+Assuming $y_1 \neq 0$ the equation of $L$ is
+
+\begin{equation*}
+  y = m(x - x_1) + y_1
+\end{equation*}
+
+Therefore, proceeding as in~\ref{preliminaries:el_curves:addition}, we obtain
+
+\begin{align*}
+  x_3 = m^{2} + - 2x_1, && y_3 = m(x_1 - x_3) - y_1
+\end{align*}
+
+\subsection{Elliptic curve discrete logarithm problem (ECDLP)}
+
+As with multiplicative groups, cyclic subgroups of some such elliptic curve groups can be used to implement secure systems based on the discrete logarithm problem which is as well assumed to be hard.
+
+\begin{dfn}
+  The elliptic curve discrete logarithm problem (ECDLP) is as follows: given an elliptic curve $E$ over a finite field $\F_p$ and two points $P, Q \in E$, find an integer $d \in \Z_p$ such that $Q = dP$.
+\end{dfn}
+
+The parameters that describe an elliptic curve $E$ defined over a finite field $\F_p$, a base (generator) point $P \in E$, and its order $q$ should be chosen carefully so that the ECDLP is resistant to all known attacks.
 
 \subsection[Key generation]{Key generation~\cite{elliptic_curves_2}}
 \label{preliminaries:el_curves:key_gen}
@@ -457,48 +426,10 @@ Let $E$ be an elliptic curve over $\F_p$ and $P$ a generator point in $E$ of ord
 
 The prime $p$, the curve $E$ the generator point $P$, its order $q$ and the public key $Q$ are public and finding the secret key $d$ is equivalent to solving the ECDLP.
 
-\subsection{Diffie-Hellman key exchange}
-\label{preliminaries:el_curves:dh}
-
-The elliptic curve analogue of Diffie-Hellman key exchange protocol (ECDH) defined in~\ref{preliminaries:pub:dh} can implemented as follows~\cite{elliptic_curves}:
-
-\begin{enumerate}
-  \item Alice and Bob agree on elliptic curve $E$ over a finite field $F_p$ for a prime $p$ such that the discrete log problem is hard in $E$ over $F_p$. They also agree on a point $P$ on $E$.
-  \item Alice choose a secret integer $a$ and computes $P_a = aP$. Alice sends $P_a$ to Bob
-  \item Bob choose a secret integer $b$ and computes $P_b = bP$. Bob sends $P_b$ to Alice
-  \item Alice computes $k = aP_b = abP$
-  \item Bob computes $k = bP_a = abP$
-\end{enumerate}
-
-The security of the protocol is based on ECDLP (§~\ref{preliminaries:el_curves:key_gen}).
-
-\subsection{The El Gamal Cryptosystem}
-\label{preliminaries:el_curves:el_gamal}
-
-The elliptic curve analogue of El Gamal cryptosystem defined in~\ref{preliminaries:pub:el_gamal} can implemented as follows~\cite{elliptic_curves_2}:
-
-\begin{itemize}
-  \item Key generation: Run elliptic curve key generation algorithm defined in~\ref{preliminaries:el_curves:key_gen} and get a key pair $(Q, d)$.
-  \item Encryption: Encrypts a message $m$ represented as a point $M$ in $E$ over $\F_p$
-    \begin{enumerate}
-      \item Choose randomly $r \rselect{\in \Z_q}$
-      \item Compute $G = rP$
-      \item Compute $C = M + rQ$
-      \item Return $c = (G, C)$
-    \end{enumerate}
-  \item Decryption: Decrypts a ciphertext $c$
-    \begin{enumerate}
-      \item Compute $M = C - dG$, and extract $m$ from $M$
-      \item return $M$
-    \end{enumerate}
-\end{itemize}
-
-An eavesdropper adversary who wants to obtain $M$ needs to compute $rQ$; given $Q$, $P$ and $G = rP$ find $r \in Z_q$. This is the elliptic curve analogue of the Diffie-Hellman problem.
-
 \subsection{Elliptic Curve Digital Signature Algorithm (ECDSA)}
 \label{preliminaries:sign:el_curves:ecdsa}
 
-The Elliptic Curve Digital Signature Algorithm (ECDSA) is a variant of the Digital Signature Algorithm (DSA) which use elliptic Curves. It is the most widely standardised elliptic curve-based signature scheme~\cite{elliptic_curves_2}.
+The Elliptic Curve Digital Signature Algorithm (ECDSA)~\cite{ecdsa} is a variant of the Digital Signature Algorithm (DSA) which use elliptic Curves. It is the most widely standardized elliptic curve-based signature scheme~\cite{elliptic_curves_2}.
 
 Let $E$ be an elliptic curve over $\F_p$, a generator point $P$ of order $q$ and $H$ a cryptographic hash function where $H: \{0, 1\}^{*} \rightarrow  \{0, 1\}^{q}$. The ECDSA is defined as follows~\cite{elliptic_curves_2}:
 
@@ -525,6 +456,8 @@ Let $E$ be an elliptic curve over $\F_p$, a generator point $P$ of order $q$ and
       \item If $v \stackrel{?}{=} r$ then output $1$ else $0$.
     \end{enumerate}
 \end{itemize}
+
+Blockchain uses elliptic curves for key pair generation and transaction signing (ECDSA). Bitcoin and Ethereum use a specific elliptic curve for ECDSA~\cite{ecdsa} which its parameters are defined in the secp256k1 standard~\cite{secp}.
 
 \section{Homomorphic Encryption}
 \label{preliminaries:homo}
