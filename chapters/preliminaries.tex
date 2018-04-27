@@ -127,7 +127,7 @@ The security of a block cipher is much stronger than semantic security~\cite{bon
 \section{Public Key Cryptography}
 \label{preliminaries:pub}
 
-As we see in~\ref{preliminaries:sym} a secret key has to been agreed prior to communication. In 1976, Whitfield Diffie and Martin Hellman published a paper called New Directions in Cryptography~\cite{Diffie:2006:NDC:2263321.2269104} that changed the way of communication. They proposed a protocol that enables two parties, having no prior communication, to establish a secret key over an insecure channel in the presence of eavesdropping adversaries. The protocol uses two keys, one for encryption and one for decryption. The encryption key is called the public key and the decryption key is called the private key. Every party has a key pair consist of a public and a private key. The public key is made available for anyone that want to encrypt a message for the receiver; The receiver may post the public key online beforehand. When a party wants to send a message to another party she use the public key of the person of interest and encrypts the message using that key. The receiver of the message decrypts the ciphertext with the use of her private key. Only the rightful owner of the private key can decrypt a message that was encrypt with the corresponding public key. In an essence, a key pair is an identity and Blockchain technology smartly utilizes that to provide anonymity to the users of the system.
+As we see in~\ref{preliminaries:sym} a secret key has to been agreed prior to communication. In 1976, Whitfield Diffie and Martin Hellman published a paper called New Directions in Cryptography~\cite{Diffie:2006:NDC:2263321.2269104} that changed the way of communication. They proposed a protocol that enables two parties, having no prior communication, to establish a secret key over an insecure channel in the presence of eavesdropping adversaries. The protocol uses two keys, one for encryption and one for decryption. The encryption key is called the public key and the decryption key is called the secret key (or private). Every party has a key pair consist of a public and a secret key. The public key is made available for anyone that want to encrypt a message for the receiver; The receiver may post the public key online beforehand. When a party wants to send a message to another party she use the public key of the person of interest and encrypts the message using that key. The receiver of the message decrypts the ciphertext with the use of her private key. Only the owner of the private key can decrypt a message that was encrypted with the corresponding public key. In an essence, a key pair is an identity and the blockchain smartly utilizes that to provide anonymous identities to the users of the system.
 
 More formally, a public-key encryption scheme is composed of the following probabilistic, polynomial-time algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
@@ -142,6 +142,29 @@ Likewise, a public-key cryptosystem must satisfy the correctness property: for a
 \begin{equation*}
   \cald_{s_k}(\cale_{p_k}(m)) = m
 \end{equation*}
+
+Many important and wide-used public-key schemes base their security on mathematical problems that, under certain conditions, are assumed to be hard; they cannot be solved in polynomial time. Such problems are the discrete logarithm and the factoring problem.
+
+\subsection[Discrete Logarithm and Diffie-Hellman Assumptions]{Discrete Logarithm and Diffie-Hellman Assumptions~\cite{Katz:2014:IMC:2700550, kiagias:crypto}}
+\label{preliminaries:pub:dlog}
+
+In cryptography, any system to be considered secure has to be provable secure. There are cryptosystems which are perfectly secure~\cite{shannon_otp}, such as the one-time pad~\cite{shannon_otp}, and others that perfect security cannot be achieved. In such case, the security is proven by computational security assumptions; reductions to a particular problem which is assumed, under certain conditions, to be hard to solve in polynomial-time. The discrete log problem is one of those problems and significant cryptographic schemes, such as the Diffie-Hellman key exchange and El Gamal encryption and signature protocol, was built under the discrete log computational hardness assumption.
+
+\begin{dfn}
+  Let $\G$ be a cyclic group of order $q$ and let $g$ be a generator of $\G$. The \textbf{discrete log problem} (DLOG) is as follows: given a random element $h \in \G$, find an integer $x \in \Z_q$ such that $g^{x} = h$.
+\end{dfn}
+
+\begin{dfn}
+ The \textbf{computational Diffie-Hellman problem} (CDH) is as follows: given a cyclic group $\G$ of order $q$, a generator $g \in \G$, $g^{a}$ and $g^{b}$ where $a, b \rselect{\Z_q}$, compute $g^{ab}$.
+\end{dfn}
+
+\begin{dfn}
+ The \textbf{decisional Diffie-Hellman problem} (DDH) is as follows: given a cyclic group $\G$ of order $q$, a generator $g \in \G$, and $g^{a}, g^{b}, g^{c}$ where $a, b, c \rselect{\Z_q}$, decide if $c = ab$ or $c \rselect{\Z_q}$.
+\end{dfn}
+
+The DLOG problem is believed to be hard for specific group families of $\G$. For example, solving the DLOG for the subgroup of order $q$ of $\Z^{*}_{p}$, where $p$ and $q$ are primes of size at least $2048$-bits and $256$-bits respectively, is considered infeasible. This assumption is called the \textbf{discrete log assumption}.
+
+The DDH problem is weaker than the CDH problem and it holds that $DDH \leq CDH$; If an adversary could solve CDH, she can compute $g^{ab}$ and comparing it to $g^{c}$ and easily solves the DDH.
 
 \subsection{Diffie–Hellman key exchange}
 \label{preliminaries:pub:dh}
@@ -208,7 +231,7 @@ The above mention protocol is not secure as the encryption function is determini
 \subsection{The El Gamal Cryptosystem}
 \label{preliminaries:pub:el_gamal}
 
-The El Gamal Cryptosystem~\cite{el_gamal} is another popular and wide-used encryption scheme. It is based on the Diffie–Hellman key exchange and the security of the system is based on the hardness of discrete log problem. It works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
+The El Gamal Cryptosystem~\cite{el_gamal} is another popular and wide-used encryption scheme. The security of the system is based on the hardness of discrete log problem. It works as follows~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
 \begin{itemize}
   \item Key generation:
@@ -452,7 +475,7 @@ We can find the third point $R$ as follows~\cite{elliptic_curves}:
   \caption{Elliptic curve point addition}
 \end{figure}
 
-Cyclic subgroups of such elliptic curve groups can be used to implement discrete logarithm systems. The parameters that describe an elliptic curve $E$ defined over a finite field $\F_p$, a base (generator) point $P \in E$, and its order $q$ should be chosen carefully so that the elliptic curve discrete logarithm problem (ECDLP) is resistant to all known attacks. ECDLP is the problem of finding $d$ given $Q = dP$ and $P$ and is assumed to be hard.
+Cyclic subgroups of some such elliptic curve groups can be used to implement discrete logarithm systems. The parameters that describe an elliptic curve $E$ defined over a finite field $\F_p$, a base (generator) point $P \in E$, and its order $q$ should be chosen carefully so that the elliptic curve discrete logarithm problem (ECDLP) is resistant to all known attacks. ECDLP is the problem of finding $d$ given $Q = dP$ and $P$ and is assumed to be hard.
 
 Blockchain uses only elliptic curves for key pair generation and transaction signing (ECDSA). Bitcoin and Ethereum use a specific elliptic curve for ECDSA which is defined in the secp256k1 standard established by the National Institute of Standards and Technology (NIST).
 
