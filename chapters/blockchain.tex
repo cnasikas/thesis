@@ -113,7 +113,7 @@ Every bitcoin transaction has a unique transaction id (txid) which comes from th
   \label{fig:bl_tx:id}
 \end{figure}
 
-Payments are done throught linking transaction nodes and money is a chain of transactions. All transactions together form a transaction graph which is public and everyone participating in
+Payments are done thought linking transaction nodes and money is a chain of transactions. All transactions together form a transaction graph which is public and everyone participating in
 the network can see and add new transactions to the graph. Spendable money are outgoing unlinked edges which are called unspent transaction outputs (UTXO). So for a user to spent her money
 she has to claim her UTXO's, meaning to find all the UTXO that have her public key as recipient given she has the corresponding secret key. A user too spent money, first she find a transaction
 that has a UTXO of which she is the owner. Then she creates one transaction with one incoming and one outgoing edge and connect the incoming edge of the new transaction with the old UTXO.
@@ -443,17 +443,6 @@ an internal pricing mechanism used to execute contracts and allocate resources o
 Turing-complete language for writing smart contracts that enables anyone to build distributed applications making the process much easier and efficient than ever before.
 Ethereum use a Proof-of-Work consensus mechanism called Ethash and has been designed to be ASIC-resistant~\cite{ethash}.
 Soon Ethereum will be moved to a Proof-of-Stake consensus mechanism called Casper. Ethereum can be implemented as well as a permissioned blockchain~\cite{consortium_chain_development,quorum}.
-
-
-\subsection{Hyperledger}\label{blockchain:impl:hyperledger}
-
-Hyperledger is an open-source permissioned blockchain and provides a flexible, modular and secure architecture with a
-pluggable consensus mechanism is among the most popular permissioned blockchains~\cite{DBLP:journals/corr/abs-1708-05665}. In Hyperledger, Fabric a predefined list of
-entities is not only known, but their identities and roles are registered and verified with a central registry service running within the system.
-It also supports smart contracts on the blockchain, also known as chaincode~\cite{bl_consensus} and does not support a cryptocurrency system. The default consensus
-mechanism of Hyperledger is the Practical Byzantine Fault Tolerance algorithm (PBFT) which assumes authenticated nodes.
-Hyperledger version 0.6 fails to scale up to more than 16 nodes~\cite{DBLP:journals/corr/abs-1708-05665} but version 1.0 architecture has been designed to address transaction and
-node scalability in a manner adherent with regulatory and industry standard~\cite{imb_hypeledger_adv}.
 
 \subsection{Cardano}\label{blockchain:impl:cardano}
 
