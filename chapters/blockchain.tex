@@ -73,11 +73,13 @@ by the same entity leading to deanonimity~\cite{7163021,Meiklejohn:2013:FBC:2504
 Altcoins such as Zerocash~\cite{zcash} and CryptoNote~\cite{cryptonote} were focused on improving bitcoin anonymity and integrated unlinkability to their currency proposals.
 In particular, Zerocash utilize zero-knowledge proofs (zkSNARKs~\cite{10.1007/978-3-642-40084-1_6}) which reveal no information at all about the amount or recipients enabling a completely untraceable ledger. On the other hand, CryptoNote uses ring signatures creating a mixing protocol satisfying both untraceability and unlinkability. CryptoNote compared to Zerocash has better performance but weaker anonymity~\cite{7163021}.
 
+\section{Network}\label{blockchain:network}
+
 \section{Structure}\label{blockchain:structure}
 
 The first blockchain was conceptualised and implemented as a core component of Bitcoin which serves as the public ledger for all transactions. The bitcoin design has been the inspiration for other applications~\cite{7163021,10.1007/978-3-662-46803-6_10, ethereum_whitepaper}. In the next subsections we analyze the Bitcoin's blockchain structure.
 
-\subsection{Transaction}\label{blockchain:structure:tx}
+\subsection{Transactions}\label{blockchain:structure:tx}
 
 The basic data structure of the blockchain is a \textbf{transaction (tx)} that transfers assets from one party to another. The owner of a coin transfers coins by publishing a digital signed statement; his desire to perform a transaction that transfers coins to the recipient of the money. By verifying the signature, one can ensure that the sender of the money is truly the one who authorized the transaction. A blockchain transaction can be described as a node with two edges, one incoming edge and one outcoming edge~\cite{zindros_thesis}. The incoming edge describes the sender (from) and the outcoming edge the recipient (to). Each edge has the corresponding address of the party; her public key. Every bitcoin transaction has a unique \textbf{transaction id (txid)} which is derived by double hashing the whole transaction with the use of the SHA-256 cryptographic hash function. Payments are done thought linking transaction nodes and money can be view as a chain of transactions where monetary value flows~\cite{zindros_thesis}. All transactions together form a transaction graph which is public and everyone participating in the network can see and add new transactions to the graph.
 
@@ -140,7 +142,7 @@ In Bitcoin there is no notion of giving changes. That is, because there is no ac
     \draw [->] (A) -- ++(2, 0) -- ++(1, 1) -- ++(2, 0) node[midway, below]{Bob} node[midway, above]{0.1mBTC};
     \draw [->] (A) -- ++(2, 0) -- ++(1, -1) -- ++(2, 0) node[midway, below]{Alice} node[midway, above]{0.9mBTC};
   \end{tikzpicture}
-  \caption{Giving change}
+  \caption{Change exchange}
   \label{fig:bl_tx:change}
 \end{figure}
 
@@ -269,7 +271,7 @@ In the Bitcoin transaction graph, the Kirchhoff property mandates that the total
   \label{fig:bl_spent}
 \end{figure}
 
-\subsection{Blockchain}\label{blockchain:structure:blockchain}
+\subsection{Blocks \& Blockchain}\label{blockchain:structure:blockchain}
 
 While only the rightful owners of a coin can spend it and the receiver can verify that the sender is in possession of that coin, coin double spending is still a problem. A double spent or a double spent attack is the action where a user sends the same transaction multiple times; trying to spent the same coin twice. As the network is decentralized and there is latency, a double spending may not be immediately noticed. In this case, it is impossible to tell which transaction occurred at first and who is the rightful recipient.
 
@@ -291,10 +293,6 @@ if transaction A precedes transaction B. Furthermore, the order must be common f
 To achieve chronological order Bitcoin utilize a data structure called the blockchain. The blockchain is an ordered back-linked list of blocks. Each block contains a set of transactions. A block cannot contain double spends---transactions that spend the same output--- and each transaction can appear only once in a block. A transaction is called confirmed if it is in a valid block. A succeeded block cannot contain a transaction that claim a UTXO that has already been spent in a preceding block. So, a transaction A precedes transaction B if A is contained in a previous block from B and if we want to ensure that a transaction will not be double spent, we have to wait for it to be confirmed. In the bitcoin network a block is set to be created approximately once every ten minutes and every newly created block contains the most recent transactions that did not exist in previous blocks.
 
 As in a transaction, every bitcoin block has a unique \textbf{block id} which is derived from the double hash of the header of the block with the use of the SHA-256 cryptographic hash function. Each block references to a previous block id, known as the parent block, through a pointer. Thus, every next block contains the hash of the previous block. This results in every next block in the chain requiring the previous block to have been computed before it can be computed~\cite{zindros_thesis}.
-
-With the use of the blockchain data structure we manage to have chronological order of the transactions. What remains is a global agreement of order of the blocks among the participants of the network. Someone can easily change the order of two blocks within the chain by changing the respective hashes or producing new ones wherever required~\cite{zindros_thesis}. This would allow an adversary to fake the order of transactions in time, which is an undesired outcome.
-
-The global agreement on a common truth, the global blockchain, is called consensus---a single universal “truth”---which is analyzed in~\ref{blockchain:consensus_mechanisms}, and this is where Bitcoin's novelty is.
 
 \begin{figure}[ht!]
   \begin{subfigure}[t]{0.50\textwidth}
@@ -372,11 +370,13 @@ The global agreement on a common truth, the global blockchain, is called consens
   \label{fig:blockchain_timeline}
 \end{figure}
 
-\section{Network}\label{blockchain:network}
-
 \section{Consensus mechanisms}\label{blockchain:consensus_mechanisms}
 
-The consensus mechanism is the core mechanism of the blockchain. Through consensus, the shared state of the ledger comes to an agreement upon a global state, allowing all the nodes of the network to reach the same ledger state. Achieving consensus in a distributed system is challenging. A consensus mechanism has to be resilient to node failures, network delays and the existence of malicious nodes.
+With the use of the blockchain data structure we manage to have chronological order of the transactions. What remains is a global agreement on order of the blocks among the participants of the network. Someone can easily change the order of two blocks within the chain by changing the respective hashes or producing new ones wherever required~\cite{zindros_thesis}. This would allow an adversary to fake the order of transactions in time, which is an undesired outcome.
+
+The global agreement on a common truth, the global blockchain, is called consensus---a single universal “truth”--- and this is where Bitcoin's novelty is. The consensus mechanism is the core mechanism of the blockchain. Through consensus, the shared state of the ledger comes to an agreement upon a global state, allowing all the nodes of the network to reach the same ledger state. That is, the users of the network agree on a common order of the blocks in the blockchain and therefore on the order of the transactions. Achieving consensus in a distributed system is challenging. A consensus mechanism has to be resilient to node failures, network delays and the existence of malicious nodes.
+
+At high level, every public consensus mechanism works as follows: A ``game'', involving randomness, is taken place where each node of the network participates. The winner of the game is eligible to propose the new block that will be adopted in the blockchain. This is a simple, but marvellous idea. The probabilistic nature of the process is paramount to its security.
 
 There are three basic consensus mechanism categories:
 
@@ -389,29 +389,49 @@ There are three basic consensus mechanism categories:
 
 \subsection{Proof of Work (PoW)}\label{blockchain:consensus:pow}
 
-In the case of Proof-of-Work consensus mechanism, each network node participating in
-the consensus tries to solve a computational puzzle that is computational hard, but feasible to find, and easy to verify correctness.
-A PoW system is also based on randomness, which is approximated proportionally to the computational power of each node.
-The participating nodes are bound to trial and error until a correct answer is found. Being a blockchain system a random node is selected as a winner for block creation.
-In order for a block to be accepted by the rest of consensus participants, they must complete a proof of work based on the data of the block.
-The difficulty of the work is adjusted in a way that a new block is generated in a specific time interval on average.
+A Proof-of-Work (PoW) consensus mechanism, is a consensus mechanism where each node of the network tries to solve a computational puzzle that is computational hard, but feasible to find, and easy to verify correctness. Assuming that hash functions are hard to invert, proof of work usually is established by seeking a range-collision of the hash function on the block~\cite{zindros_thesis}.
 
-The process of solving a PoW computational puzzle is known as mining and the participants as miners.
-The first miner that solves the puzzle gets to add the proposed block to the blockchain and broadcast
-the block to the entire network. Due to network latency and the distributed nature of the system it is possible that two miners will
-find a block around the same time and some nodes will accept the first block and some others the second one. In such cases there is a temporary
-fork in the blockchain, where one node is adding blocks to one branch while other nodes are adding blocks to another branch. Eventually the
-system will come to an agreement, the longest branch will be accepted and the others will be discarded.
+Bitcoin~\cite{Zohar:2015:BUH:2817191.2701411} is the first blockchain system that utilizes a PoW for blockchain block generation. It work as follows: A target $\epsilon$ is given and is asked that the hash of the block is smaller than the target. The node can only modify a nonce, which is concatenated with the rest of the block data. By changing the nonce the node can change the block hash. As cryptographic hash functions is assumed to be one-way, the only way to find a hash value smaller than the target is with a series of brute-force trials of different nonce values. Bitcoin's proof-of-work can be summarized as:
 
-Bitcoin~\cite{Zohar:2015:BUH:2817191.2701411} is the first blockchain system that utilizes a PoW for blockchain block generation. Due to the nature of PoW, bitcoin is vulnerable to 51\% attacks.
-This means that if a node or a group of nodes is able to control over 51\% of the computational power of the network, it is able to manipulate
-the verification process: by writing its own blocks, it has made it possible to double-spend funds or reject certain transactions.
+\begin{equation*}
+  H(txs || nonce || parent\_blockid) \leq \epsilon
+\end{equation*}
 
-PoW consensus mechanism works very well in public blockchain systems where trust of the nodes is low eliminating
-the double-spend problem -to redirect previously processed payments and use the same money twice- and guarding against Sybil attacks~\cite{Vu:2009:PCP:1671222}.
-However, the transaction confirmation time is longer compared to conventional financial services (such as VISA)\cite{Sompolinsky2015,Zohar:2015:BUH:2817191.2701411,DBLP:journals/corr/abs-1708-05665} resulting
-in slower transaction confirmation rates. Lastly, the energy waste attributed to the mining process can be very high -the energy requirements
-of the Bitcoin protocol are estimated to be comparable to those of a small country~\cite{6912770}.
+The network evaluates collectively the target value using a predefined algorithm. That way, the network can control the difficulty of proof-of-work and the expected frequency of block generation is controlled.
+
+All the nodes of the network simultaneously try to produce a new block, meaning trying to find a correct nonce satisfying the proof-of-work requirements. Each node monitors the network for blocks and transactions and while preparing its block. In its block the node includes all the valid transactions that are not in a previous block and a reference to a parent block. Every node of the network can produce a valid block but each block has to meet the target proof-of-work requirements.
+
+When a node founds a hash value less than the target, gets to add the proposed block to the blockchain and broadcast the new block to to all its neighbours which, in turn, transmit it to the whole network. If a block is found by another node, all the nodes stop the proof of work procedure and start over the new recent block.
+
+For a block to be accepted as valid it must contain valid transactions, a valid proof-of-work and a reference to a known valid parent block.
+
+A PoW system is based on randomness. Each node has a small change to win the block which is approximated proportionally to the computational power of each node. To obtain control of the blockchain, an adversary would need to control the majority of the CPU power of the network. Bitcoin’s security is founded on the fact that this will not occur~\cite{zindros_thesis}. The Bitcoin's security has been formalized and rigorously explored\cite{10.1007/978-3-662-46803-6_10} over the years.
+
+PoW consensus mechanism works very well in public blockchain systems where trust of the nodes is low eliminating the double-spend problem -to redirect previously processed payments and use the same money twice- and guarding against Sybil attacks~\cite{Vu:2009:PCP:1671222}. However, the transaction confirmation time is longer compared to conventional financial services (such as VISA)\cite{Sompolinsky2015,Zohar:2015:BUH:2817191.2701411,DBLP:journals/corr/abs-1708-05665} resulting in slower transaction confirmation rates. Lastly, the energy waste attributed to the mining process can be very high -the energy requirements of the Bitcoin protocol are estimated to be comparable to those of a small country~\cite{6912770}.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[node distance=10cm, minimum height=1cm, minimum width=2cm]
+    \node[draw] (a) {Alice};
+    \node[draw, right of =a] (b) {Bob};
+    \node[below of=a, node distance=1cm] (c) {$H(K || x) \stackrel{?}{\leq} \epsilon$};
+    \node[below of=b, node distance=1cm] (d) {$pow(K, e)$};
+    \draw[->] ([yshift=0.5em]a.east) -- ([yshift=0.5em]b.west) node[midway, above] {$K, \epsilon$};
+    \draw[<-] ([yshift=-0.5em]a.east) -- ([yshift=-0.5em]b.west) node[midway, below] {$x$};
+  \end{tikzpicture}
+  \caption{The Proof-of-Work protocol}
+  \label{fig:consensus:pow}
+\end{figure}
+
+\begin{lstlisting}[language=C, caption={A simple Proof-of-Work Algorithm}, mathescape=true]
+  x = rand();
+
+  do {
+    ++x;
+  } while (H(K||x) >= $\epsilon$);
+
+  return x;
+\end{lstlisting}
 
 \subsection{Proof of Stake (PoS)}\label{blockchain:consensus:pos}
 
@@ -456,11 +476,19 @@ global consensus is achieved when certain conditions are being met~\cite{DBLP:jo
   \label{table:blockchain_consensus}
 \end{table}
 
+\section{Mining}\label{blockchain:mining}
+
+The process of solving a PoW computational puzzle is known as mining and the participants as miners.
+The first miner that solves the puzzle gets to add the proposed block to the blockchain and broadcast
+the block to the entire network.
+
+\section{Blockchain fork}\label{blockchain:fork}
+
+Due to network latency and the distributed nature of the system it is possible that two miners will find a block around the same time and some nodes will accept the first block and some others the second one. In such cases there is a temporary fork in the blockchain, where one node is adding blocks to one branch while other nodes are adding blocks to another branch. Eventually the system will come to an agreement, the longest branch will be accepted and the others will be discarded.
+
 \section{Incentives}\label{blockchain:incentives}
 
-For miners to participate in the network and contribute their computation resources incentives must be provided.
-Normally, in permissionless blockchains such as Bitcoin or Ethereum a monetary incentive in the form of cryptocurrency
-incentivize the miners and in a permissioned blockchain finance incentives or access to blockchain data could encourage miners to participate~\cite{deloitte}.
+For miners to participate in the network and contribute their computation resources incentives must be provided. Normally, in permissionless blockchains such as Bitcoin or Ethereum a monetary incentive in the form of cryptocurrency incentivize the miners and in a permissioned blockchain finance incentives or access to blockchain data could encourage miners to participate~\cite{deloitte}.
 
 \section{Blockchain Types}\label{blockchain:blockchain_types}
 
