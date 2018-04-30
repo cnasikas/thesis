@@ -391,24 +391,6 @@ There are three basic consensus mechanism categories:
 
 A Proof-of-Work (PoW) consensus mechanism, is a consensus mechanism where each node of the network tries to solve a computational puzzle that is computational hard, but feasible to find, and easy to verify correctness. Assuming that hash functions are hard to invert, proof of work usually is established by seeking a range-collision of the hash function on the block~\cite{zindros_thesis}.
 
-Bitcoin~\cite{Zohar:2015:BUH:2817191.2701411} is the first blockchain system that utilizes a PoW for blockchain block generation. It work as follows: A target $\epsilon$ is given and is asked that the hash of the block is smaller than the target. The node can only modify a nonce, which is concatenated with the rest of the block data. By changing the nonce the node can change the block hash. As cryptographic hash functions is assumed to be one-way, the only way to find a hash value smaller than the target is with a series of brute-force trials of different nonce values. Bitcoin's proof-of-work can be summarized as:
-
-\begin{equation*}
-  H(txs || nonce || parent\_blockid) \leq \epsilon
-\end{equation*}
-
-The network evaluates collectively the target value using a predefined algorithm. That way, the network can control the difficulty of proof-of-work and the expected frequency of block generation is controlled.
-
-All the nodes of the network simultaneously try to produce a new block, meaning trying to find a correct nonce satisfying the proof-of-work requirements. Each node monitors the network for blocks and transactions and while preparing its block. In its block the node includes all the valid transactions that are not in a previous block and a reference to a parent block. Every node of the network can produce a valid block but each block has to meet the target proof-of-work requirements.
-
-When a node founds a hash value less than the target, gets to add the proposed block to the blockchain and broadcast the new block to to all its neighbours which, in turn, transmit it to the whole network. If a block is found by another node, all the nodes stop the proof of work procedure and start over the new recent block.
-
-For a block to be accepted as valid it must contain valid transactions, a valid proof-of-work and a reference to a known valid parent block.
-
-A PoW system is based on randomness. Each node has a small change to win the block which is approximated proportionally to the computational power of each node. To obtain control of the blockchain, an adversary would need to control the majority of the CPU power of the network. Bitcoin’s security is founded on the fact that this will not occur~\cite{zindros_thesis}. The Bitcoin's security has been formalized and rigorously explored\cite{10.1007/978-3-662-46803-6_10} over the years.
-
-PoW consensus mechanism works very well in public blockchain systems where trust of the nodes is low eliminating the double-spend problem -to redirect previously processed payments and use the same money twice- and guarding against Sybil attacks~\cite{Vu:2009:PCP:1671222}. However, the transaction confirmation time is longer compared to conventional financial services (such as VISA)\cite{Sompolinsky2015,Zohar:2015:BUH:2817191.2701411,DBLP:journals/corr/abs-1708-05665} resulting in slower transaction confirmation rates. Lastly, the energy waste attributed to the mining process can be very high -the energy requirements of the Bitcoin protocol are estimated to be comparable to those of a small country~\cite{6912770}.
-
 \begin{figure}[!ht]
   \centering
   \begin{tikzpicture}[node distance=10cm, minimum height=1cm, minimum width=2cm]
@@ -423,6 +405,24 @@ PoW consensus mechanism works very well in public blockchain systems where trust
   \label{fig:consensus:pow}
 \end{figure}
 
+Bitcoin~\cite{Zohar:2015:BUH:2817191.2701411} is the first blockchain system that utilizes a PoW for blockchain block generation. It work as follows: A target $\epsilon$ is given and is asked that the hash of the block is smaller than the target. The node can only modify a nonce, which is concatenated with the rest of the block data. By changing the nonce the node can change the block hash. As cryptographic hash functions is assumed to be one-way, the only way to find a hash value smaller than the target is with a series of brute-force trials of different nonce values. Bitcoin's proof-of-work can be summarized as:
+
+\begin{equation*}
+  H(txs || nonce || parent\_blockid) \leq \epsilon
+\end{equation*}
+
+The network evaluates collectively the target value using a predefined algorithm. That way, the network can control the difficulty of proof-of-work and the expected frequency of block generation is controlled. In Bitcoin the expected rate is one block per 10 minutes.
+
+All the nodes of the network simultaneously try to produce a new block, meaning trying to find a correct nonce satisfying the proof-of-work requirements. Each node monitors the network for blocks and transactions while preparing its block. In its block the node includes all the valid transactions that are not in a previous block and a reference to a parent block. Every node of the network can produce a valid block but each block has to meet the target proof-of-work requirements.
+
+When a hash value less than the target is found by a node, the node gets to add the proposed block to the blockchain and broadcast the new block to to all its neighbours which, in turn, transmit it to the whole network. If a block is found by another node, all the nodes stop the proof of work procedure and start over upon the new block. For a block to be accepted as valid it must contain valid transactions, a valid proof-of-work and a reference to a known valid parent block.
+
+The existence of a transaction in a block makes the transaction valid. The deeper the block is in the blockchain the more difficult is for an adversary to alter the block in which the transaction is confirmed. The reason is, that the time an adversary needs to alter a block grows exponentially in the number of blocks that have followed~\cite{10.1007/978-3-662-46803-6_10}, as she will need to reproduced those blocks and the blockchain is constantly extended. Waiting 6 confirmation blocks to appear after the block in which the transaction is confirmed is enough for a transaction to considered secure.
+
+A PoW system is based on randomness. Each node has a small change to win the block which is approximated proportionally to the computational power of each node. To obtain control of the blockchain, an adversary would need to control the majority of the CPU power of the network. Bitcoin's security has been formalized and rigorously explored~\cite{10.1007/978-3-662-46803-6_10} over the years.
+
+PoW consensus mechanism works very well in public blockchain systems where trust of the nodes is low eliminating the double-spend problem and guarding against Sybil attacks~\cite{Vu:2009:PCP:1671222}. However, the transaction confirmation time is longer compared to conventional financial services (such as VISA)~\cite{Sompolinsky2015,Zohar:2015:BUH:2817191.2701411,DBLP:journals/corr/abs-1708-05665} resulting in slower transaction confirmation rates. Lastly, the energy waste attributed to the mining process can be very high ---the energy requirements of the Bitcoin protocol are estimated to be comparable to those of a small country~\cite{6912770}.
+
 \begin{lstlisting}[language=C, caption={A simple Proof-of-Work Algorithm}, mathescape=true]
   x = rand();
 
@@ -436,13 +436,11 @@ PoW consensus mechanism works very well in public blockchain systems where trust
 \subsection{Proof of Stake (PoS)}\label{blockchain:consensus:pos}
 
 Proof-of-Stake algorithms are designed to overcome the disadvantages of PoW in terms of the high electricity consumption involved in mining~\cite{bl_consensus}
-and provide equal security guarantees~\cite{Kiayias2017}. Unlike PoW where the miners solve computational puzzles in order to create a new block, in PoS the choice
-of the block creator among the miners is random, yet relative to the stake the miner possesses according to the current blockchain ledger. Maintaining
-the blockchain relies on the stakeholders themselves and assigns work to them based on the amount of stake that each possesses as reported in the ledge~\cite{Kiayias2017}.
-The higher the stake participant, the higher the possibility to be chosen.
+and provide equal security guarantees~\cite{Kiayias2017}. Unlike PoW where the nodes of the network solve computational puzzles in order to create a new block, in PoS the choice
+of the block creator among the miners is random, yet relative to the stake the node possesses according to the current blockchain ledger. Maintaining
+the blockchain relies on the stakeholders themselves and assigns work to them based on the amount of stake that each possesses as reported in the ledger~\cite{Kiayias2017}. The higher the stake participant, the higher the possibility to be chosen.
 
-Proof-of-Stake algorithms suffer from the so-called “nothing at stake” problem.
-The “nothing at stake” problem refers to attacks against PoS blockchain systems where shareholders do not have
+Proof-of-Stake algorithms suffer from the so-called “nothing at stake” problem. The “nothing at stake” problem refers to attacks against PoS blockchain systems where shareholders do not have
 incentives to follow the protocol and vote simultaneously on multiple blockchains exploiting the fact that little computational effort
 is needed to build a PoS blockchain~\cite{Kiayias2017}. Ouroboros is the first provable secure PoS algorithm~\cite{Kiayias2017} and is the main consensus algorithm of the Cardano blockchain~\cite{cardano_site}.
 
@@ -476,24 +474,67 @@ global consensus is achieved when certain conditions are being met~\cite{DBLP:jo
   \label{table:blockchain_consensus}
 \end{table}
 
-\section{Mining}\label{blockchain:mining}
+\section{Mining \& incentives}\label{blockchain:mining}
 
-The process of solving a PoW computational puzzle is known as mining and the participants as miners.
-The first miner that solves the puzzle gets to add the proposed block to the blockchain and broadcast
-the block to the entire network.
+The process of creating a block in a PoW consensus system is known as mining and the participants as miners. The first block was mined by Satoshi Nakamoto~\cite{nakamoto2012bitcoin} and is called the genesis block. Every valid chain starts from the genesis block.
+
+For miners to participate in the network and contribute their computation resources incentives are provided. Normally, in a permissionless blockchains such as Bitcoin or Ethereum a monetary incentive in the form of cryptocurrency incentivize the miners and in a permissioned blockchain finance incentives or access to blockchain data could encourage miners to participate~\cite{deloitte}.
+
+In Bitcoin, the miner is rewarded with a number of bitcoins that are created for the specific block. This happens through a specific type of transaction called \textbf{coinbase}. This type of transaction has an unconnected income edge without a sender and an outcoming edge with recipient the miner that found the particular block. This is how new bitcoin is generated. The amount of coin mined in each block is preagreed on by the network and every four years is reduced by half. Currently, the reward is 12,5 BTC.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}
+    \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+    \draw [->] (-3,0) -- (A) node[midway, below]{} node[midway, above]{12.5 BTC};
+    \draw [->] (A) -- (3, 0) node[midway, below]{miner} node[midway, above]{12.5 BTC};
+  \end{tikzpicture}
+  \caption{Coinbase transaction}
+  \label{fig:mining:coinbase}
+\end{figure}
+
+Another way a miner is rewarded is by collecting transactions fees;  the financial remain of a confirmed transaction. This can happen when a user makes a transaction where the total value of all incoming edges are bigger than the total value of all outcoming edges. In particular the total fees of a block are defined as:
+
+\begin{equation*}
+  fees = \sum_{tx \in block} [ \sum_{i \in in(tx) }w(i) -  \sum_{o \in out(tx) }w(o)]
+\end{equation*}
 
 \section{Blockchain fork}\label{blockchain:fork}
 
 Due to network latency and the distributed nature of the system it is possible that two miners will find a block around the same time and some nodes will accept the first block and some others the second one. In such cases there is a temporary fork in the blockchain, where one node is adding blocks to one branch while other nodes are adding blocks to another branch. Eventually the system will come to an agreement, the longest branch will be accepted and the others will be discarded.
 
-\section{Incentives}\label{blockchain:incentives}
+\begin{figure}[ht!]
+  \centering
+  \begin{tikzpicture}
+    \foreach \x in {0,1,...,4}
+        \pgfmathparse{(\x*3)}
+        \edef\position{\pgfmathresult}
+        \node[rectangle,draw,minimum width=1.5cm,minimum height=1cm] (\x) at (\position,0) {};
 
-For miners to participate in the network and contribute their computation resources incentives must be provided. Normally, in permissionless blockchains such as Bitcoin or Ethereum a monetary incentive in the form of cryptocurrency incentivize the miners and in a permissioned blockchain finance incentives or access to blockchain data could encourage miners to participate~\cite{deloitte}.
+    \foreach \x in {1,2,...,4}
+        \pgfmathparse{(\x-1)}
+        \edef\previous{\pgfmathresult}
+        \draw [->] (\x) -- (\previous);
+
+    \foreach \x in {2,3,...,5}
+        \pgfmathparse{(\x*3)}
+        \edef\position{\pgfmathresult}
+        \node[rectangle,draw,minimum width=1.5cm,minimum height=1cm, red] (\x_mal) at (\position,2) {};
+
+    \draw [->] (3_mal) -- (2_mal);
+    \draw [->] (4_mal) -- (3_mal);
+    \draw [->] (5_mal) -- (4_mal);
+
+    \draw [<-] (1.north) -- (2_mal.west);
+
+  \end{tikzpicture}
+  \caption{Double spend}
+  \label{fig:blockchain}
+\end{figure}
 
 \section{Blockchain Types}\label{blockchain:blockchain_types}
 
-There are various types of blockchains varying in restrictions on data access and participation in the consensus process.
-Each one has its own advantages and disadvantages.
+There are various types of blockchains varying in restrictions on data access and participation in the consensus process. Each one has its own advantages and disadvantages.
 
 \begin{itemize}
   \item Public Blockchain: A public blockchain is a blockchain, in which there are no restrictions on reading blockchain data -encrypted or not- and validating transactions~\cite{prbc_vs_pubbc}.
