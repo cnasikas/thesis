@@ -132,7 +132,7 @@ The UTXO set is maintained collectively by the network. When a new full node is 
 
 In Bitcoin there is no notion of giving changes. That is, because there is no accounts with balances and the only way of keeping track money ownership is the UTXO set, the total value of the income edge must be consumed at once. However, a bitcoin transaction can have multiple incoming and outcoming edges. This property is exploited to create a changing system. In particular, when a user wants to transfer money to another user and the value of the UTXO edge is bigger than the desired amount, she can create a transaction with two outcoming edges, one for the recipient and one to give changes to herself.
 
-\begin{figure}
+\begin{figure}[!ht]
   \centering
   \begin{tikzpicture}
     \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
@@ -144,7 +144,7 @@ In Bitcoin there is no notion of giving changes. That is, because there is no ac
   \label{fig:bl_tx:change}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!ht]
   \centering
   \begin{tikzpicture}[node distance=3cm]
     \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
@@ -163,7 +163,7 @@ In Bitcoin there is no notion of giving changes. That is, because there is no ac
   \label{fig:bl_tx:change}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!ht]
   \centering
   \begin{tikzpicture}
     \node[circle,draw, minimum size=2cm] (A) at (-5,0) {$tx$};
@@ -269,17 +269,32 @@ In the Bitcoin transaction graph, the Kirchhoff property mandates that the total
   \label{fig:bl_spent}
 \end{figure}
 
-\subsection{Block}\label{blockchain:structure:block}
+\subsection{Blockchain}\label{blockchain:structure:blockchain}
+
+While only the rightful owners of a coin can spend it and the receiver can verify that the sender is in possession of that coin, coin double spending is still a problem. A double spent or a double spent attack is the action where a user sends the same transaction multiple times; trying to spent the same coin twice. As the network is decentralized and there is latency, a double spending may not be immediately noticed. In this case, it is impossible to tell which transaction occurred at first and who is the rightful recipient.
 
 To prevent double-spending the transaction must be put in chronological order so that it can be answered
-if transaction A happen before transaction B. Furthermore, the order must be common for everyone in the network.
-This global agreement on a common truth is named consensus (§~\ref{blockchain:consensus_mechanisms}) and this is where the bitcoin novelty is.
+if transaction A precedes transaction B. Furthermore, the order must be common for everyone in the network.
 
-A block contains many transactions and it cannot contain double spends; transactions that spend the same output.
-Each transaction can appear only once in a block and a transaction in a valid block is called confirmed.
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}
+    \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+    \draw [->] (-3,0) -- (A) node[midway, below]{Eve} node[midway, above]{1mBTC};
+    \draw [->] (A) -- ++(2, 0) -- ++(1, 1) -- ++(2, 0) node[midway, below]{Alice} node[midway, above]{1mBTC};
+    \draw [->] (A) -- ++(2, 0) -- ++(1, -1) -- ++(2, 0) node[midway, below]{Eve} node[midway, above]{1mBTC};
+  \end{tikzpicture}
+  \caption{A double spent}
+  \label{fig:bl_tx:change}
+\end{figure}
 
-In bitcoin network a block is set to be created approximately one every ten minutes and every newly created block contains the most recent transactions that did not
-exist in previous blocks. As in transaction every bitcoin block has a unique block id which comes from the double hash of the header of the block with the use of SHA-256 cryptographic hash function.
+To achieve chronological order Bitcoin utilize a data structure called the blockchain. The blockchain is an ordered back-linked list of blocks. Each block contains a set of transactions. A block cannot contain double spends---transactions that spend the same output--- and each transaction can appear only once in a block. A transaction is called confirmed if it is in a valid block. A succeeded block cannot contain a transaction that claim a UTXO that has already been spent in a preceding block. So, a transaction A precedes transaction B if A is contained in a previous block from B and if we want to ensure that a transaction will not be double spent, we have to wait for it to be confirmed. In the bitcoin network a block is set to be created approximately once every ten minutes and every newly created block contains the most recent transactions that did not exist in previous blocks.
+
+As in a transaction, every bitcoin block has a unique \textbf{block id} which is derived from the double hash of the header of the block with the use of the SHA-256 cryptographic hash function. Each block references to a previous block id, known as the parent block, through a pointer. Thus, every next block contains the hash of the previous block. This results in every next block in the chain requiring the previous block to have been computed before it can be computed~\cite{zindros_thesis}.
+
+With the use of the blockchain data structure we manage to have chronological order of the transactions. What remains is a global agreement of order of the blocks among the participants of the network. Someone can easily change the order of two blocks within the chain by changing the respective hashes or producing new ones wherever required~\cite{zindros_thesis}. This would allow an adversary to fake the order of transactions in time, which is an undesired outcome.
+
+The global agreement on a common truth, the global blockchain, is called consensus---a single universal “truth”---which is analyzed in~\ref{blockchain:consensus_mechanisms}, and this is where Bitcoin's novelty is.
 
 \begin{figure}[ht!]
   \begin{subfigure}[t]{0.50\textwidth}
@@ -313,13 +328,6 @@ exist in previous blocks. As in transaction every bitcoin block has a unique blo
   \label{fig:blocks}
 \end{figure}
 
-\subsection{Blockchain}\label{blockchain:structure:blockchain}
-
-The blockchain data structure is an ordered back-linked list of blocks of transactions. Each block references a
-previous block, known as the parent block, through a pointer to the previous block id. A later block cannot contain a double spend of a previous one or a transaction that appeared in a previous block.
-So, a transaction A precedes transaction B if A is contained in a previous block from B and if we want to ensure that a transaction will not be double spent, we have to
-wait for it to be confirmed. So, the need of a consensus-a single universal “truth”, a global agreement---on the order of the blocks emerge (§~\ref{blockchain:consensus_mechanisms}).
-
 \begin{figure}[ht!]
   \centering
   \begin{tikzpicture}
@@ -334,7 +342,7 @@ wait for it to be confirmed. So, the need of a consensus-a single universal “t
         \draw [->] (\x) -- (\previous);
 
   \end{tikzpicture}
-  \caption{Blockchain}
+  \caption{The blockchain}
   \label{fig:blockchain}
 \end{figure}
 
@@ -360,7 +368,7 @@ wait for it to be confirmed. So, the need of a consensus-a single universal “t
     \node[red,below=0cm of old_ell] (old) {$oldest\text{ }block\text{ }$};
     \node[red,below=0cm of recent_ell] (recent) {$recent\text{ }block\text{ }$};
   \end{tikzpicture}
-  \caption{Blockchain timeline}
+  \caption{The blockchain timeline}
   \label{fig:blockchain_timeline}
 \end{figure}
 
@@ -368,9 +376,7 @@ wait for it to be confirmed. So, the need of a consensus-a single universal “t
 
 \section{Consensus mechanisms}\label{blockchain:consensus_mechanisms}
 
-The consensus mechanism is the core mechanism of the blockchain. Through consensus, the shared state of the ledger comes to an agreement upon a global state,
-allowing all the nodes of the network to reach the same ledger state. Achieving consensus in a distributed system is challenging.
-A consensus mechanism has to be resilient to node failures, network delays and the existence of malicious nodes.
+The consensus mechanism is the core mechanism of the blockchain. Through consensus, the shared state of the ledger comes to an agreement upon a global state, allowing all the nodes of the network to reach the same ledger state. Achieving consensus in a distributed system is challenging. A consensus mechanism has to be resilient to node failures, network delays and the existence of malicious nodes.
 
 There are three basic consensus mechanism categories:
 
