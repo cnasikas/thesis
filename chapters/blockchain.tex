@@ -79,7 +79,7 @@ Blockchain networks are structured as a peer-to-peer network architecture. Anyon
 
 All the nodes of the network are equal. There is no central server or trusted authority, neither hierarchy within the network. The nodes simultaneously provide and consume services sharing common participation incentives.
 
-When a user runs the software it connects to other peers of the network using peer-to-peer discovery schemes. In Bitcoin, there are some nodes called seed nodes, that their IP address is hardcoded in the software, which can be used to quickly discover other nodes. Alternatively, a known IP address of a bitcoin node can be given manually. Furthermore, each node produces a public key which they public on the network and a respective private key which is kept secret on the local system.
+When a user runs the software it connects to other peers of the network using peer-to-peer discovery schemes. In Bitcoin, there are some nodes called seed nodes, that their IP address is hardcoded in the software, which can be used to quickly discover other nodes. Alternatively, a known IP address of a bitcoin node can be given manually. Furthermore, each node produces a public key which they publish on the network and a respective private key which is kept secret on the local system.
 
 \section{Transactions}\label{blockchain:structure:tx}
 
@@ -495,7 +495,7 @@ In Bitcoin, the miner is rewarded with a number of bitcoins that are created for
   \label{fig:mining:coinbase}
 \end{figure}
 
-Another way a miner is rewarded is by collecting transactions fees;  the financial remain of a confirmed transaction. This can happen when a user makes a transaction where the total value of all incoming edges are bigger than the total value of all outcoming edges. In particular the total fees of a block are defined as:
+Another way a miner is rewarded is by collecting transactions fees;  the financial remains of a confirmed transaction. This can happen when a user makes a transaction where the total value of all incoming edges are bigger than the total value of all outcoming edges. In particular the total fees of a block are defined as:
 
 \begin{equation*}
   fees = \sum_{tx \in block} [ \sum_{i \in in(tx) }w(i) -  \sum_{o \in out(tx) }w(o)]
