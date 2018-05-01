@@ -75,6 +75,12 @@ In particular, Zerocash utilize zero-knowledge proofs (zkSNARKs~\cite{10.1007/97
 
 \section{Network}\label{blockchain:network}
 
+Blockchain networks are structured as a peer-to-peer network architecture. Anyone who wants to spend coins can freely join and participate in the network by running a software on their computer. Both the protocol as well as the software are open, as is required by modern cryptography~\cite{zindros_thesis}. Any blockchain implementation that does not follow that principle should be avoid.
+
+All the nodes of the network are equal. There is no central server or trusted authority, neither hierarchy within the network. The nodes simultaneously provide and consume services sharing common participation incentives.
+
+When a user runs the software it connects to other peers of the network using peer-to-peer discovery schemes. In Bitcoin, there are some nodes called seed nodes, that their IP address is hardcoded in the software, which can be used to quickly discover other nodes. Alternatively, a known IP address of a bitcoin node can be given manually. Furthermore, each node produces a public key which they public on the network and a respective private key which is kept secret on the local system.
+
 \section{Structure}\label{blockchain:structure}
 
 The first blockchain was conceptualised and implemented as a core component of Bitcoin which serves as the public ledger for all transactions. The bitcoin design has been the inspiration for other applications~\cite{7163021,10.1007/978-3-662-46803-6_10, ethereum_whitepaper}. In the next subsections we analyze the Bitcoin's blockchain structure.
