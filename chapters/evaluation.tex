@@ -21,43 +21,6 @@ Ethereum Testnet Specifications:
   \item Solidity 0.4.19
 \end{enumerate}
 
-\section{Computation Costs}
-\label{evaluation:computation_costs}
-
-Ethreuem use a unit called gas as a measurement of computation use--an internal pricing mechanism used to execute contracts and allocate resources on the network-- and it's price is expressed in ether (Ethereum currency). Every node in the Ethereum network executes instructions (opcodes) within the Ethereum Virtual Machine (EVM) (§~\ref{blockchain:impl:ethereum}) and each of these instructions has an associated cost in gas. The cumulative sum of all the operations is the total gas cost for a transaction and is the fee that is being paid to the miners.
-
-The cost of each opcode (operation code) of EVM is defined on Ethereum's yellow paper~\cite{ethereum_yellowpaper} and a gas cost summarization of basic opcodes are be shown on Table~\ref{table:opcode_gas_cost}.
-
-For storing data, Ethereum offers two opcodes: SLOAD opcode loads a word from storage and SSTORE opcode saves a word to storage. The size of an EVM word is 32 bytes (256 bit) and to store one EVM word using SSTORE opcode costs 20.000 gas.
-
-\begin{table}[!hb]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
- Operation & Gas  & Description \\ \hline
- ADD/SUB & 3 & Arithmetic operation \\ \hline
- MUL/DIV & 5 & Arithmetic operation \\ \hline
- ADDMOD/MULMOD & 8 & Arithmetic operation \\ \hline
- AND/OR/XOR & 3 & Bitwise logic operation \\ \hline
- LT/GT/SLT/SGT/EQ & 3 & Comparison operation \\ \hline
- POP & 2 & Stack operation \\ \hline
- PUSH/DUP/SWAP & 3 & Stack operation \\ \hline
- MLOAD/MSTORE & 3 & Memory operation \\ \hline
- JUMP & 8 & Unconditional jump \\ \hline
- JUMPI & 10 & Conditional jump \\ \hline
- SLOAD & 200 & Storage operation \\ \hline
- SSTORE & 5.000 / 20.000 & Storage operation \\ \hline
- BALANCE & 400 & Get balance of an account \\ \hline
- CREATE & 32.000 & Create a new account using CREATE \\ \hline
- CALL & 25.000 & Create a new account using CALL \\ \hline
- LOG & 375 & Logging operation \\ \hline
-\end{tabular}
-\caption{Ethereum opcodes gas costs}
-\label{table:opcode_gas_cost}
-\end{table}
-
-\clearpage
-
 \section{Benchmarks}
 \label{evaluation:benchmarks}
 

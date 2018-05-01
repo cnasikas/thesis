@@ -606,34 +606,6 @@ There are various types of blockchains varying in restrictions on data access an
   \label{table:blockchain_types}
 \end{table}
 
-\section{Blockchain Implementations}\label{blockchain_implementations}
-
-\subsection{Bitcoin}\label{blockchain:impl:bitcoin}
-
-Bitcoin is the first decentralized digital currency. The main currency is called Bitcoin and is used to store and transmit value among participants in the Bitcoin network. The Bitcoin network is a fully distributed peer-to-peer network where anyone can freely join running an open source implementation of the bitcoin protocol and there is no need for trust to the network; in the network any node may be malicious. As a result, Bitcoin is a public permissionless blockchain. Bitcoin's use a Proof-of-Work consensus mechanism for keeping consistent the public ledger, preventing double spend and confirm transactions. Bitcoin is the oldest digital currency decentralized network running from 3 January 2009~\cite{btc_first_block}. As a result, Bitcoin is the most well studied Blockchain network~\cite{10.1007/978-3-662-46803-6_10} with various published papers on different topics such as privacy~\cite{10.1007/978-3-319-70278-0_8, 10.1007/978-3-642-39884-1_2, Bonneau14e.w.:mixcoin, 10.1007/978-3-662-44774-1_9}, economics~\cite{Babaioff:2012:BRB:2229012.2229022, 10.1007/978-3-319-70278-0_17, Bentov2017DecentralizedPM, Carlsten:2016:IBW:2976749.2978408}, attacks~\cite{DBLP:journals_corr_Bahack13, DBLP:journals_corr_EyalS13}, network~\cite{10.1007/978-3-662-44774-1_7, 190890} and scalability~\cite{kiayias2017non, 10.1007/978-3-662-53357-4_5, 10.1007/978-3-662-53357-4_8}. Due to the years Bitcoin's blockchain has grow significantly is size making difficult to some devices to store the entire blockchain and run as a full node leading to network centralization. Specifically, as of April 2018 the Bitcoin's blockchain size is over 160GB~\cite{btc_bl_size}.
-
-Bitcoin suffers from scalability due to the limit on the amount of transactions the bitcoin network can process. The transaction processing capacity maximum is estimated between 3.3 and 7 transactions per second~\cite{10.1007/978-3-662-53357-4_8}. The limit is related to the block size limit---the total number of transactions a block can contain--- that was introduces as an anti-spam measure. There are various proposed and activated solutions to address this issue. One activated solution is Segregated Witness (SegWit, BIP 141)~\cite{segwit} which performed as a soft fork and increased the block size by a factor of approximately of two.
-
-As of April 2018, Bitcoin is the most widely used crypto currency~\cite{10.1007/978-3-642-39884-1_2} with over of 100,000 merchants that accept Bitcoin~\cite{btc_merchants} and with the biggest total market cap~\cite{btc_cap}.
-
-\subsection{Ethereum}\label{blockchain:impl:ethereum}
-
-Ethereum is an open-source, public, blockchain-based distributed computing platform featuring smart contract functionality.
-It provides a decentralized Turing-complete virtual machine, the Ethereum Virtual Machine (EVM), which can execute scripts using an
-international network of public nodes~\cite{ethereum_yellowpaper}. Ethereum provides a cryptocurrency called ether which can be transferred between accounts, and gas, an internal pricing mechanism used to execute contracts and allocate resources on the network. Through EVM, Ethereum provides Solidity a Turing-complete language for writing smart contracts that enables anyone to build distributed applications making the process much easier and efficient than ever before. Ethereum use a Proof-of-Work consensus mechanism called Ethash and has been designed to be ASIC-resistant~\cite{ethash}.
-Soon Ethereum will be moved to a Proof-of-Stake consensus mechanism called Casper. Ethereum can be implemented as well as a permissioned blockchain~\cite{consortium_chain_development,quorum}.
-
-\subsection{Cardano}\label{blockchain:impl:cardano}
-
-Cardano is a security focused blockchain that utilize the latest research and engineering insights to build a platform suitable for
-the highest value applications~\cite{cardano_site}. It supports distributed applications creation and smart contracts verifiable by a method called formal
-verification allowing logical proof of correctness of code providing high security. Cardano addresses the need for regulatory oversight while
-maintaining consumer privacy and security. Cardano is the first blockchain project to be peer reviewed by academic researchers~\cite{cardano_site} and its consensus
-mechanism, Ouroboros, is the first Proof of Stake algorithm to be provably secure~\cite{Kiayias2017}.
-Cardano consists of two main layers, one for accounting and one for computation. The accounting layer is called Cardano Settlement Layer (CSL)
-and the computation layer Cardano Computation Layer (CCP) where distributed application can be built and run upon. The CCP layer has not been
-implemented yet and there is a plan to be released as a beta by the first quarter of 2018~\cite{cardano_parsons}.
-
 \section{Smart Contracts}
 \label{smart_contracts}
 
@@ -641,14 +613,165 @@ A smart contract is a computer protocol intended to facilitate, verify, or enfor
 The idea of smart contracts proposed in the early 1990s~\cite{FM548}, by Nick Szabo, and have been used primarily in association with cryptocurrencies enabling
 parties to formally specify a cryptographically enforceable agreements~\cite{7163021}. A smart contract consists of a set of promises including protocols within which the parties perform on these promises. It can define rules and penalties around an agreement and automatically enforce those obligations. The contractual rules may be partially or fully self-executed, self-enforcing or both. On blockchain technologies a smart contract is any computer program that is executed on the blockchain---a general purpose computation.
 
-Bitcoin is the first blockchain that provides a scripting language for expressing simple smart contracts such as ownership of an amount of coins by one or multiple entities. Bitcoin's language is a stack-based scripting language inspired by Forth~\cite{forth_lang} and offers a set of simple serial commands supporting cryptographic primitives such as hash functions and signature verification. The main disadvantage of Bitcoin's language is that is not Turing-complete limiting the type of smart contracts one can create. Furthermore, adding new commands to extent functionality requires either a soft-fork which has to be decided by the majority of bitcoin network or to fork Bitcoin's code and implement a new blockchain supporting the new features in which the Bitcoin's network power is lost. Numerous previous smart contract application atop Bitcoin (e.g., lottery\cite{Andrychowicz:2014:SMC:2650286.2650764,10.1007/978-3-662-44381-1_24},
-verifiable computation~\cite{Kumaresan:2014:UBI:2660267.2660380}) have demonstrated the difficulty of Bitcoin's scripting language~\cite{cryptoeprint:2015:675}.
+\subsection{Bitcoin scripts}
+\label{smart_contracts:bitcoin}
+
+Bitcoin is the first blockchain that provides a scripting language for expressing simple smart contracts such as ownership of an amount of coins by one or multiple entities. Bitcoin's language is a stack-based scripting language inspired by Forth~\cite{forth_lang} and offers a set of simple serial commands supporting cryptographic primitives such as hash functions and signature verification. The main disadvantage of Bitcoin's language is that is not Turing-complete limiting the type of smart contracts one can create. Furthermore, adding new commands to extent functionality requires either a soft-fork which has to be decided by the majority of bitcoin network or to fork Bitcoin's code and implement a new blockchain supporting the new features in which the Bitcoin's network power is lost. Numerous previous smart contract application atop Bitcoin (e.g., lottery\cite{Andrychowicz:2014:SMC:2650286.2650764,10.1007/978-3-662-44381-1_24}, verifiable computation~\cite{Kumaresan:2014:UBI:2660267.2660380}) have demonstrated the difficulty of Bitcoin's scripting language~\cite{cryptoeprint:2015:675}.
+
+In~\ref{blockchain:structure:tx}, a transaction is defined as a graph node with two edges, one incoming and one outcoming. Each edge has an owner declared by her address. In reality, each edge contains a program which decides whether the edge can be spent or not. The program is written in Bitcoin's scripting language and is called \verb|scriptPubKey|. This allows the expression of more complicated ownership of assets such as multi-signatures or micropayments. The script is executed on a stack machine and containes a series of simple serial commands. When a UTXO is spent, every node of the network executes the script. If the output of the program is $1$, then the transaction is valid and can be spent. Otherwise, the transaction is considered invalid.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}
+    \node[tx] (A) at (0,0) {$tx$};
+    \draw [->] ++(-8,0) -- (A) node[above, midway]{5mBTC} node[left, below,  align=left, font=\footnotesize, xshift=-4.5cm]{
+      OP\_DUP \\
+      OP\_HASH160 \\
+      1FdtUtvK5vZxwo8jzjzid5EwGAB7paqX4n \\
+      OP\_EQUALVERIFY \\
+      OP\_CHECKSIG
+    };
+    \draw [->] (A) -- (8, 0) node[midway, above]{5mBTC} node[midway, below, align=left, font=\footnotesize, xshift=0.2cm]{
+      OP\_DUP \\
+      OP\_HASH160 \\
+      128MZKqUsvg2kYJQ5LCVDx8Mdn8xrijzQY \\
+      OP\_EQUALVERIFY \\
+      OP\_CHECKSIG};
+  \end{tikzpicture}
+  \caption{A Bitcoin script}
+  \label{fig:bl_tx:script}
+\end{figure}
+
+\subsection{Ethereum smart contracts}
+\label{smart_contracts:ethereum}
 
 The need of user defined open source blockchain applications emerged. As a result, Ethereum was born which is the first Turing-complete decentralized smart contract framework. In Ethereum, one can create smart contracts in a high level language such as Solidity~\cite{solidity} which in turn is compiled to bytecode that is executable on the Ethereum.
 
+Before describing how smart contracts are written in Ethereum, a thorough analysis of Ethereum's core mechanisms must be made. Like Bitcoin, Ethereum is a decentralized monetary system based on a public blockchain with a  proof of work consensus mechanism. The coin that Ethereum uses for monetary transactions is called ether (ETH).
+
+Ethereum constitute of a set of one global object, that of account. Each account has a state, in which the nodes of the network must agree upon with the use of a consensus mechanism, and an 20-byte address. The state of an account can only be changed with a transaction. The global state of Ethereum is made up of accounts. For that reason, Ethereum is often described as a state machine~\cite{ethereum_whitepaper} where the state transition function takes as input a transaction and outputs a different state.
+
+Each account is composed by the following fields: address, balance, and nonce. The address is a 160-bit account identifier which corresponds to a public key. The balance contains the total amount the account holds in Wei; the smallest denomination of Ether. Ethereum instead of using UTXOs to keep track of coin ownership, adopted the traditional notion of balances for which we are accustomed from the financial system. The choice of balances over UTXOs was a design decision by the Ethereum foundation. Each option has its advantages and disadvantage. According to Ethereum founders, the advantages of accounts massively outweigh the alternatives~\cite{eth_design}. Lastly, the nonce is the total number of transaction sent from that account. It is acts as a replay-attack prevention mechanism as there is not UTXOs to keep track unspent edges. A malicious adversary could hear a transaction and broadcast a copy of it another time. The transaction is valid and amount will be deducted again from the user's balance.
+
+Similar to Bitcoin, anyone can send ethers from one account to another. The principles of the transaction described in~\ref{blockchain:structure:tx} are also applicable to Ethereum. Each transaction consist of the following fields: from, signature, to, and amount. The from and to fields describe the sender and the receiver respectively. The signature field contains the valid signature of the transaction where the nodes of the network verify. Lastly, the amount contains the amount to be sent in Wei.
+
+There are two type of accounts: \textbf{personal} (or external own accounts) and \textbf{contract} accounts. A contact account is an account dedicated for a smart contracts. They contain two extra fields: code and storage. The code field contains the code to be executed and the storage field the data of the contract. Those fields are empty when it comes to personal accounts.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[x=2cm, y=-1cm, node distance=0 cm,outer sep = 0pt]
+    \node[account_block, fill=orange!30] (address) {$address$};
+    \node[account_block, right=of address, fill=magenta!30] (code) {$code$};
+    \node[account_block, right=of code, fill=purple!30] (storage) {$storage$};
+    \node[account_block, right=of storage, fill=blue!30] (balance) {$balance$};
+    \node[account_block, right=of balance, fill=green!30] (nonce) {$nonce$};
+  \end{tikzpicture}
+  \caption{An Ethereum account}
+  \label{fig:eth_account}
+\end{figure}
+
+Additionally, transactions contain also an extra field which is called data field and is empty when the transaction is taken place between personal accounts. To create a contact, a transaction has to be sent where the receiver is empty and the data field contains the code of the smart contract. When the nodes of the network hear a transaction, where the field of the recipient is empty, they treat the transaction as a smart contract creation transaction. They create a contract account with code, the string that is contained in the data field of the transaction, and with empty storage. After the creation of the contract account an address is returned to the creator of the contract. The address is created from the concatenation of the creator's public key with her account current nonce. Anyone knowing the address of the contract can interact with it. In particular, to call a smart contract function, a transaction with recipient the smart contact's address and data the function's name along with its arguments, has to be sent.
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{|c|c|c|}
+  \hline
+   & Personal account  & Contract account \\ \hline
+   address & $H(p_k)$ & $H(creator, nonce)$ \\ \hline
+   code & $\emptyset$ & Code to be executed \\ \hline
+   storage & $\emptyset$ & Data of the contract \\ \hline
+   balance & \multicolumn{2}{c|}{ETH} \\ \hline
+   nonce &  \multicolumn{2}{c|}{\# transaction sent}  \\ \hline
+  \end{tabular}
+  \caption{Ethereum accounts}
+  \label{fig:eth_accounts}
+\end{table}
+
+When a contract account is activated, the contract code runs and it can read or write to internal storage, send other message or create new contracts. A contract account can not initiate new transactions on their own but only in response of a transaction initiated by a personal account. Only personal accounts can change the state of the accounts.
+
+Contract accounts can send messages to other contracts accounts. Messages are like transactions except it is produced by a contract and exist only in the Ethereum execution environment. The network never sees the message neither is stored in the blockchain. This way, contracts can have relationships with other contracts.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[x=2cm, y=-1cm, node distance=0 cm,outer sep = 0pt]
+    \node[account_block, fill=orange!30] (from) {$from$};
+    \node[account_block, right=of from, fill=magenta!30] (signature) {$signature$};
+    \node[account_block, right=of signature, fill=purple!30] (to) {$to$};
+    \node[account_block, right=of to, fill=blue!30] (amount) {$amount$};
+    \node[account_block, right=of amount, fill=green!30] (data) {$data$};
+  \end{tikzpicture}
+  \caption{An Ethereum transaction}
+  \label{fig:eth_transaction}
+\end{figure}
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+  \hline
+   & create & send & call \\ \hline
+   from & creator & sender & caller \\ \hline
+   signature & $\sigma$ & $\sigma$ & $\sigma$ \\ \hline
+   to & $\emptyset$ & receiver & contract \\ \hline
+   amount & ETH & ETH & ETH \\ \hline
+   data & code & $\emptyset$ & $f, args$ \\ \hline
+  \end{tabular}
+  \caption{Ethereum transactions}
+  \label{fig:eth_transactions}
+\end{table}
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[node distance=3 cm,outer sep = 0pt]
+    \node[node, fill=blue!30] (pr_1) {Personal Account};
+    \node[node, fill=blue!30, below=of pr_1] (pr_2) {Personal Account};
+    \node[node, fill=orange!30, right=of pr_1] (c_1) {Contract Account};
+    \node[node, fill=orange!30, below=of c_1] (c_2) {Contract Account};
+    \node[node, fill=orange!30, right=of c_2] (c_3) {Contract Account};
+
+      \draw [->] (pr_1) -- (c_1);
+      \draw [->] (pr_2) -- (c_2);
+      \draw [->] (c_1) -- (c_2);
+      \draw [->] (c_2) -- (c_3);
+  \end{tikzpicture}
+  \caption{Transactions \& messages}
+  \label{fig:eth_transaction}
+\end{figure}
+
+Ethreuem use a unit called gas as a measurement of computation use--an internal pricing mechanism used to execute contracts and allocate resources on the network-- and it's price is expressed in ether. Every node in the Ethereum network executes instructions (opcodes) within the Ethereum Virtual Machine (EVM) and each of these instructions has an associated cost in gas. The cumulative sum of all the operations is the total gas cost for a transaction and is the fee that is being paid to the miners.
+
+The cost of each opcode (operation code) of EVM is defined on Ethereum's yellow paper~\cite{ethereum_yellowpaper} and a gas cost summarization of basic opcodes are be shown on Table~\ref{table:opcode_gas_cost}.
+
+For storing data, Ethereum offers two opcodes: SLOAD opcode loads a word from storage and SSTORE opcode saves a word to storage. The size of an EVM word is 32 bytes (256 bit) and to store one EVM word using SSTORE opcode costs 20.000 gas.
+
+\begin{table}[!hb]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+ Operation & Gas  & Description \\ \hline
+ ADD/SUB & 3 & Arithmetic operation \\ \hline
+ MUL/DIV & 5 & Arithmetic operation \\ \hline
+ ADDMOD/MULMOD & 8 & Arithmetic operation \\ \hline
+ AND/OR/XOR & 3 & Bitwise logic operation \\ \hline
+ LT/GT/SLT/SGT/EQ & 3 & Comparison operation \\ \hline
+ POP & 2 & Stack operation \\ \hline
+ PUSH/DUP/SWAP & 3 & Stack operation \\ \hline
+ MLOAD/MSTORE & 3 & Memory operation \\ \hline
+ JUMP & 8 & Unconditional jump \\ \hline
+ JUMPI & 10 & Conditional jump \\ \hline
+ SLOAD & 200 & Storage operation \\ \hline
+ SSTORE & 5.000 / 20.000 & Storage operation \\ \hline
+ BALANCE & 400 & Get balance of an account \\ \hline
+ CREATE & 32.000 & Create a new account using CREATE \\ \hline
+ CALL & 25.000 & Create a new account using CALL \\ \hline
+ LOG & 375 & Logging operation \\ \hline
+\end{tabular}
+\caption{Ethereum opcodes gas costs}
+\label{table:opcode_gas_cost}
+\end{table}
+
 With Ethereum launch, the notion of DApps (decentralized applications) arisen
 and a lot of developers and companies are building numerous applications atop Ethereum such as prediction markets~\cite{augur,gnosis}, social media platforms~\cite{akasha,backfeed},
-online gambling~\cite{etheroll,coinpoker} and video games~\cite{cryptokitties}. As of January 2018, there are more than 250 live DApps, with hundreds more under development.
+online gambling~\cite{etheroll,coinpoker} and video games~\cite{cryptokitties}. As of January 2018, there are more than 250 live DApps.
 
 \clearpage
 
@@ -688,3 +811,31 @@ contract Namespace{
 \end{lstlisting}
 
 \clearpage
+
+\section{Blockchain Implementations}\label{blockchain_implementations}
+
+\subsection{Bitcoin}\label{blockchain:impl:bitcoin}
+
+Bitcoin is the first decentralized digital currency. The main currency is called Bitcoin and is used to store and transmit value among participants in the Bitcoin network. The Bitcoin network is a fully distributed peer-to-peer network where anyone can freely join running an open source implementation of the bitcoin protocol and there is no need for trust to the network; in the network any node may be malicious. As a result, Bitcoin is a public permissionless blockchain. Bitcoin's use a Proof-of-Work consensus mechanism for keeping consistent the public ledger, preventing double spend and confirm transactions. Bitcoin is the oldest digital currency decentralized network running from 3 January 2009~\cite{btc_first_block}. As a result, Bitcoin is the most well studied Blockchain network~\cite{10.1007/978-3-662-46803-6_10} with various published papers on different topics such as privacy~\cite{10.1007/978-3-319-70278-0_8, 10.1007/978-3-642-39884-1_2, Bonneau14e.w.:mixcoin, 10.1007/978-3-662-44774-1_9}, economics~\cite{Babaioff:2012:BRB:2229012.2229022, 10.1007/978-3-319-70278-0_17, Bentov2017DecentralizedPM, Carlsten:2016:IBW:2976749.2978408}, attacks~\cite{DBLP:journals_corr_Bahack13, DBLP:journals_corr_EyalS13}, network~\cite{10.1007/978-3-662-44774-1_7, 190890} and scalability~\cite{kiayias2017non, 10.1007/978-3-662-53357-4_5, 10.1007/978-3-662-53357-4_8}. Due to the years Bitcoin's blockchain has grow significantly is size making difficult to some devices to store the entire blockchain and run as a full node leading to network centralization. Specifically, as of April 2018 the Bitcoin's blockchain size is over 160GB~\cite{btc_bl_size}.
+
+Bitcoin suffers from scalability due to the limit on the amount of transactions the bitcoin network can process. The transaction processing capacity maximum is estimated between 3.3 and 7 transactions per second~\cite{10.1007/978-3-662-53357-4_8}. The limit is related to the block size limit---the total number of transactions a block can contain--- that was introduces as an anti-spam measure. There are various proposed and activated solutions to address this issue. One activated solution is Segregated Witness (SegWit, BIP 141)~\cite{segwit} which performed as a soft fork and increased the block size by a factor of approximately of two.
+
+As of April 2018, Bitcoin is the most widely used crypto currency~\cite{10.1007/978-3-642-39884-1_2} with over of 100,000 merchants that accept Bitcoin~\cite{btc_merchants} and with the biggest total market cap~\cite{btc_cap}.
+
+\subsection{Ethereum}\label{blockchain:impl:ethereum}
+
+Ethereum is an open-source, public, blockchain-based distributed computing platform featuring smart contract functionality.
+It provides a decentralized Turing-complete virtual machine, the Ethereum Virtual Machine (EVM), which can execute scripts using an
+international network of public nodes~\cite{ethereum_yellowpaper}. Ethereum provides a cryptocurrency called ether which can be transferred between accounts, and gas, an internal pricing mechanism used to execute contracts and allocate resources on the network. Through EVM, Ethereum provides Solidity a Turing-complete language for writing smart contracts that enables anyone to build distributed applications making the process much easier and efficient than ever before. Ethereum use a Proof-of-Work consensus mechanism called Ethash and has been designed to be ASIC-resistant~\cite{ethash}.
+Soon Ethereum will be moved to a Proof-of-Stake consensus mechanism called Casper. Ethereum can be implemented as well as a permissioned blockchain~\cite{consortium_chain_development,quorum}.
+
+\subsection{Cardano}\label{blockchain:impl:cardano}
+
+Cardano is a security focused blockchain that utilize the latest research and engineering insights to build a platform suitable for
+the highest value applications~\cite{cardano_site}. It supports distributed applications creation and smart contracts verifiable by a method called formal
+verification allowing logical proof of correctness of code providing high security. Cardano addresses the need for regulatory oversight while
+maintaining consumer privacy and security. Cardano is the first blockchain project to be peer reviewed by academic researchers~\cite{cardano_site} and its consensus
+mechanism, Ouroboros, is the first Proof of Stake algorithm to be provably secure~\cite{Kiayias2017}.
+Cardano consists of two main layers, one for accounting and one for computation. The accounting layer is called Cardano Settlement Layer (CSL)
+and the computation layer Cardano Computation Layer (CCP) where distributed application can be built and run upon. The CCP layer has not been
+implemented yet and there is a plan to be released as a beta by the first quarter of 2018~\cite{cardano_parsons}.
