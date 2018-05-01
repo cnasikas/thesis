@@ -88,9 +88,9 @@ The basic data structure of the blockchain is a \textbf{transaction (tx)} that t
   \begin{subfigure}[!ht]{\textwidth}
     \centering
     \begin{tikzpicture}
-      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
-      \draw [->] (-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
-      \draw [->] (A) -- (3, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
+      \node[tx] (A) at (0,0) {$tx$};
+      \draw [->] ++(-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
+      \draw [->] (A) -- ++(3, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
     \end{tikzpicture}
     \caption{Simplified}
     \label{fig:bl_tx:simple}
@@ -99,7 +99,7 @@ The basic data structure of the blockchain is a \textbf{transaction (tx)} that t
   \begin{subfigure}[!ht]{\textwidth}
     \centering
     \begin{tikzpicture}
-      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+      \node[tx] (A) at (0,0) {$tx$};
       \draw [->] (-3,0) -- (A) node[below, xshift=-4.7cm]{\footnotesize{1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2}} node[midway, above]{5mBTC};
       \draw [->] (A) -- (3, 0) node[left, below, xshift=1.5cm]{\footnotesize{1J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy}} node[midway, above]{5mBTC};
     \end{tikzpicture}
@@ -114,7 +114,7 @@ The basic data structure of the blockchain is a \textbf{transaction (tx)} that t
 \begin{figure}[!ht]
   \centering
   \begin{tikzpicture}
-    \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+    \node[tx] (A) at (0,0) {$tx$};
     \draw [->] (-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{5mBTC};
     \draw [->] (A) -- (3, 0) node[midway, below]{Bob} node[midway, above]{5mBTC};
     \node (txid) at (-5,0) {$txid = SHA256^{2}($};
@@ -137,7 +137,7 @@ In Bitcoin there is no notion of giving changes. That is, because there is no ac
 \begin{figure}[!ht]
   \centering
   \begin{tikzpicture}
-    \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+    \node[tx] (A) at (0,0) {$tx$};
     \draw [->] (-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{1mBTC};
     \draw [->] (A) -- ++(2, 0) -- ++(1, 1) -- ++(2, 0) node[midway, below]{Bob} node[midway, above]{0.1mBTC};
     \draw [->] (A) -- ++(2, 0) -- ++(1, -1) -- ++(2, 0) node[midway, below]{Alice} node[midway, above]{0.9mBTC};
@@ -149,10 +149,10 @@ In Bitcoin there is no notion of giving changes. That is, because there is no ac
 \begin{figure}[!ht]
   \centering
   \begin{tikzpicture}[node distance=3cm]
-    \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
-    \node[circle,draw, minimum size=2cm, below of=A] (B) {$tx$};
-    \node[circle,draw, minimum size=2cm, below of=B] (C) {$tx$};
-    \node[circle,draw, minimum size=2cm, right of=B, node distance=7cm] (D) {$tx$};
+    \node[tx] (A) at (0,0) {$tx$};
+    \node[tx, below of=A] (B) {$tx$};
+    \node[tx, below of=B] (C) {$tx$};
+    \node[tx, right of=B, node distance=7cm] (D) {$tx$};
 
     \draw [->] (A) -- ++(4, 0) node[midway, below]{Alice} node[midway, above]{1mBTC} -- (D);
     \draw [->] (B) -- ++(4, 0) node[midway, below]{Alice} node[midway, above]{2mBTC} -- (D);
@@ -168,8 +168,8 @@ In Bitcoin there is no notion of giving changes. That is, because there is no ac
 \begin{figure}[!ht]
   \centering
   \begin{tikzpicture}
-    \node[circle,draw, minimum size=2cm] (A) at (-5,0) {$tx$};
-    \node[circle,draw, minimum size=2cm] (B) at (0,0) {$tx$};
+    \node[tx] (A) at (-5,0) {$tx$};
+    \node[tx] (B) at (0,0) {$tx$};
     \draw [->] (A) -- (B) node[midway, below]{Wage} node[midway, above]{1mBTC};
     \draw [->] (B) -- ++(2, 0) -- ++(1, 2) -- ++(2, 0) node[midway, below]{Rent} node[midway, above]{0.6mBTC};
     \draw [->] (B) -- ++(2, 0) -- ++(3, 0) node[midway, below, xshift=1em]{Electricity} node[midway, above, xshift=1em]{0.2mBTC};
@@ -188,9 +188,9 @@ In the Bitcoin transaction graph, the Kirchhoff property mandates that the total
 \begin{figure}[ht!]
     \centering
     \begin{tikzpicture}[scale=0.9]
-      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
-      \node[circle,draw, minimum size=2cm] (B) at (4,0) {$tx$};
-      \node[circle,draw, minimum size=2cm] (C) at (8,0) {$tx$};
+      \node[tx] (A) at (0,0) {$tx$};
+      \node[tx] (B) at (4,0) {$tx$};
+      \node[tx] (C) at (8,0) {$tx$};
       \draw [->] (-3,0) -- (A) node[midway, below]{Alice} node[midway, above]{1mBTC};
       \draw [->] (A) -- (B) node[midway, below]{Bob} node[midway, above]{1mBTC};
       \draw [->] (B) -- (C) node[midway, below]{Charlie} node[midway, above]{1mBTC};
@@ -208,7 +208,7 @@ In the Bitcoin transaction graph, the Kirchhoff property mandates that the total
   \begin{subfigure}[t]{0.50\textwidth}
     \centering
     \begin{tikzpicture}
-      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+      \node[tx] (A) at (0,0) {$tx$};
       \draw [->] (A) -- (3,0) node[midway, below]{Alice} node[midway, above]{1mBTC};
 
       \node[red] (utxo) at (2, 3) {$utxo$};
@@ -221,9 +221,9 @@ In the Bitcoin transaction graph, the Kirchhoff property mandates that the total
   \begin{subfigure}[t]{0.50\textwidth}
     \centering
     \begin{tikzpicture}[scale=0.9]
-      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+      \node[tx] (A) at (0,0) {$tx$};
       \draw [->] (A) -- (3,0) node[midway, below]{Alice} node[midway, above]{1mBTC};
-      \node[circle,draw, minimum size=2cm] (B) at (5,0) {$tx$};
+      \node[tx] (B) at (5,0) {$tx$};
       \draw [->] (B) -- (8,0) node[midway, below]{Bob} node[midway, above]{1mBTC};
 
       \node[red] (utxo) at (2, 3) {$utxo$};
@@ -236,8 +236,8 @@ In the Bitcoin transaction graph, the Kirchhoff property mandates that the total
   \begin{subfigure}[t]{0.50\textwidth}
     \centering
     \begin{tikzpicture}[scale=0.9]
-      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
-      \node[circle,draw, minimum size=2cm] (B) at (4,0) {$tx$};
+      \node[tx] (A) at (0,0) {$tx$};
+      \node[tx] (B) at (4,0) {$tx$};
       \draw [->] (A) -- (B) node[midway, below]{Alice} node[midway, above]{1mBTC};
       \draw [->] (B) -- (7,0) node[midway, below]{Bob} node[midway, above]{1mBTC};
 
@@ -255,8 +255,8 @@ In the Bitcoin transaction graph, the Kirchhoff property mandates that the total
   \begin{subfigure}[t]{0.50\textwidth}
     \centering
     \begin{tikzpicture}[scale=0.9]
-      \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
-      \node[circle,draw, minimum size=2cm] (B) at (4,0) {$tx$};
+      \node[tx] (A) at (0,0) {$tx$};
+      \node[tx] (B) at (4,0) {$tx$};
       \draw [->] (A) -- (B) node[midway, below]{Alice} node[midway, above]{1mBTC};
       \draw [->] (B) -- (7,0) node[midway, below]{Bob} node[midway, above]{1mBTC};
 
@@ -281,7 +281,7 @@ if transaction A precedes transaction B. Furthermore, the order must be common f
 \begin{figure}[!ht]
   \centering
   \begin{tikzpicture}
-    \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+    \node[tx] (A) at (0,0) {$tx$};
     \draw [->] (-3,0) -- (A) node[midway, below]{Eve} node[midway, above]{1mBTC};
     \draw [->] (A) -- ++(2, 0) -- ++(1, 1) -- ++(2, 0) node[midway, below]{Alice} node[midway, above]{1mBTC};
     \draw [->] (A) -- ++(2, 0) -- ++(1, -1) -- ++(2, 0) node[midway, below]{Eve} node[midway, above]{1mBTC};
@@ -332,7 +332,7 @@ As in a transaction, every bitcoin block has a unique \textbf{block id} which is
     \foreach \x in {0,1,...,4}
         \pgfmathparse{(\x*3)}
         \edef\position{\pgfmathresult}
-        \node[rectangle,draw,minimum width=2cm,minimum height=1cm] (\x) at (\position,0) {$block$};
+        \node[bl_block] (\x) at (\position,0) {$block$};
 
     \foreach \x in {1,2,...,4}
         \pgfmathparse{(\x-1)}
@@ -349,7 +349,7 @@ As in a transaction, every bitcoin block has a unique \textbf{block id} which is
     \foreach \x in {0,1,...,4}{
         \pgfmathparse{(\x*3)}
         \edef\position{\pgfmathresult}
-        \node[rectangle,draw,minimum width=2cm,minimum height=1cm] (\x) at (\position,0) {$block$};
+        \node[bl_block] (\x) at (\position,0) {$block$};
         \pgfmathparse{int(\x*10 + 10)}
         \edef\time{\pgfmathresult}
         \node[] at (\position,-2) {$17:\time$};
@@ -419,7 +419,7 @@ When a hash value less than the target is found by a node, the node gets to add 
 
 The existence of a transaction in a block makes the transaction valid. The deeper the block is in the blockchain the more difficult is for an adversary to alter the block in which the transaction is confirmed. The reason is, that the time an adversary needs to alter a block grows exponentially in the number of blocks that have followed~\cite{10.1007/978-3-662-46803-6_10}, as she will need to reproduced those blocks and the blockchain is constantly extended. Waiting 6 confirmation blocks to appear after the block in which the transaction is confirmed is enough for a transaction to considered secure.
 
-A PoW system is based on randomness. Each node has a small change to win the block which is approximated proportionally to the computational power of each node. To obtain control of the blockchain, an adversary would need to control the majority of the CPU power of the network. Bitcoin's security has been formalized and rigorously explored~\cite{10.1007/978-3-662-46803-6_10} over the years.
+A PoW system is based on randomness. Each node has a small change to win the block which is approximated proportionally to the computational power of each node. The consensus mechanism depends on having a majority of the miners acting honestly out of self-interest~\cite{antonopoulos2014mastering}.
 
 PoW consensus mechanism works very well in public blockchain systems where trust of the nodes is low eliminating the double-spend problem and guarding against Sybil attacks~\cite{Vu:2009:PCP:1671222}. However, the transaction confirmation time is longer compared to conventional financial services (such as VISA)~\cite{Sompolinsky2015,Zohar:2015:BUH:2817191.2701411,DBLP:journals/corr/abs-1708-05665} resulting in slower transaction confirmation rates. Lastly, the energy waste attributed to the mining process can be very high ---the energy requirements of the Bitcoin protocol are estimated to be comparable to those of a small country~\cite{6912770}.
 
@@ -485,7 +485,7 @@ In Bitcoin, the miner is rewarded with a number of bitcoins that are created for
 \begin{figure}[!ht]
   \centering
   \begin{tikzpicture}
-    \node[circle,draw, minimum size=2cm] (A) at (0,0) {$tx$};
+    \node[tx] (A) at (0,0) {$tx$};
     \draw [->] (-3,0) -- (A) node[midway, below]{} node[midway, above]{12.5 BTC};
     \draw [->] (A) -- (3, 0) node[midway, below]{miner} node[midway, above]{12.5 BTC};
   \end{tikzpicture}
@@ -501,35 +501,76 @@ Another way a miner is rewarded is by collecting transactions fees;  the financi
 
 \section{Blockchain fork}\label{blockchain:fork}
 
-Due to network latency and the distributed nature of the system it is possible that two miners will find a block around the same time and some nodes will accept the first block and some others the second one. In such cases there is a temporary fork in the blockchain, where one node is adding blocks to one branch while other nodes are adding blocks to another branch. Eventually the system will come to an agreement, the longest branch will be accepted and the others will be discarded.
+Due to network latency and the distributed nature of the system, it is possible that two miners will find a block around the same time and some nodes will accept the first block and some others the second one. Both blocks are valid, containing a valid proof of work, valid transactions and both extent the same parent block. In such cases there is a temporary fork in the blockchain, where some nodes are adding blocks to one branch while other nodes are adding blocks to another branch. As a result, two competitive versions of the blockchain will emerge~\cite{antonopoulos2014mastering}. This situation, arise the same problem we have with the transactions: the order of the blocks cannot be defined.
 
-\begin{figure}[ht!]
+To resolve this, each node always selects the longest brach. At some point, one of the two branches will be extended by a new block. The nodes that were working on the first branch will see that the new branch is the longest and start working immediately on that. Eventually the system will come to an agreement, the longest branch will be accepted and the others will be discarded. The process of chain selection can be likened to voting where mining nodes ``vote'' with their mining power by choosing which chain to extend by mining the next block; the new block itself represents the voting result~\cite{antonopoulos2014mastering}.
+
+\begin{figure}[!ht]
   \centering
   \begin{tikzpicture}
-    \foreach \x in {0,1,...,4}
-        \pgfmathparse{(\x*3)}
+    \foreach \x in {0,1,...,5}
+        \pgfmathparse{(\x*2)}
         \edef\position{\pgfmathresult}
-        \node[rectangle,draw,minimum width=1.5cm,minimum height=1cm] (\x) at (\position,0) {};
+        \node[bl_block, minimum width=1cm, fill=blue!30] (\x) at (\position,0) {$block$};
 
-    \foreach \x in {1,2,...,4}
+    \foreach \x in {1,2,...,5}
         \pgfmathparse{(\x-1)}
         \edef\previous{\pgfmathresult}
         \draw [->] (\x) -- (\previous);
 
-    \foreach \x in {2,3,...,5}
-        \pgfmathparse{(\x*3)}
+    \foreach \x in {3,4}
+        \pgfmathparse{(\x*2)}
         \edef\position{\pgfmathresult}
-        \node[rectangle,draw,minimum width=1.5cm,minimum height=1cm, red] (\x_mal) at (\position,2) {};
+        \node[bl_block, minimum width=1cm, fill=orange!30] (\x_fork) at (\position,2) {$block$};
 
-    \draw [->] (3_mal) -- (2_mal);
-    \draw [->] (4_mal) -- (3_mal);
-    \draw [->] (5_mal) -- (4_mal);
-
-    \draw [<-] (1.north) -- (2_mal.west);
+    \draw [->] (4_fork) -- (3_fork);
+    \draw [<-] (2.north) -- (3_fork.west);
 
   \end{tikzpicture}
-  \caption{Double spend}
-  \label{fig:blockchain}
+  \caption{A blockchain fork}
+  \label{fig:bl:fork}
+\end{figure}
+
+If a malicious adversary wants to do create double spent transactions or execute a denial-of-service, she has to produce a malicious blockchain longer than the honest. To achieve that, an adversary would need to control the majority of the CPU power of the network and specifically the 51\% of the total network’s hashing power. This is called the 51\% attack. It is important to node that this kind of consensus attack affects at best the most recent blocks. Beyond a certain depth blockchain is absolute immutable. In addition, this type of attacks cannot steal or spend coins as the adversary has to forge a signature to produce a valid transaction impersonating another user.
+
+ Bitcoin's security has been formalized and rigorously explored~\cite{10.1007/978-3-662-46803-6_10} over the last years.
+
+\begin{figure}[ht!]
+  \centering
+  \begin{tikzpicture}
+    \foreach \x in {0,1,...,5}
+        \pgfmathparse{(\x*2)}
+        \edef\position{\pgfmathresult}
+        \node[bl_block, minimum width=1cm, fill=blue!30] (\x) at (\position,0) {};
+
+    \foreach \x in {1,2,...,5}
+        \pgfmathparse{(\x-1)}
+        \edef\previous{\pgfmathresult}
+        \draw [->] (\x) -- (\previous);
+
+    \foreach \x in {3,...,6}
+        \pgfmathparse{(\x*2)}
+        \edef\position{\pgfmathresult}
+        \node[bl_block, minimum width=1cm, fill=red!30] (\x_mal) at (\position,2) {};
+
+    \draw [->] (4_mal) -- (3_mal);
+    \draw [->] (5_mal) -- (4_mal);
+    \draw [->] (6_mal) -- (5_mal);
+
+    \draw [<-] (2.north) -- (3_mal.west);
+
+    \node[circle, draw, minimum size=0.1cm, fill=red] at (4_mal.center) {};
+    \node[circle, draw, minimum size=0.1cm, fill=green] at (3.center) {};
+
+    \draw[decorate,decoration={brace,amplitude=10pt, mirror}, xshift=-1.2em, yshift=-1.5em](0, 0) -- (5, 0) node [black,midway,yshift=-1cm, above] {\footnotesize{Honest common prefix}};
+
+    \draw[decorate,decoration={brace,amplitude=10pt, mirror}, xshift=-1.2em, yshift=-1.5em](6, 0) -- (11, 0) node [black,midway,yshift=-1cm, above] {\footnotesize{Honest blockchain}};
+
+    \draw[decorate,decoration={brace,amplitude=10pt}, xshift=-1.2em, yshift=1.5em](6, 2) -- (13, 2) node [black,midway, above, yshift=1em] {\footnotesize{Malicious blockchain}};
+
+  \end{tikzpicture}
+  \caption{Double spent attack}
+  \label{fig:blockchain:dl_spent}
 \end{figure}
 
 \section{Blockchain Types}\label{blockchain:blockchain_types}
