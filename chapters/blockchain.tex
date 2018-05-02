@@ -645,17 +645,19 @@ In~\ref{blockchain:structure:tx}, a transaction is defined as a graph node with 
 \subsection{Ethereum smart contracts}
 \label{smart_contracts:ethereum}
 
-The need of user defined open source blockchain applications emerged. As a result, Ethereum was born which is the first Turing-complete decentralized smart contract framework. In Ethereum, one can create smart contracts in a high level language such as Solidity~\cite{solidity} which in turn is compiled to bytecode that is executable on the Ethereum.
+The need of user defined open source blockchain applications emerged. As a result, Ethereum~\cite{ethereum_yellowpaper, ethereum_whitepaper} was born. Ethereum is an open-source, public, blockchain-based distributed computing platform and smart contract framework that enables anyone to build distributed applications making the process much easier and efficient than ever before. It provides a decentralized Turing-complete virtual machine, the Ethereum Virtual Machine (EVM) in which smart contracts are executed by all nodes of the network. In Ethereum, one can create smart contracts in a high level language, such as Solidity~\cite{solidity}, which in turn is compiled to bytecode that is executable on the EVM. Ethereum provides a cryptocurrency called ether which can be transferred between accounts, and gas, an internal pricing mechanism used to execute contracts and allocate resources on the network. Like Bitcoin, Ethereum use a Proof-of-Work consensus mechanism called Ethash and has been designed to be ASIC-resistant~\cite{ethash}. Soon Ethereum will be moved to a Proof-of-Stake consensus mechanism called Casper.
 
-Before describing how smart contracts are written in Ethereum, a thorough analysis of Ethereum's core mechanisms must be made. Like Bitcoin, Ethereum is a decentralized monetary system based on a public blockchain with a  proof of work consensus mechanism. The coin that Ethereum uses for monetary transactions is called ether (ETH).
+With Ethereum launch, the notion of DApps (decentralized applications) arisen
+and a lot of developers and companies are building numerous applications atop Ethereum such as prediction markets~\cite{augur,gnosis}, social media platforms~\cite{akasha,backfeed},
+online gambling~\cite{etheroll,coinpoker} and video games~\cite{cryptokitties}. As of January 2018, there are more than 250 live DApps.
 
-Ethereum constitute of a set of one global object, that of account. Each account has a state, in which the nodes of the network must agree upon with the use of a consensus mechanism, and an 20-byte address. The state of an account can only be changed with a transaction. The global state of Ethereum is made up of accounts. For that reason, Ethereum is often described as a state machine~\cite{ethereum_whitepaper} where the state transition function takes as input a transaction and outputs a different state.
+Before describing how smart contracts are deployed in Ethereum, a thorough analysis of Ethereum's core mechanisms must be made. Ethereum constitute of a set of one global object, that of account. Each account has a state, in which the nodes of the network must agree upon with the use of a consensus mechanism, and a 20-byte address. The state of an account can only be changed by a transaction. The global state of Ethereum is made up of accounts. For that reason, Ethereum is often described as a state machine~\cite{ethereum_whitepaper} where the state transition function takes as input a transaction and outputs a different state.
 
-Each account is composed by the following fields: address, balance, and nonce. The address is a 160-bit account identifier which corresponds to a public key. The balance contains the total amount the account holds in Wei; the smallest denomination of Ether. Ethereum instead of using UTXOs to keep track of coin ownership, adopted the traditional notion of balances for which we are accustomed from the financial system. The choice of balances over UTXOs was a design decision by the Ethereum foundation. Each option has its advantages and disadvantage. According to Ethereum founders, the advantages of accounts massively outweigh the alternatives~\cite{eth_design}. Lastly, the nonce is the total number of transaction sent from that account. It is acts as a replay-attack prevention mechanism as there is not UTXOs to keep track unspent edges. A malicious adversary could hear a transaction and broadcast a copy of it another time. The transaction is valid and amount will be deducted again from the user's balance.
+Each account is composed by the following fields: address, balance, and nonce. The address is a 160-bit account identifier which corresponds to a public key. The balance contains the total amount the account holds in Wei; the smallest denomination of ether. Ethereum instead of using UTXOs to keep track of coin ownership, adopted the traditional notion of balances for which we are accustomed from the financial system. The choice of balances over UTXOs was a design decision by the Ethereum foundation. Each option has its advantages and disadvantage. According to Ethereum founders, the advantages of accounts massively outweigh the alternatives~\cite{eth_design}. Lastly, the nonce is the total number of transaction sent from that account. It is acts as a replay-attack prevention mechanism as there is not UTXOs to keep track unspent edges. A malicious adversary could hear a transaction and broadcast a copy of it in another time. As a result, the transaction amount will be deducted again from the user's balance since the transaction is valid.
 
 Similar to Bitcoin, anyone can send ethers from one account to another. The principles of the transaction described in~\ref{blockchain:structure:tx} are also applicable to Ethereum. Each transaction consist of the following fields: from, signature, to, and amount. The from and to fields describe the sender and the receiver respectively. The signature field contains the valid signature of the transaction where the nodes of the network verify. Lastly, the amount contains the amount to be sent in Wei.
 
-There are two type of accounts: \textbf{personal} (or external own accounts) and \textbf{contract} accounts. A contact account is an account dedicated for a smart contracts. They contain two extra fields: code and storage. The code field contains the code to be executed and the storage field the data of the contract. Those fields are empty when it comes to personal accounts.
+There are two type of accounts: \textbf{personal} (or external own accounts) and \textbf{contract} accounts. A contact account is an account dedicated for smart contracts. They contain two extra fields: code and storage. The code field contains the code of the smart contract and the storage field the internal persistent storage of the smart contract. Those fields are empty, and optional, when it comes to personal accounts.
 
 \begin{figure}[!ht]
   \centering
@@ -670,7 +672,7 @@ There are two type of accounts: \textbf{personal} (or external own accounts) and
   \label{fig:eth_account}
 \end{figure}
 
-Additionally, transactions contain also an extra field which is called data field and is empty when the transaction is taken place between personal accounts. To create a contact, a transaction has to be sent where the receiver is empty and the data field contains the code of the smart contract. When the nodes of the network hear a transaction, where the field of the recipient is empty, they treat the transaction as a smart contract creation transaction. They create a contract account with code, the string that is contained in the data field of the transaction, and with empty storage. After the creation of the contract account an address is returned to the creator of the contract. The address is created from the concatenation of the creator's public key with her account current nonce. Anyone knowing the address of the contract can interact with it. In particular, to call a smart contract function, a transaction with recipient the smart contact's address and data the function's name along with its arguments, has to be sent.
+Additionally, transactions contain also an extra field, called the data field. To create a contact, a transaction with empty recipient and data field the code of the smart contract must be created and sent. When the nodes of the network hear a transaction, where the field of the recipient is empty, they treat the transaction as a smart contract creation transaction. They create a contract account with code, the string that is contained in the data field of the transaction, and empty storage. After the creation of the contract account an address is returned to the creator of the contract. The address is created from the concatenation of the creator's public key and her account current nonce. Anyone knowing the address of the contract can interact with it. In particular, to call a smart contract function, a transaction with recipient the smart contact's address and data the function's name along with its arguments, has to be sent.
 
 \begin{table}[!ht]
   \centering
@@ -687,22 +689,9 @@ Additionally, transactions contain also an extra field which is called data fiel
   \label{fig:eth_accounts}
 \end{table}
 
-When a contract account is activated, the contract code runs and it can read or write to internal storage, send other message or create new contracts. A contract account can not initiate new transactions on their own but only in response of a transaction initiated by a personal account. Only personal accounts can change the state of the accounts.
+When a contract account is activated, the contract code runs and it can read or write to internal storage, do various computations, send messages or create new contracts. A contract account can not initiate new transactions on its own but only in response of a transaction initiated by a personal account. Only personal accounts can change the state of the accounts.
 
 Contract accounts can send messages to other contracts accounts. Messages are like transactions except it is produced by a contract and exist only in the Ethereum execution environment. The network never sees the message neither is stored in the blockchain. This way, contracts can have relationships with other contracts.
-
-\begin{figure}[!ht]
-  \centering
-  \begin{tikzpicture}[x=2cm, y=-1cm, node distance=0 cm,outer sep = 0pt]
-    \node[account_block, fill=orange!30] (from) {$from$};
-    \node[account_block, right=of from, fill=magenta!30] (signature) {$signature$};
-    \node[account_block, right=of signature, fill=purple!30] (to) {$to$};
-    \node[account_block, right=of to, fill=blue!30] (amount) {$amount$};
-    \node[account_block, right=of amount, fill=green!30] (data) {$data$};
-  \end{tikzpicture}
-  \caption{An Ethereum transaction}
-  \label{fig:eth_transaction}
-\end{figure}
 
 \begin{table}[!ht]
   \centering
@@ -712,7 +701,7 @@ Contract accounts can send messages to other contracts accounts. Messages are li
    from & creator & sender & caller \\ \hline
    signature & $\sigma$ & $\sigma$ & $\sigma$ \\ \hline
    to & $\emptyset$ & receiver & contract \\ \hline
-   amount & ETH & ETH & ETH \\ \hline
+   amount & \multicolumn{3}{c|}{ETH} \\ \hline
    data & code & $\emptyset$ & $f, args$ \\ \hline
   \end{tabular}
   \caption{Ethereum transactions}
@@ -737,41 +726,151 @@ Contract accounts can send messages to other contracts accounts. Messages are li
   \label{fig:eth_transaction}
 \end{figure}
 
-Ethreuem use a unit called gas as a measurement of computation use--an internal pricing mechanism used to execute contracts and allocate resources on the network-- and it's price is expressed in ether. Every node in the Ethereum network executes instructions (opcodes) within the Ethereum Virtual Machine (EVM) and each of these instructions has an associated cost in gas. The cumulative sum of all the operations is the total gas cost for a transaction and is the fee that is being paid to the miners.
+When a transaction is made which call a function of a contract, the code of that function is run by all nodes of the network. That function can change the state of the contract or the state of another account. The nodes must agree on a global common state for that account. Similar to Bitcoin, the transactions, along with the state of each account, are contained in a block which through a proof-of-work consensus mechanism the network agree in the block that will extent the blockchain and consequently to the new state of the accounts.
 
-The cost of each opcode (operation code) of EVM is defined on Ethereum's yellow paper~\cite{ethereum_yellowpaper} and a gas cost summarization of basic opcodes are be shown on Table~\ref{table:opcode_gas_cost}.
+As all nodes evaluate all transactions, execute code and store all state, and the Ethereum is turing-complete, infinite loops or computational heavy code could make all the nodes of the system to be occupied for a very long period of time, or even forever, and any other transactions waiting for validation will not be fulfilled. Furthermore, storage requirements can be grown very fast making the nodes to become unable to fulfil and maintain that demand as there is no incentive to invest for storage capacity. To address those issues, Ethreuem use a unit called \textbf{gas} as a measurement of computation use. It acts as a anti-denial of service mechanism. The intent of the gas, is that a malicious adversary should pay proportionately for every resource that they consume, including computation, bandwidth and storage~\cite{ethereum_whitepaper}.
 
-For storing data, Ethereum offers two opcodes: SLOAD opcode loads a word from storage and SSTORE opcode saves a word to storage. The size of an EVM word is 32 bytes (256 bit) and to store one EVM word using SSTORE opcode costs 20.000 gas.
+So, gas is an internal pricing mechanism used to execute contracts and allocate resources on the network and it's price is expressed in gwei ($1 \times 10^9$ Wei). Every node in the Ethereum network executes instructions (opcodes), that represent the code of the contract, within the Ethereum Virtual Machine (EVM) and each of these instructions has an associated cost in gas. The cumulative sum of all the operations is the total gas cost for a transaction and is the fee that is being paid to the miners.
 
-\begin{table}[!hb]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
- Operation & Gas  & Description \\ \hline
- ADD/SUB & 3 & Arithmetic operation \\ \hline
- MUL/DIV & 5 & Arithmetic operation \\ \hline
- ADDMOD/MULMOD & 8 & Arithmetic operation \\ \hline
- AND/OR/XOR & 3 & Bitwise logic operation \\ \hline
- LT/GT/SLT/SGT/EQ & 3 & Comparison operation \\ \hline
- POP & 2 & Stack operation \\ \hline
- PUSH/DUP/SWAP & 3 & Stack operation \\ \hline
- MLOAD/MSTORE & 3 & Memory operation \\ \hline
- JUMP & 8 & Unconditional jump \\ \hline
- JUMPI & 10 & Conditional jump \\ \hline
- SLOAD & 200 & Storage operation \\ \hline
- SSTORE & 5.000 / 20.000 & Storage operation \\ \hline
- BALANCE & 400 & Get balance of an account \\ \hline
- CREATE & 32.000 & Create a new account using CREATE \\ \hline
- CALL & 25.000 & Create a new account using CALL \\ \hline
- LOG & 375 & Logging operation \\ \hline
-\end{tabular}
-\caption{Ethereum opcodes gas costs}
-\label{table:opcode_gas_cost}
+The cost of each opcode (operation code) of EVM is defined in Ethereum's yellow paper~\cite{ethereum_yellowpaper} and a gas cost summarization of basic opcodes are be shown in Table~\ref{table:opcode_gas_cost}. For storing data, Ethereum offers two opcodes: SLOAD opcode which loads a word from the storage and SSTORE opcode which saves a word to storage. The size of an EVM word is 32 bytes (256 bit) and to store one EVM word using SSTORE opcode costs 20.000 gas. Due to that reasons, storing data is expensive and blockchain technologies cannot be used for file saving or dig data.
+
+\begin{table}[!ht]
+  \centering
+  \begin{tabular}{|l|l|l|}
+  \hline
+   Operation & Gas  & Description \\ \hline
+   ADD/SUB & 3 & Arithmetic operation \\ \hline
+   MUL/DIV & 5 & Arithmetic operation \\ \hline
+   ADDMOD/MULMOD & 8 & Arithmetic operation \\ \hline
+   AND/OR/XOR & 3 & Bitwise logic operation \\ \hline
+   LT/GT/SLT/SGT/EQ & 3 & Comparison operation \\ \hline
+   POP & 2 & Stack operation \\ \hline
+   PUSH/DUP/SWAP & 3 & Stack operation \\ \hline
+   MLOAD/MSTORE & 3 & Memory operation \\ \hline
+   JUMP & 8 & Unconditional jump \\ \hline
+   JUMPI & 10 & Conditional jump \\ \hline
+   SLOAD & 200 & Storage operation \\ \hline
+   SSTORE & 5.000 / 20.000 & Storage operation \\ \hline
+   BALANCE & 400 & Get balance of an account \\ \hline
+   CREATE & 32.000 & Create a new account using CREATE \\ \hline
+   CALL & 25.000 & Create a new account using CALL \\ \hline
+   LOG & 375 & Logging operation \\ \hline
+  \end{tabular}
+  \caption{Ethereum opcodes gas costs}
+  \label{table:opcode_gas_cost}
 \end{table}
 
-With Ethereum launch, the notion of DApps (decentralized applications) arisen
-and a lot of developers and companies are building numerous applications atop Ethereum such as prediction markets~\cite{augur,gnosis}, social media platforms~\cite{akasha,backfeed},
-online gambling~\cite{etheroll,coinpoker} and video games~\cite{cryptokitties}. As of January 2018, there are more than 250 live DApps.
+An Ethereum transaction has two extra fields: the \textbf{start gas} and \textbf{gas price}. The start gas is the maximum amount of gas willing to pay and the gas price is the price willing to pay per gas unit. The start gas (or gas limit) acts as protection to computational wastage or malicious code. Even if the code needs more gas to terminate, when the gas limit is reached the execution is stoped and all state changes are revert. An extra benefit of gas limit is, that a miner seeing the gas limit field can estimate the needed computational time beforehand and act accordingly. The gas price is not defined by any central trusted authority but is regulated by the network itself. By setting the gas price, the user in a sense ``votes'' for the value of the gas. Gas price determines how quickly a transaction will be mined; the higher the price is, the more likely is the transaction to be in the next block.
+
+\begin{figure}[!ht]
+  \centering
+  \begin{tikzpicture}[x=2cm, y=-1cm, node distance=0 cm,outer sep = 0pt]
+    \node[account_block, fill=orange!30] (from) {$from$};
+    \node[account_block, right=of from, fill=magenta!30] (signature) {$signature$};
+    \node[account_block, right=of signature, fill=purple!30] (to) {$to$};
+    \node[account_block, right=of to, fill=blue!30] (amount) {$amount$};
+    \node[account_block, right=of amount, fill=green!30] (data) {$data$};
+    \node[account_block, right=of data, fill=yellow!30] (startgas) {$startgas$};
+    \node[account_block, right=of startgas, fill=blue!30] (gasprice) {$gasprice$};
+  \end{tikzpicture}
+  \caption{An Ethereum transaction}
+  \label{fig:eth_transaction}
+\end{figure}
+
+The start gas can be larger than the cost of the computation. In this case, all unused gas is refunded at the end of a transaction to the sender. If the computation exceed the gas limit then a \textbf{out of gas exception} is trigger and the state is reverted to the previous state as the transaction did not occurred. Out of gas exceptions are not refundable. The miner still claims the fee for each computational step performed.
+
+\begin{figure}[!ht]
+  \begin{tikzpicture}[node distance=2.5cm]
+    \node[execution_entity, label=below:{\footnotesize{250}}] (sender) at (0, 0) {Sender};
+    \node[execution_process, right =of sender] (start) {Start \\ Transaction};
+    \node[execution_operation, right =of start, label=below:{\footnotesize{200}}] (op_1) {Operation};
+    \node[execution_operation, right =of op_1, label=below:{\footnotesize{170}}] (op_2) {Operation};
+    \node[execution_process, below =of start, label=below:{\footnotesize{170}}] (end) {End \\ Transaction};
+    \node[execution_entity, right =of end] (receiver) {Receiver};
+
+    \node[execution_label, below=of end] (rem_gas) {Remaing \\ gas};
+    \node[execution_label, below=of sender] (str_gas) {Start \\ gas};
+
+    \draw[->] (sender) -- (start);
+    \draw[->] (start) -- (op_1) node[midway, above, red]{\footnotesize{Use -50 gas}};
+    \draw[->] (op_1) -- (op_2) node[midway, above, red]{\footnotesize{Use -30 gas}};
+    \draw[->] (op_2.east) -- ++(0.5, 0) -- ++(0, -1.5) -- ++(-11.4, 0) -- (end.north);
+    \draw[->] (end) -- (receiver);
+
+    \draw[->] ([yshift=-0.55cm]end.south) -- (rem_gas);
+    \draw[->] (rem_gas.west) -- ++(-4.2, 0) -- (str_gas);
+
+    \draw[<-] ([yshift=-0.55cm]sender.south) -- (str_gas);
+  \end{tikzpicture}
+  \caption{Smart contract execution}
+  \label{fig:smart_contract_execution}
+\end{figure}
+
+\begin{figure}[!ht]
+  \begin{tikzpicture}[node distance=2.5cm]
+    \node[execution_entity, label=below:{\footnotesize{250}}] (sender) at (0, 0) {Sender};
+    \node[execution_process, right =of sender] (start) {Start \\ Transaction};
+    \node[execution_operation, right =of start, label=below:{\footnotesize{200}}] (op_1) {Operation};
+    \node[execution_operation, right =of op_1, label=below:{\footnotesize{170}}] (op_2) {Operation};
+
+    \node[execution_operation, below =of op_2, label=below:{\footnotesize{0}}] (op_3) {Operation};
+    \node[execution_operation, left =of op_3, label=below:{\footnotesize{0}}] (op_4) {Operation};
+
+    \node[execution_entity, below =of op_3] (receiver) {Receiver};
+
+    \node[execution_label, below=of sender] (str_gas) {Start \\ gas};
+
+    \draw[->] (sender) -- (start);
+    \draw[->] (start) -- (op_1) node[midway, above, red]{\footnotesize{Use -50 gas}};
+    \draw[->] (op_1) -- (op_2) node[midway, above, red]{\footnotesize{Use -30 gas}};
+    \draw[->] ([yshift=-0.55cm]op_2.south) -- (op_3) node[midway, right, red]{\footnotesize{Use -170 gas}};
+    \draw[->] (op_3) -- (op_4) node[midway, above, red]{\footnotesize{Out of gas}};
+
+    \draw[red!100, thick] ([yshift=1cm]sender |- receiver.north) -- ([yshift=1cm]receiver.north) node[midway, below, red]{\footnotesize{Revert state}};
+
+    \draw[<-] ([yshift=-0.55cm]sender.south) -- (str_gas);
+  \end{tikzpicture}
+  \caption{Out of gas exception}
+  \label{fig:smart_contract_out_of_gas}
+\end{figure}
+
+Each miner at code execution perform the following steps:
+
+\begin{enumerate}
+  \item If $start\_gas * gas\_price > balance$ then halt
+  \item Deduct $start\_gas * gas\_price$ from $balance$
+  \item Set $gas = start\_gas$
+  \item Run code deducting from gas
+  \item After termination return remaining $gas$ to $balance$
+\end{enumerate}
+
+The total gas cost of the transaction is paid to miner that mined the block. The maximum fee a miner could take by a transaction is calculated as:
+
+\begin{equation*}
+  fee_{max} = startgas \times gasprice
+\end{equation*}
+
+For example if the start gas is set to $50.000$ and the gas price to $20$ Gwei the maximum fee is $0.001$ ETH.
+
+As discussed earlier, the code of the contract is executed within the Ethereum Virtual Machine (EVM) which is a stack-based machine using 32-bytes (256-bit) words. The EVM is a virtual machine that reads a series of bytecode instructions (EVM code) where each bytecode represents an operation (opcode). In addition, EVM provides built-in cryptographic primitives support.
+
+\begin{lstlisting}[language=Solidity, caption={EVM bytecode}]
+PUSH1 0
+CALLDATALOAD
+SLOAD
+NOT
+PUSH1 9
+JUMPI
+STOP
+JUMPDEST
+PUSH1 32
+CALLDATALOAD
+PUSH1 0
+CALLDATALOAD
+SSTORE
+\end{lstlisting}
+
+Writing smart contract on bytecode can be challenging. For that reason, various high level programming language that compile to EVM code have been implemented. The most wide used is of Solidity~\cite{solidity}.
 
 \clearpage
 

@@ -363,7 +363,19 @@
     },
     account_block/.style={%
       rectangle,draw,minimum width=2cm,minimum height=1cm,anchor=south west
-    }
+    },
+    execution_entity/.style={%
+        rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, draw, fill=orange!30
+    },
+    execution_process/.style={%
+        ellipse, minimum width=2cm, minimum height=1cm, text centered, draw=black, draw, fill=green!30, align=center, font=\small
+    },
+    execution_operation/.style={%
+        rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black, draw, fill=gray!30
+    },
+    execution_label/.style={%
+        node distance=1.5cm, align=center, font=\small
+    },
 }
 
 \pgfplotsset{%
