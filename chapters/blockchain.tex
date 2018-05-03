@@ -420,7 +420,7 @@ The network evaluates collectively the target value using a predefined algorithm
 
 All the nodes of the network simultaneously try to produce a new block, meaning trying to find a correct nonce satisfying the proof-of-work requirements. Each node monitors the network for blocks and transactions while preparing its block. In its block the node includes all the valid transactions that are not in a previous block and a reference to a parent block. Every node of the network can produce a valid block but each block has to meet the target proof-of-work requirements.
 
-When a hash value less than the target is found by a node, the node gets to add the proposed block to the blockchain and broadcast the new block to to all its neighbours which, in turn, transmit it to the whole network. If a block is found by another node, all the nodes stop the proof of work procedure and start over upon the new block. For a block to be accepted as valid it must contain valid transactions, a valid proof-of-work and a reference to a known valid parent block.
+When a hash value less than the target is found by a node, the node gets to add the proposed block to the blockchain and broadcast the new block to all its neighbors which, in turn, transmit it to the whole network. If a block is found by another node, all the nodes stop the proof of work procedure and start over upon the new block. For a block to be accepted as valid it must contain valid transactions, a valid proof-of-work and a reference to a known valid parent block.
 
 The existence of a transaction in a block makes the transaction valid. The deeper the block is in the blockchain the more difficult is for an adversary to alter the block in which the transaction is confirmed. The reason is, that the time an adversary needs to alter a block grows exponentially in the number of blocks that have followed~\cite{10.1007/978-3-662-46803-6_10}, as she will need to reproduced those blocks and the blockchain is constantly extended. Waiting 6 confirmation blocks to appear after the block in which the transaction is confirmed is enough for a transaction to considered secure.
 
@@ -536,9 +536,9 @@ To resolve this, each node always selects the longest brach. At some point, one 
   \label{fig:bl:fork}
 \end{figure}
 
-If a malicious adversary wants to do create double spent transactions or execute a denial-of-service, she has to produce a malicious blockchain longer than the honest. To achieve that, an adversary would need to control the majority of the CPU power of the network and specifically the 51\% of the total network’s hashing power. This is called the 51\% attack. It is important to node that this kind of consensus attack affects at best the most recent blocks. Beyond a certain depth blockchain is absolute immutable. In addition, this type of attacks cannot steal or spend coins as the adversary has to forge a signature to produce a valid transaction impersonating another user.
+If a malicious adversary wants to do create double spent transactions or execute a denial-of-service, she has to produce a malicious blockchain longer than the honest. To achieve that, an adversary would need to control the majority of the CPU power of the network and specifically the 51\% of the total network’s hashing power. This is called the 51\% attack. It is important to node that this kind of consensus attack affects at best the most recent blocks. Beyond a certain depth blockchain is absolute immutable. In addition, this type of attacks cannot steal or spend coins as the adversary has to forge a signature to produce a valid transaction impersonating another user. Bitcoin's security has been formalized and rigorously explored~\cite{10.1007/978-3-662-46803-6_10} over the last years.
 
- Bitcoin's security has been formalized and rigorously explored~\cite{10.1007/978-3-662-46803-6_10} over the last years.
+ Ethereum is designed to produce blocks very fast (around 12-15 second) in comparison to Bitcoin (around 10 minutes). Blockchains with fast block confirmation times, suffer from reduced security due to high stale rate~\cite{ethereum_whitepaper}. To counterpart that, Ethereum use a variant of the GHOST protocol~\cite{Sompolinsky2015}. The GHOST protocol rule picks the chain that has had the most computation done upon it and not the chain with the longest depth. It takes into account all stale blocks of the chain including all stale descendants of the block's ancestor.
 
 \begin{figure}[ht!]
   \centering
@@ -873,7 +873,32 @@ CALLDATALOAD
 SSTORE
 \end{lstlisting}
 
-Writing smart contract on bytecode can be challenging. For that reason, various high level programming language that compile to EVM code have been implemented. The most wide used is of Solidity~\cite{solidity}.
+Writing smart contract on bytecode can be challenging. For that reason, various high level programming language that compile to EVM code have been implemented. The most wide used is of Solidity~\cite{solidity}. From the perspective of a developer, Solidity is much alike to JavaScript as it supports most of its structures. Every contact have to be declared with the keyword \verb|contract| at the begging of the file. It is the same as declaring a class or an object in object-oriented programming languages.
+
+Solidity supports two types of variables: \textbf{state} variables and \textbf{local} variables. State variables are contract variables that are permanently stored in contract storage and have to be declared at compilation time. Local variables are function variables that cannot be accessed outside the scope of the function and they can be stored either in storage or memory. Without declaration, local variables of \verb|struct|, \verb|array| or \verb|mapping| type reference are saved in storage by default and local variables of value type are stored in the stack.
+
+The value types of variables Solidity supports are:
+
+\begin{itemize}
+  \item Boolean: true of false.
+  \item Integers: Signed and unsigned integers of various sizes. Keywords \verb|uint8| to \verb|uint256| in steps of  8 (unsigned of 8 up to 256 bits) and \verb|int8| to  \verb|int256|.
+  \item Fixed-size byte arrays: \verb|bytes1| to  \verb|bytes32| in steps of one.
+  \item Dynamically-sized byte array: \verb|bytes| or \verb|string|.
+  \item Address: 20-byte value holding an Ethereum address.
+  \item Enum: Enumerated type.
+  \item Mapping: A key-map type similar to hash tables. \verb|mapping(keyType => valueType)|.
+  \item Structs: A structure. It can be used to define new types.
+  \item Function: Variables that hold a function reference.
+\end{itemize}
+
+EVM supports a built-in logging mechanism which can be used by smart contracts to notify for various events. Services outside the blockchain can register listeners to those event and act accordingly; log and event data is not accessible from within contracts~\cite{solidity}. As logging events is much cheaper than saving data to storage, the log is often used as an alternative to store data cheaply. In solidity, an event is declared by the \verb|event| keyword along with its arguments. Lastly, Solidity supports multiple inheritance by copying code including abstract class and interfaces. Contracts can extend another contract with the keyword \verb|is| and access internal functions and non-private members.
+
+Since smart contracts deal directly with currency exchange, security of smart contract is of the utmost importance~\cite{safe_smart_contracts, smart_contracts_smarter}. The DAO bug~\cite{dao, dao_2} is a perfect example where at least 60 millions US dollars was lost leading to a hard fork in Ethereum and the creation of Ethereum Classic. In contrast to traditional application that can be patched when bugs are detect, smart contracts, due to the nature of blockchain, are irreversible and immutable. Various analysis~\cite{safe_smart_contracts, smart_contracts_smarter} have shown that most of the deployed smart contracts on Ethereum are vulnerable. In particular, an analysis tool called \verb|Oyente|~\cite{smart_contracts_smarter}, created by Loi Luu et. al, marked 8,833 out of 19,336 smart contracts as vulnerable. Is believed that these bugs arise from the gap in understanding the actual mechanisms of the underlying platform~\cite{smart_contracts_smarter}; developers make false assumptions of the semantics of the system.
+
+\subsection{Cardano}\label{blockchain:impl:cardano}
+
+Another platform for smart contract implementation is Cardano. Cardano is a security focused blockchain that utilize the latest research and engineering insights to build a platform suitable for the highest value applications~\cite{cardano_site}. It supports distributed applications creation and smart contracts verifiable by a method called formal verification allowing logical proof of correctness of code providing high security. Cardano addresses the need for regulatory oversight while maintaining consumer privacy and security. Cardano is the first blockchain project to be peer reviewed by academic researchers~\cite{cardano_site} and its consensus mechanism, Ouroboros, is the first Proof of Stake algorithm to be provably secure~\cite{Kiayias2017}. Cardano consists of two main layers, one for accounting and one for computation. The accounting layer is called Cardano Settlement Layer (CSL)
+and the computation layer Cardano Computation Layer (CCP) where distributed application can be built and run upon. The CCP layer has not been implemented yet and there is a plan to be released as a beta by the first quarter of 2018~\cite{cardano_parsons}.
 
 \clearpage
 
@@ -913,10 +938,3 @@ contract Namespace{
 \end{lstlisting}
 
 \clearpage
-
-\subsection{Cardano}\label{blockchain:impl:cardano}
-
-Another platform for smart contract implementation is Cardano. Cardano is a security focused blockchain that utilize the latest research and engineering insights to build a platform suitable for the highest value applications~\cite{cardano_site}. It supports distributed applications creation and smart contracts verifiable by a method called formal verification allowing logical proof of correctness of code providing high security. Cardano addresses the need for regulatory oversight while maintaining consumer privacy and security. Cardano is the first blockchain project to be peer reviewed by academic researchers~\cite{cardano_site} and its consensus
-mechanism, Ouroboros, is the first Proof of Stake algorithm to be provably secure~\cite{Kiayias2017}. Cardano consists of two main layers, one for accounting and one for computation. The accounting layer is called Cardano Settlement Layer (CSL)
-and the computation layer Cardano Computation Layer (CCP) where distributed application can be built and run upon. The CCP layer has not been
-implemented yet and there is a plan to be released as a beta by the first quarter of 2018~\cite{cardano_parsons}.
