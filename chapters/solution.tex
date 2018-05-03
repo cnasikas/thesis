@@ -7,11 +7,6 @@ audit, immutable, tamper-proof and transparent log of all actions of the partici
 
 Blockchain does not provides an extra security layer concerning datasets. The datasets are stored off-chain, data controllers are responsible for the security of their system and the participants can still collaborate outside the Blockchain network. Nevertheless, the use of the Blockchain can guarantee accountability, auditability and provenance tracking of the data increasing the trust for the system.
 
-\section{Trust model}
-\label{solution:trust_model}
-
-In our model we assume that the involved entities that interact with a data set---the data controller and the data processor---are identified and verified through a public key infrastructure (PKI)~\cite{adams_understanding_2003}. Furthermore, each entity is a trusted entity with certain trust properties. In particular, the data controller is trusted for integrity and confidentiality and the data processor only for confidentiality.
-
 \section{Entities}
 \label{solution:entities}
 
@@ -36,6 +31,21 @@ The data processor is responsible for processing data on behalf of the data cont
 \label{solution:entities:data_req}
 
 The requester can be any entity that requests a computation over a data set. It can be a research center, a university, a machine learning algorithm or any individual. The requester expects, along with the output, a proof of correct computation over the requested data set that verifies at the end of the processing.
+
+\section{Trust model}
+\label{solution:trust_model}
+
+Before we explain in detail our architecture, we would like to introduce our thread model and what exactly our goals are. It is important to understand the possible roles of adversaries, their strengths and their resources.
+
+Adversaries can be categories in 3 categories, as the involved parties:
+
+\begin{itemize}
+  \item Malicious data controller
+  \item Malicious data processor
+  \item Malicious data requestor
+\end{itemize}
+
+In our model we assume that the involved entities that interact with a data set---the data controller and the data processor---are identified and verified through a public key infrastructure (PKI)~\cite{adams_understanding_2003}. Furthermore, each entity is a trusted entity with certain trust properties. In particular, the data controller is trusted for integrity and confidentiality and the data processor only for confidentiality.
 
 \section{Queries}
 \label{solution:queries}

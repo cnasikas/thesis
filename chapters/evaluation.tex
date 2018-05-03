@@ -2,24 +2,9 @@
 \chapter{Evaluation}
 \label{evaluation}
 
-Saving data on the blockchain is expensive. Thus, various experiments have been made regarding the cost of saving data on the blockchain to compare and analyze various methods and alternatives.
+We measure the efficiency of our solution via various analyses and comparisons. As storing data on Ethereum, and in blockchain in general, is expensive, the first series of experiments have been made regarding the cost of saving data by comparing and analyze various methods and alternatives. Second, we measure the cost of deploying the application on Ethereum and the cost of each of the individual operation inside the application. Lastly, a series of benchmarks have been made to measure the time and the size of computational proofs for each of the predefined algorithms supported by the processors.
 
-All measurements were take in a MacBook Pro 2016 and in a local Ethereum testnet.
-
-PC Specifications:
-
-\begin{enumerate}
-  \item CPU: 2GHz Intel Core i5 (2 cores)
-  \item Memory: 8GB 1867 MHz LPDDR3
-  \item 256GB PCI-Express SSD
-\end{enumerate}
-
-Ethereum Testnet Specifications:
-
-\begin{enumerate}
-  \item Ganache CLI v6.0.3 (ganache-core: 2.0.2)
-  \item Solidity 0.4.19
-\end{enumerate}
+All experiments are conducted on MacBook Pro 2016 having a \verb|2GHz Intel Core i5 (2 cores)| CPU with \verb|8GB (1867 MHz LPDDR3)| of memory and a \verb|256GB PCI-Express SSD|. We use \verb|Ganache CLI v6.0.3 (ganache-core: 2.0.2)| as local Ethereum blockchain testnet and all smart contract are compiled by \verb|Solidity 0.4.19|.
 
 \section{Benchmarks}
 \label{evaluation:benchmarks}
@@ -27,13 +12,13 @@ Ethereum Testnet Specifications:
 \subsection{Data storage}
 \label{evaluation:data_storage}
 
-The first evaluation test calculates the cost of storing raw data on the blockchain of the following sizes: 32 bytes, 1KB, 1MB, 10MB, 100MB and 1GB. The results are being shown on Table~\ref{table:bytes_usd_cost}. It is worth mentioning that storing 1GB of data on Ethereum costs around \$13.000.000 make it impossible and unpractical to store big data on blockchain technologies.
+First, we measure the cost of storing raw data on the blockchain for each one of the following sizes: \verb|32 bytes|, \verb|1KB|, \verb|1MB|, \verb|10MB|, \verb|100MB| and \verb|1GB|. The size of \verb|32 bytes| is included as EVM words are of \verb|256-bits|. Table~\ref{table:bytes_usd_cost} reports the results.
 
-A common way of countermeasure the preceding problem is to store the data on an off-chain infrastructure (i.e IPFS~\cite{ipfs}, Storj~\cite{storj} or Filecoin~\cite{filecoin}) and store the hash pointer of the data on the blockchain. Storing a fixed size hash is much cheaper than saving the whole data.
+As the size grows in multiples of ten the cost is growing significantly. Storing 1GB of data in Ethereum costs around 13.000.000 US dollars make it impossible and unpractical to store big data in blockchain. A common way of countermeasure that is to store the data in an off-chain infrastructure (i.e IPFS~\cite{ipfs}, Storj~\cite{storj} or Filecoin~\cite{filecoin}) and store instead the data hash pointer in the blockchain. Storing a fixed size hash is much cheaper than saving an arbitrary size dataset. Furthermore, Ethereum offers a logging mechanism whose cost of use is much cheaper than direct storage and can be used as an alternative for data storage.
 
-Ethereum offers a logging mechanism that can be taken advantage of for data storing. A LOG opcode costs 375 gas and for each byte of data it costs 8 gas, way lower than SSTORE opcode.
+In attempt to reduce storage costs, various experiments were conducted to compare different storage techniques. Four basic technique have been evaluated: data storage, data hash pointer storage, data logging, data hash pointer logging. Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_05} shows the cost of the four possible ways of storing data for sizes of \verb|32 bytes|, \verb|1KB|, and \verb|1MB|. The size of hash value either for storage or logging is \verb|32 bytes| and is always the same. Logging instead of saving the hash value to storage is cheaper by 35.42\%. Logging raw data far exceeds direct data storage by an average of 700\%.
 
-Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_05} demonstrate the difference between the four possible ways of storing data for various data sizes: store raw data, store the hash pointer of the data, log raw data and log the has pointer of the data.
+At the time of the experiments the price of Ether is at 942.99 US dollars and the gas price is set at 2 Gwei.
 
 \begin{table}[!htb]
 \centering
@@ -48,11 +33,11 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
  1GB & 700.000.000.000  & \$13,104,000 \\ \hline
 \end{tabular}
 \captionsetup{format=hang, justification=centering}
-\caption{Saving data costs.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei}
+\caption{Data storage costs.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei}
 \label{table:bytes_usd_cost}
 \end{table}
 
-\begin{figure}
+\begin{figure}[!htb]
   \centering
   \begin{tikzpicture}
     \begin{axis}[xlabel=Gas,ylabel=Size]
@@ -69,8 +54,9 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
       };
     \end{axis}
   \end{tikzpicture}
-  \caption{}
-  \label{}
+  \captionsetup{format=hang, justification=centering}
+  \caption{Data storage costs.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei}
+  \label{fig:bytes_usd_cost}
 \end{figure}
 
 \begin{table}[!htb]
@@ -78,13 +64,13 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
   \begin{tabular}{|l|l|l|l|}
   \hline
   Type & Size & Gas  & USD \\ \hline
-  Store raw data & 32 bytes & 34.916  & \$0.065 \\ \hline
-  Store hash pointer & 32 bytes & 34.850  & \$0.065 \\ \hline
-  Log raw data & 32 bytes & 25.995  & \$0.048 \\ \hline
-  Log hash pointer & 32 bytes & 25.995  & \$0.048 \\ \hline
+  Data storage & 32 bytes & 34.916  & \$0.065 \\ \hline
+  Hash pointer storage & 32 bytes & 34.850  & \$0.065 \\ \hline
+  Data logging & 32 bytes & 25.995  & \$0.048 \\ \hline
+  Hash pointer logging & 32 bytes & 25.995  & \$0.048 \\ \hline
   \end{tabular}
   \captionsetup{format=hang, justification=centering}
-  \caption{Comparing methods of storing data.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 32 bytes}
+  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 32 bytes}
   \label{table:data_store_comparison_01}
 \end{table}
 
@@ -93,13 +79,13 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
   \begin{tabular}{|l|l|l|l|}
   \hline
     Type & Size & Gas  & USD \\ \hline
-    Store raw data & 1KB & 724.730  & \$1.347 \\ \hline
-    Store hash pointer & 32 bytes & 34.850  & \$0.065 \\ \hline
-    Log raw data & 1KB & 104.310  & \$0.194 \\ \hline
-    Log hash pointer & 32 bytes & 25.995  & \$0.048 \\ \hline
+    Data storage & 1KB & 724.730  & \$1.347 \\ \hline
+    Hash pointer storage & 32 bytes & 34.850  & \$0.065 \\ \hline
+    Data logging & 1KB & 104.310  & \$0.194 \\ \hline
+    Hash pointer logging & 32 bytes & 25.995  & \$0.048 \\ \hline
   \end{tabular}
   \captionsetup{format=hang, justification=centering}
-  \caption{Comparing methods of storing data.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 1KB}
+  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 1KB}
   \label{table:data_store_comparison_02}
 \end{table}
 
@@ -108,13 +94,13 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
   \begin{tabular}{|l|l|l|l|}
     \hline
       Type & Size & Gas  & USD \\ \hline
-      Store raw data & 10KB & 6.668.509  & \$12.39 \\ \hline
-      Store hash pointer & 32 bytes & 34.850  & \$0.065 \\ \hline
-      Log raw data & 10KB & 832.604  & \$1.547 \\ \hline
-      Log hash pointer & 32 bytes & 25.995  & \$0.048 \\ \hline
+      Data storage & 10KB & 6.668.509  & \$12.39 \\ \hline
+      Hash pointer storage & 32 bytes & 34.850  & \$0.065 \\ \hline
+      Data logging & 10KB & 832.604  & \$1.547 \\ \hline
+      Hash pointer logging & 32 bytes & 25.995  & \$0.048 \\ \hline
   \end{tabular}
   \captionsetup{format=hang, justification=centering}
-  \caption{Comparing methods of storing data.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 10KB}
+  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 10KB}
   \label{table:data_store_comparison_03}
 \end{table}
 
@@ -123,13 +109,13 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
   \begin{tabular}{|l|l|l|l|}
     \hline
     Type & Size & Gas  & USD \\ \hline
-    Store raw data & 100KB & 66.454.178  & \$123.472 \\ \hline
-    Store hash pointer & 32 bytes & 34.850  & \$0.065 \\ \hline
-    Log raw data & 100KB & 8.186.883  & \$15.211 \\ \hline
-    Log hash pointer & 32 bytes & 25.995  & \$0.048 \\ \hline
+    Data storage & 100KB & 66.454.178  & \$123.472 \\ \hline
+    Hash pointer storage & 32 bytes & 34.850  & \$0.065 \\ \hline
+    Data logging & 100KB & 8.186.883  & \$15.211 \\ \hline
+    Hash pointer logging & 32 bytes & 25.995  & \$0.048 \\ \hline
   \end{tabular}
   \captionsetup{format=hang, justification=centering}
-  \caption{Comparing methods of storing data.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 100KB}
+  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 100KB}
   \label{table:data_store_comparison_04}
 \end{table}
 
@@ -138,58 +124,60 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
   \begin{tabular}{|l|l|l|l|}
     \hline
     Type & Size & Gas  & USD \\ \hline
-    Store raw data & 1MB & 666.092.228  & \$1,237.599 \\ \hline
-    Store hash pointer & 32 bytes & 34.850  & \$0.065 \\ \hline
-    Log raw data & 1MB & 88.857.033  & \$165.096 \\ \hline
-    Log hash pointer & 32 bytes & 25.995  & \$0.048 \\ \hline
+    Data storage & 1MB & 666.092.228  & \$1,237.599 \\ \hline
+    Hash pointer storage & 32 bytes & 34.850  & \$0.065 \\ \hline
+    Data logging & 1MB & 88.857.033  & \$165.096 \\ \hline
+    Hash pointer logging & 32 bytes & 25.995  & \$0.048 \\ \hline
   \end{tabular}
   \captionsetup{format=hang, justification=centering}
-  \caption{Comparing methods of storing data.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 1MB}
+  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 1MB}
   \label{table:data_store_comparison_05}
 \end{table}
 
-\begin{figure}
+\begin{figure}[!ht]
+\begin{subfigure}[t]{0.475\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[bar]
+          \addplot coordinates {
+          (Data storage,34916)
+          (Hash pointer,34850)
+          (Data logging,25995)
+          (Hash pointer logging, 25995)
+          };
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Size: 32 bytes}
+  \end{subfigure}
   \begin{subfigure}[t]{0.475\textwidth}
-        \centering
-        \begin{tikzpicture}
-          \begin{axis}[bar]
-            \addplot coordinates {
-            (Store raw data,34916)
-            (Store hash pointer,34850)
-            (Log raw data,25995)
-            (Log hash pointer, 25995)
-            };
-            \legend{Type}
-          \end{axis}
-        \end{tikzpicture}
-        \caption{Size: 32 bytes}
-    \end{subfigure}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[bar]
+          \addplot coordinates {
+            (Data storage,724730)
+            (Hash pointer,34850)
+            (Data logging,104310)
+            (Hash pointer logging, 25995)
+          };
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Size: 1KB}
+  \end{subfigure}
+  \caption{Storage methods}
+  \label{fig:storage:charts:01}
+\end{figure}
+
+\begin{figure}[!ht]
     \begin{subfigure}[t]{0.475\textwidth}
         \centering
         \begin{tikzpicture}
           \begin{axis}[bar]
             \addplot coordinates {
-              (Store raw data,724730)
-              (Store hash pointer,34850)
-              (Log raw data,104310)
-              (Log hash pointer, 25995)
+              (Data storage,6668509)
+              (Hash pointer,34850)
+              (Data logging,832604)
+              (Hash pointer logging, 25995)
             };
-            \legend{Type}
-          \end{axis}
-        \end{tikzpicture}
-        \caption{Size: 1KB}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.475\textwidth}
-        \centering
-        \begin{tikzpicture}
-          \begin{axis}[bar]
-            \addplot coordinates {
-              (Store raw data,6668509)
-              (Store hash pointer,34850)
-              (Log raw data,832604)
-              (Log hash pointer, 25995)
-            };
-            \legend{Type}
           \end{axis}
         \end{tikzpicture}
         \caption{Size: 10KB}
@@ -199,43 +187,39 @@ Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_
         \begin{tikzpicture}
           \begin{axis}[bar]
             \addplot coordinates {
-              (Store raw data,66454178)
-              (Store hash pointer,34850)
-              (Log raw data,8186883)
-              (Log hash pointer, 25995)
+              (Data storage,66454178)
+              (Hash pointer,34850)
+              (Data logging,8186883)
+              (Hash pointer logging, 25995)
             };
-            \legend{Type}
           \end{axis}
         \end{tikzpicture}
         \caption{Size: 100KB}
     \end{subfigure}
-  \caption{Charts}
-  \label{Storage methods}
+  \caption{Storage methods}
+  \label{fig:storage:charts:02}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!ht]
   \centering
   \begin{tikzpicture}
     \begin{axis}[bar]
       \addplot coordinates {
-        (Store raw data,666092228)
-        (Store hash pointer,34850)
-        (Log raw data,88857033)
-        (Log hash pointer, 25995)
+        (Data storage,666092228)
+        (Hash pointer,34850)
+        (Data logging,88857033)
+        (Hash pointer logging, 25995)
       };
-      \legend{Type}
     \end{axis}
   \end{tikzpicture}
-  \caption{Size: 1MB}
-  \label{}
+  \caption{Storage methods - Size: 1MB}
+  \label{fig:storage:charts:1mb}
 \end{figure}
-
-\clearpage
 
 \subsection{Application costs}
 \label{evaluation:app_costs}
 
-Table~\ref{table:app_costs} shows the costs of each operation of the application.
+Each action by the participants has a cost in gas and therefore in money. Table~\ref{table:app_costs} shows the costs of each operation of the application. The most expensive operation is the dataset registration, with a cost of 233.487 gas, as it contains a lot of metadata for the dataset itself. Nevertheless, is an negligible cost in the face of data sharing.
 
 \begin{table}[!htb]
 \centering
@@ -256,7 +240,10 @@ Table~\ref{table:app_costs} shows the costs of each operation of the application
 \subsection{Zero Knowledge Proofs}
 \label{evaluation:zkp}
 
-Tables~\ref{table:zkp_01} to~\ref{table:zkp_03} provide details of ZKP performance for each query of the application that the data processor executes. The setup step consists of the compilation of a \verb|C| programm to QAP (§~\ref{zkp:snarks}) and the key generation. The compute step consists of circuit evaluation, polynomial solving and proof generation. Lastly, the verification step consists of the verification of the proof.
+Lastly, a series of benchmarks are performed to measure the performance of the basic parts of zero knowledge proofs. Proof generation is divided in three phases: \verb|Setup|, \verb|Compute| and \verb|Verify|. \verb|Setup| phase consists of the compilation of a \verb|C| programm to QAP (§~\ref{zkp:snarks}) and the generation of the keys for proof construction and verification. \verb|Setup| phase is executed once at application bootstrap and per processing algorithm. \verb|Compute| phase consists of circuit evaluation, polynomial solving and proof generation using the evaluation key. Lastly, \verb|Verification| phase consists of proof verification by the verifier using the verification key.
+
+Tables~\ref{table:zkp_01} to~\ref{table:zkp_03} provide details of ZKP performance for each query the application supports for inputs of size \verb|100|, \verb|1.000| and \verb|10.000|. For each query, we measure the time execution of each one of the three phases and the size of the keys and proofs. The keys are reasonably sized, with evaluation key typically requiring
+10 to 100 MB and the verirication key 100KB. Due to the succinctness property of zkSNARKs the size of the proof is very small and constant for all programs regardless of input size. The size of the keys and the execution time of the phases are proportional to program complexity. 
 
 \begin{table}[!htb]
 \centering
