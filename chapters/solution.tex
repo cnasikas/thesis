@@ -65,21 +65,6 @@ The supported queries are:
 
 The above queries are not considered to be privacy-preserving as it is outside the scope of the initial prototype and should be implemented on future work.
 
-\section{Consent}
-\label{solution:consent}
-
-Modeling dynamic consent in smart contracts should be carefully analyzed taking into account design issues that are related to smart contracts lifecycle, required state variables for storing contract’s information, and access restrictions to those variables.
-
-Neisse et al.~\cite{DBLP:journals/corr/NeisseSF17} proposed the following three models for data accountability and provenance tracking that comply with the GDPR(§~\ref{problem:regulations}):
-
-\begin{enumerate}
-  \item Contract for a specific controller: A contract where the data subject creates a contract tailored for each data controller
-  \item Contract for specific data: A contract where each subject’s data instance is shared among all data controllers
-  \item Contract for multiple data subjects: A contract where the data controller specifies how the data from all subjects are treated from the controller
-\end{enumerate}
-
-The first contract is more adequate for sensitive data~\cite{DBLP:journals/corr/NeisseSF17}, such as health data, since a subject-controller relationship~\cite{Azaria2016} is being created where each patient has a different contract for each controller accessing their data, providing fine grained access control and provenance information. On the other hand, it has the highest cardinality among the others two types~\cite{DBLP:journals/corr/NeisseSF17}. The second contract suffers from direct linkability as a unique subject address is needed compromising patients’ privacy~\cite{DBLP:journals/corr/NeisseSF17}. Lastly, the third one has the lowest cardinality among the others but also has the lower level of customization due to the limited number of contract options~\cite{DBLP:journals/corr/NeisseSF17}.
-
 \section{Flow}
 \label{solution:flow}
 
