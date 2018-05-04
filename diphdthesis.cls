@@ -773,6 +773,8 @@ publications}\gdef\@lopfileinternal{#1}}
 
     \include{chapters/abbreviations}
 
+    \bibliography{./references}
+
     % appendix
     \begin{appendix}
       % mark the beginning of the appendix
