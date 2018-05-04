@@ -780,7 +780,7 @@ publications}\gdef\@lopfileinternal{#1}}
 
       % add appendix line to ToC
       \phantomsection
-      \addcontentsline{toc}{chapter}{Appendices}
+      % \addcontentsline{toc}{chapter}{Appendices}
 
       \include{chapters/appendixA}
     \end{appendix}
