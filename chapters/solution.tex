@@ -72,11 +72,17 @@ The above queries are not considered to be privacy-preserving as it is outside t
 \subsection{Dataset Registration}
 \label{solution:flow:reg_data}
 
-A data controller:
+Naturally, for datasets to be available for processing a data registration process is needed. Anyone who register a dataset automatically becomes a data controller who is responsible for the availability and quality of the it. The dataset should be publicly available on any location of choice provided that the controller expose an API for data retrieval. The location can be in a distributed file system~\cite{ipfs}, a decentralized cloud storage~\cite{storj} or a central server. As long as the involved participants communicate over the same protocol the choice is irrelevant; the system can be agnostic concerning data storage.
+
+The confidentiality of the dataset must rely solely on cryptographic primitives with strong guarantees. Therefore, every dataset is encrypted using the symmetric encryption algorithm \verb|AES| with \verb|256-bit| key length and \verb|CTR| as mode of operation. In addition, the hash of contents of the unencrypted dataset is computed using the cryptographic hash function \verb|SHA256|.
+
+A dataset is actually registered and available when a \textbf{register} transaction is sent to blockchain, signed by the data controller. The transaction needs to include the name of the dataset, a category, the location (URI) and the checksum (hash) of the file. From the name of the dataset a unique persistent identifier is created, to which all participants refer to. Two datasets with the same name cannot be saved; the transaction is rejected in the case of name duplication.
+
+The data registration procedure can be summarized as:
 
 \begin{enumerate}
-  \item Encrypts a data set with a symmetric key and save it to a specific location
-  \item Registers the data set by initiating a transaction that saves the data set's metadata (name, location, category, digest) on the Blockchain.
+  \item A dataset is encrypted with a symmetric key and is saved.
+  \item A dataset is registered by the initiation of a register transaction which saves the data set's metadata---name, location, category and digest---on the blockchain.
 \end{enumerate}
 
 \begin{figure}[ht!]
