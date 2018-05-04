@@ -777,12 +777,12 @@ Intuitively, statistical zero-knowledge is a property that prohibits a verifier 
 A weaker version of zero-knowledge is honest-verifier zero-knowledge (HVZK). Here it is assumed that the verifier executes the protocol faithfully,
 but makes additional computations~\cite{kiagias:crypto}.
 
-\subsection{zk-SNARKs}
-\label{zkp:snarks}
+\subsection{Verifiable Computation (VC)}
+\label{zkp:vc}
 
-Since computational power is often limited to devices such as mobiles or IoT (clients) the need of outsourcing computation to one or more powerful workers on the cloud emerges. Yet, confidence is needed at the working entity for proper computation. For this reason, the client should be able to verify the correctness of the results returned. That way not only the client is protected from malicious or malfunctioning workers but also the legitimate worker is benefit by shedding liability~\cite{pinocchio-nearly-practical-verifiable-computation}. This scheme is called public verifiable computation (VC).
+Since computational power is often limited to devices such as mobiles or IoT devices the need of outsourcing computation to one or more powerful workers on the cloud emerges. Yet, confidence is needed at the working entity for proper computation. For this reason, the client should be able to verify the correctness of output. That way not only the client is protected from malicious or malfunctioning workers but also the legitimate worker is benefit by not be accountable for the computation~\cite{pinocchio-nearly-practical-verifiable-computation}. This scheme is called public verifiable computation (VC)~\cite{pinocchio-nearly-practical-verifiable-computation}.
 
-In a public verifiable computation scheme the client outsource the evaluation of a function $F$ on input $u$ known to the client (e.g. a query). The client then can verify the correctness of the computation of $F(u)$ with less work than required for the computation of $F(u)$. When the outsource function $F$ consist of two inputs $u$ and $w$, where $w$ is the worker's private input (e.g a data set), then the scheme is a Zero-Knowledge Verifiable Computation (or non-interactive zero knowledge (NIZK) proof~\cite{Blum:1991:NZ:123137.123145}) if the client learns nothing about worker's input expect the output of the computation~\cite{pinocchio-nearly-practical-verifiable-computation}.
+In a public verifiable computation scheme the client outsource the evaluation of a function $F$ on input $u$ known to the client (e.g. a query). The client then can verify the correctness of the computation of $F(u)$ with less work than the computation of $F(u)$. The outsource function $F$ can take two inputs $u$ and $w$, where $w$ is the worker's private input (e.g a data set). In this case, the scheme is a Zero-Knowledge Verifiable Computation (or non-interactive zero knowledge (NIZK) proof~\cite{Blum:1991:NZ:123137.123145}) if the client learns nothing about worker's input expect the output of the computation~\cite{pinocchio-nearly-practical-verifiable-computation}.
 
 Such schemes are not interactive meaning no interaction is necessary between prover and verifier (worker and client) and a common reference string (CRS) shared between them is enough to achieve computational zero-knowledge~\cite{Blum:1991:NZ:123137.123145}.
 
@@ -794,15 +794,31 @@ Formally, as defined by Parno et. al~\cite{pinocchio-nearly-practical-verifiable
   \item $\{0, 1\} \leftarrow \text{Verify}(VK_F, u, y, \pi_y)$:  The deterministic verification algorithm. It takes as input the public verification key $VK_F$, the public input $u$, the output $y$ and the proof $\pi_y$; It outputs $1$ if $F(u) = y$ and $0$ otherwise.
 \end{itemize}
 
-The acronym zk-SNARK stands for `Zero-Knowledge Succinct Non-Interactive Argument of Knowledge` in which each individual part, informally, have the following meaning~\cite{zksnarks_nutshell, zcash, 184425, Bitansky:2012:ECR:2090236.2090263}:
+\subsection{zk-SNARKs}
+\label{zkp:snarks}
+
+Non-interactive zero-knowledge proofs (NIKZ)~\cite{Blum:1991:NZ:123137.123145} are a variant of zero-knowledge proofs where sharing a common reference string (CRS) between the prover and the verifier ahead of time is enough to implement zero knowledge protocols without the need for interaction by the participants of the protocol. zkSNARKs protocols are non-interactive zero-knowledge proofs protocols with extra properties regarding size of proof and verification time.
+
+The acronym zkSNARK stands for `Zero-Knowledge Succinct Non-Interactive Argument of Knowledge` in which each individual part, informally, have the following meaning~\cite{zksnarks_nutshell, zcash, 184425, Bitansky:2012:ECR:2090236.2090263, zksnark_basics}:
 
 \begin{itemize}
   \item Zero-Knowledge: The verifier learns nothing but the validity of the computation
-  \item Succinct: The proof are sort and easy to verify in comparison to the actual computation (constant size and polynomial verifiable in the size of the proof)
-  \item Non-Interactive: There is no or little interaction done in one step. Anyone can verify without the need of interacting anew (publicly verifiable)
-  \item ARgument: Soundness (§~\ref{zkp:definition}) holds only against computationally bounded provers
-  \item of Knowledge: If the verifier accepts a proof output by a computationally bounded prover, then the prover has a witness for the given instance
+  \item Succinct: The proof are sort and easy to verify in comparison to the actual computation (constant size and polynomial verifiable in the size of the proof).
+  \item Non-Interactive: There is no or little interaction done in one step. Anyone can verify without the need of interacting anew (publicly verifiable).
+  \item ARgument: Soundness (§~\ref{zkp:definition}) holds only against computationally bounded provers.
+  \item of Knowledge: If the verifier accepts a proof output by a computationally bounded prover, then the prover has a witness for the given instance.
 \end{itemize}
+
+The first zkSNARKs constructions where inspired by the PCP theorem allowing faster and shorter proofs~\cite{zksnark_basics}. In this section we analyze the zk-SNARK model proposed by Gennaro et al~\cite{ggpr} and the Pinnochio protocol proposed by Parno et al~\cite{pinocchio-nearly-practical-verifiable-computation} without getting into rigorous mathematical proofs, security assumptions or implementations. The purpose of this chapter is to provide a high level understanding of zkSNARKs and their core mechanisms.
+
+\subsection{Main idea}
+\label{zkp:snarks:main_idea}
+
+The main idea for constructing zkSNARKs is firstly to transform the generic program as a quadratic equation of polynomials (QAP)~\cite{ggpr}: $p(x)q(x) = s(x)r(x)$, where the equality holds if and only if the program is computed correctly. So the prover wants to convince the verifier that the equality holds.
+
+Succinctness is achieved by random sampling. The verifier chooses a secret evaluation point $x_0$ to reduce the problem from polynomial multiplication and equality to simple number arithmetic checks: $p(x_0)q(x_0) = s(x_0)r(x_0)$. To allow the prover to compute the evaluation of the polynomials at $x_0$, without revealing $x_0$, Homomorphic encryption is used:  $E(p(x_0))E(q(x_0)) = E(s(x_0))E(r(x_0))$.
+
+Finally the prover obfuscates the encrypted values by multiplying with a number so that the verifier can still check the correctness of the structure without knowing the actual encrypted values: $E(k + p(x_0))E(k + q(x_0)) = E(k + s(x_0))E(k + r(x_0))$.
 
 At high level, zkSNARKs consist of four basic steps (Figure ~\ref{fig:zkp:zksnark_flow}):
 
@@ -812,13 +828,6 @@ At high level, zkSNARKs consist of four basic steps (Figure ~\ref{fig:zkp:zksnar
   \item R1CS to Quadratic Span Program (QAP)~\cite{ggpr}
   \item QAP to zkSNARK~\cite{pinocchio-nearly-practical-verifiable-computation}
 \end{enumerate}
-
-The main idea for constructing zkSNARKs is firstly to transform the generic program as a quadratic equation of polynomials (QAP)~\cite{ggpr}: $p(x)q(x) = s(x)r(x)$, where the equality holds if and only if the program is computed correctly. So the prover wants to convince the verifier that the equality holds.
-
-Succinctness is achieved by random sampling. The verifier chooses a secret evaluation point $x_0$ to reduce the problem from polynomial multiplication and equality to simple number arithmetic checks: $p(x_0)q(x_0) = s(x_0)r(x_0)$. To allow the prover to compute the evaluation of the polynomials at $x_0$, without revealing $x_0$, Homomorphic encryption is used:  $E(p(x_0))E(q(x_0)) = E(s(x_0))E(r(x_0))$
-
-Finally the prover obfuscates the encrypted values by multiplying with a number so that the verifier can still check the correctness of the structure without knowing the actual
-encrypted values: $E(k + p(x_0))E(k + q(x_0)) = E(k + s(x_0))E(k + r(x_0))$
 
 \begin{figure}[ht!]
   \begin{tikzpicture}[
@@ -890,6 +899,6 @@ Given a circuit evaluation, the task of the Prover is to convince the Verifier t
 \subsubsection{Quadratic Arithmetic Program (QAP)}
 \label{zkp:snarks:qap}
 
-Geranno et. al~\cite{ggpr} showed how to encode efficiently computation as quadratic programs called Quadratic Arithmetic Programs (QSP), so as to obtain zk-SNARKs. A Quadratic Span Program consists of a set of polynomials and the task is to find a linear combination of those that is a multiple of another given polynomial.
+Geranno et. al~\cite{ggpr} showed how to encode efficiently computation as quadratic programs called Quadratic Arithmetic Programs (QSP) to obtain zk-SNARKs. A Quadratic Span Program consists of a set of polynomials and the task is to find a linear combination of those that is a multiple of another given polynomial.
 
 \note{Implementations of zksnark (pinnochio, Hawk, Zcash etc)}
