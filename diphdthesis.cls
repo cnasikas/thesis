@@ -783,6 +783,7 @@ publications}\gdef\@lopfileinternal{#1}}
       % \addcontentsline{toc}{chapter}{Appendices}
 
       \include{chapters/appendixA}
+      \include{chapters/appendixB}
     \end{appendix}
     \bibliographystyle{plain}
     % \bibliography{./references.bib} - Moved to root due to cite autocomplete bugs with atom-latextools package
