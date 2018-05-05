@@ -48,12 +48,12 @@ Adversaries can be categories in 4 categories:
   \item Malicious public user
 \end{itemize}
 
-\section{Queries}
-\label{solution:queries}
+\section{Algorithms}
+\label{solution:algorithms}
 
-The system should support only a set of open pre-fabricated queries that have been analyzed and constructed to be privacy-preserving with the use of techniques such as k-anonymity~\cite{Samarati98protectingprivacy} and l-diversity~\cite{Aggarwal2008}. The queries return only de-identified aggregated results.
+The system should support only a set of open-source algorithms that have been analyzed and constructed to be privacy-preserving with the use of techniques such as k-anonymity~\cite{Samarati98protectingprivacy} and l-diversity~\cite{Aggarwal2008}. This algorithms should return only de-identified aggregated results.
 
-The supported queries are:
+The supported algorithms are:
 
 \begin{enumerate}
   \item Sum
@@ -64,7 +64,7 @@ The supported queries are:
   \item Minimum
 \end{enumerate}
 
-The above queries are not considered to be privacy-preserving as it is outside the scope of the initial prototype and should be implemented on future work.
+The above algorithms are not considered to be privacy-preserving as it is outside the scope of the initial prototype and should be implemented on future work(§~\ref{future_work:ppq}).
 
 \section{Flow}
 \label{solution:flow}
@@ -91,7 +91,7 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
       \State \Return{$(h, k, uri)$}
   \EndFunction
   \Function{\sf broadcast}{name, uri, category, hash}
-        \Let{tx}{\emptyset}
+
         \Let{h_{meta}}{H(name || uri || category || hash)}
         \Let{tx}{(name, uri, category, hash, h_{meta})}
         \State $tx.send()$
@@ -122,55 +122,41 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
   \label{fig:arc:reg}
 \end{figure}
 
-\subsection{Data Controller Registration}
-\label{solution:flow:con_reg}
+\subsection{Entity Registration}
+\label{solution:flow:entity_reg}
 
 \begin{enumerate}
   \item Data controller generates an asymmetric encryption key pair
   \item A trusted entity registers data controller's availability by initiating a transaction that saves processors name and public key on the blockchain
 \end{enumerate}
 
+\begin{algorithm}[!htb]
+  \caption{Entity registration}\label{alg:entity_registration}
+  \begin{algorithmic}[1]
+  \Procedure{\sf register\_entity}{name, $p_k$, address}
+    \Let{tx}{(name, p_k, address)}
+    \State $tx.send()$
+    \State \Return{$tx$}
+  \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
 \begin{figure}[ht!]
   \begin{tikzpicture}
-
     \node[blockchain] (blockchain) at (0,0){Blockchain};
 
-
     \begin{scope}
-      \node[node, anchor=west] (controller) at (0,5) {Data Controller};
+      \node[node, anchor=west] (controller) at (0,5) {PKI};
       \draw[<-] ([xshift=-1em]controller.south) -- ([xshift=-1em]2,0.5);
-      \draw[->] ([xshift=1em]controller.south) -- ([xshift=1em]2,0.5) node[midway,right] {$Tx(\{name, pubKey, address\}, "register\_controller")$};
+      \draw[->] ([xshift=1em]controller.south) -- ([xshift=1em]2,0.5) node[midway,right] {$Tx(\{name, pubKey, address\}, "register\_entity")$};
     \end{scope}
 
   \end{tikzpicture}
-  \caption{Controller Registration}
-  \label{fig:arch:con_reg}
+  \caption{Entity Registration}
+  \label{fig:arch:entity_reg}
 \end{figure}
 
-\subsection{Data Processor Registration}
-\label{solution:flow:pr_reg}
 
-\begin{enumerate}
-  \item Data processor generates an asymmetric encryption key pair
-  \item A trusted entity registers processor's availability by initiating a transaction that saves processors name and public key on the blockchain
-\end{enumerate}
-
-\begin{figure}[ht!]
-  \begin{tikzpicture}
-
-    \node[blockchain] (blockchain) at (0,0){Blockchain};
-
-
-    \begin{scope}
-      \node[node, anchor=west] (processor) at (0,5) {Data Processor};
-      \draw[<-] ([xshift=-1em]processor.south) -- ([xshift=-1em]2,0.5);
-      \draw[->] ([xshift=1em]processor.south) -- ([xshift=1em]2,0.5) node[midway,right] {$Tx(\{name, pubKey, address\}, "register\_processor")$};
-    \end{scope}
-
-  \end{tikzpicture}
-  \caption{Processor Registration}
-  \label{fig:arch:pr_reg}
-\end{figure}
 
 \subsection{Request for processing}
 \label{solution:flow:pr_req}
@@ -185,7 +171,6 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
   \Function{\sf notify}{$e$}
     \State $p \rselect \{ p_1, p_2, \dots p_n \}$ \Comment{Select randomly processor}
     \Let{(requestID)}{e}
-    \Let{tx}{\emptyset}
     \Let{tx}{(p)}
     \Let{(pk_p)}{tx.send()} \Comment{Get processor public key}
     \Let{c}{Enc_{pk_p}(k)} \Comment{Encrypt symmetric key}
@@ -194,7 +179,6 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
     \State \Return{$tx$}
   \EndFunction
   \Procedure{\sf request}{datasetID, algorithmID, $p_{k}$}
-    \Let{tx}{\emptyset}
     \Let{tx}{(datasetID, algorithmID, p_{k})}
     \State $tx.send()$
     \State \Return{$tx$}
@@ -275,7 +259,6 @@ A data processor:
   \EndFunction
   \Procedure{\sf process}{e}
     \Let{(requestID, algorithmID, c_{k}, pk_r)}{e}
-    \Let{tx}{\emptyset}
     \Let{tx}{(requestID)}
     \Let{(datasetID, location, h)}{(tx)} \Comment{Get dataset info}
     \Let{k}{Dec_{sk_{p}}(c_{k})} \Comment{Decrypt symmetric key}
@@ -299,7 +282,6 @@ A data processor:
   \begin{algorithmic}[1]
   \Procedure{\sf verify}{e}
     \Let{(requestID)}{e}
-    \Let{tx}{\emptyset}
     \Let{tx}{(requestID)}
     \Let{(proof)}{(tx)} \Comment{Get request info}
     \Let{(h, c)}{proof}
