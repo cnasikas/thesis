@@ -78,12 +78,32 @@ The confidentiality of the dataset must rely solely on cryptographic primitives 
 
 A dataset is actually registered and available when a \textbf{register} transaction is sent to blockchain, signed by the data controller. The transaction needs to include the name of the dataset, a category, the location (URI) and the checksum (hash) of the file. From the name of the dataset a unique persistent identifier is created, to which all participants refer to. Two datasets with the same name cannot be saved; the transaction is rejected in the case of name duplication.
 
-The data registration procedure can be summarized as:
+The data registration procedure is summarized in Algorithm~\ref{alg:data_registration}.
 
-\begin{enumerate}
-  \item A dataset is encrypted with a symmetric key and is saved.
-  \item A dataset is registered by the initiation of a register transaction which saves the data set's metadata---name, location, category and digest---on the blockchain.
-\end{enumerate}
+\begin{algorithm}[!htb]
+  \caption{Dataset registration}\label{alg:data_registration}
+  \begin{algorithmic}[1]
+  \Function{\sf save}{file}
+      \Let{h}{H(file)}
+      \Let{k}{\calg}
+      \Let{c}{Enc_{k}(file)}
+      \Let{uri}{store(c)}
+      \State \Return{$(h, k, uri)$}
+  \EndFunction
+  \Function{\sf broadcast}{name, uri, category, hash}
+        \Let{tx}{\emptyset}
+        \Let{h_{meta}}{H(name || uri || category || hash)}
+        \Let{tx}{(name, uri, category, hash, h_{meta})}
+        \State $tx.send()$
+        \State \Return{$tx$}
+  \EndFunction
+  \Procedure{\sf register}{name, file, category}
+    \Let{(h, k, uri)}{save(file)}
+    \Let{tx}{broadcast(name, uri, category, h)}
+    \State \Return{$(tx, k)$}
+  \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
 
 \begin{figure}[ht!]
   \begin{tikzpicture}
@@ -159,6 +179,37 @@ The data registration procedure can be summarized as:
   \item The requestor selects a data set on which the processing should be made and  notify the network participants of the request by initiating a transaction on the blockchain passing along her public key
 \end{enumerate}
 
+\begin{algorithm}[!htb]
+  \caption{Request for processing}\label{alg:data_request}
+  \begin{algorithmic}[1]
+  \Function{\sf notify}{$e$}
+    \State $p \rselect \{ p_1, p_2, \dots p_n \}$ \Comment{Select randomly processor}
+    \Let{(requestID)}{e}
+    \Let{tx}{\emptyset}
+    \Let{tx}{(p)}
+    \Let{(pk_p)}{tx.send()} \Comment{Get processor public key}
+    \Let{c}{Enc_{pk_p}(k)} \Comment{Encrypt symmetric key}
+    \Let{tx}{(requestID, c)}
+    \State $tx.send()$
+    \State \Return{$tx$}
+  \EndFunction
+  \Procedure{\sf request}{datasetID, algorithmID, $p_{k}$}
+    \Let{tx}{\emptyset}
+    \Let{tx}{(datasetID, algorithmID, p_{k})}
+    \State $tx.send()$
+    \State \Return{$tx$}
+  \EndProcedure
+  \Procedure{\sf watch}{\null}
+    \While{$e \in$ events['request']} \Comment{Listen data processing requests}
+      \CommentLine{Check if the controller is the owner of the dataset}
+      \If{isOwner($e$.datasetOwner)}
+        \State notify($e$) \Comment{Notify processor}
+      \EndIf
+    \EndWhile
+  \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
 \subsection{Handle request for processing}
 \label{solution:flow:handle_request}
 
@@ -188,7 +239,7 @@ The data registration procedure can be summarized as:
 
     \begin{scope}
       \node[node, anchor=east] (requester) at (\textwidth,-5) {Requester};
-      \draw[->] ([xshift=0em]requester.north) -- ([xshift=0em]14.45,-0.5) node[midway,left] {\small $Tx(\{dataSetID, queryID, pubKey, address\}, "request\_processing")$};
+      \draw[->] ([xshift=0em]requester.north) -- ([xshift=0em]14.45,-0.5) node[midway,left] {\small $Tx(\{dataSetID, queryID, pubKey\}, "request\_processing")$};
     \end{scope}
 
   \end{tikzpicture}
@@ -196,7 +247,7 @@ The data registration procedure can be summarized as:
   \label{fig:arch:req_pr}
 \end{figure}
 
-\subsection{Data set processing}
+\subsection{Dataset processing}
 \label{solution:flow:pr_data}
 
 A data processor:
@@ -209,6 +260,62 @@ A data processor:
   \item Encrypts the results with the public key of the requestor
   \item Submits the encrypted result of the computation on the Blockchain along with the proof.
 \end{enumerate}
+
+\begin{algorithm}[!htb]
+  \caption{Dataset processing}\label{alg:data_processing}
+  \begin{algorithmic}[1]
+  \Function{\sf zkp}{$d$, algorithmID, $h$}
+    \Let{valid}{false}
+    \Let{h^{'}}{H(d)} \Comment{Get the digest of the dataset}
+    \If{$h^{'} == h$} \Comment{Check if the digest match}
+      \Let{valid}{true}
+    \EndIf
+    \Let{y}{\textsf{Compute($d$)}} \Comment{Process dataset}
+    \State \Return{$(\pi, y, valid)$} \Comment{Return results}
+  \EndFunction
+  \Procedure{\sf process}{e}
+    \Let{(requestID, algorithmID, c_{k}, pk_r)}{e}
+    \Let{tx}{\emptyset}
+    \Let{tx}{(requestID)}
+    \Let{(datasetID, location, h)}{(tx)} \Comment{Get dataset info}
+    \Let{k}{Dec_{sk_{p}}(c_{k})} \Comment{Decrypt symmetric key}
+    \Let{c_{d}}{get(location)} \Comment{Get encrypted dataset}
+    \Let{d}{Dec_{k}(c_{d})} \Comment{Decrypt dataset}
+    \CommentLine{Process dataset and get proof of computation}
+    \Let{(\pi, y, valid)}{zkp(d, algorithmID, h)}
+    \Let{tx}{(H(\pi), Enc_{pk_r}(\pi, y, valid))} \Comment{Send results to requestor}
+    \State $tx.send()$
+  \EndProcedure
+  \Procedure{\sf watch}{\null}
+    \While{$e \in$ events['process']} \Comment{Listen data processing notifications}
+      \State process($e$) \Comment{Process request}
+    \EndWhile
+  \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[!htb]
+  \caption{Proof verification}\label{alg:data_verify}
+  \begin{algorithmic}[1]
+  \Procedure{\sf verify}{e}
+    \Let{(requestID)}{e}
+    \Let{tx}{\emptyset}
+    \Let{tx}{(requestID)}
+    \Let{(proof)}{(tx)} \Comment{Get request info}
+    \Let{(h, c)}{proof}
+    \Let{(\pi, y, valid)}{Dec_{sk_{r}}(c)} \Comment{Decrypt results}
+    \Let{result}{\_verify(\pi, y ,valid)} \Comment{Verify proof}
+    \If{!valid || !result} \Comment{Reject if not valid}
+      \State \textbf{reject}
+    \EndIf
+  \EndProcedure
+  \Procedure{\sf watch}{\null}
+    \While{$e \in$ events['process\_done']} \Comment{Listen data processing completion}
+      \State verify($e$) \Comment{Process request}
+    \EndWhile
+  \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
 
 \begin{figure}[ht!]
   \begin{tikzpicture}

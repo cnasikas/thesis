@@ -392,7 +392,15 @@
 }
 }
 
+% algorithm %
+
+\def\Let#1#2{\State $#1\gets#2$}
+
 % Various %
 
 \newcommand*\xor{\oplus}
 \newcommand{\epar}[1]{\paragraph{#1}\mbox{}\\}
+\newcommand{\tx}{\mathsf{tx}}
+\newcommand{\CommentLine}[1]{
+    \State \(\triangleright\) \text{#1}
+}
