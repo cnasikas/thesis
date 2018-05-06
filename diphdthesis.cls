@@ -738,6 +738,11 @@ publications}\gdef\@lopfileinternal{#1}}
     \listoftables
     \thispagestyle{empty}
 
+    % list of algorithms
+    \addcontentsline{toc}{chapter}{List of Algorithms}
+    \listofalgorithms
+    \thispagestyle{empty}
+
     % list of listings
     \addcontentsline{toc}{chapter}{\lstlistlistingname}
     \lstlistoflistings
