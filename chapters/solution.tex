@@ -18,14 +18,14 @@ In our scheme we assume that the data controller already has consent to access o
 \subsection{Data Controller}
 \label{solution:entities:data_controller}
 
-The data controller is in charge of a data set. She run on behalf of a data subject (person)
-that authorizes the data controller to access her personal data, with the possibility of forwarding
-them to a data processor that will be responsible for processing the data on behalf of controller~\cite{DBLP:journals/corr/NeisseSF17}.
+The data controller is in charge of a data set. It run on behalf of a data subject (person)
+that authorizes the data controller to access its personal data, with the possibility of forwarding
+them to a data processor that will be responsible for processing the data on behalf of controller~\cite{DBLP:journals/corr/NeisseSF17}. Data
 
 \subsection{Data Processor}
 \label{solution:entities:data_processor}
 
-The data processor is responsible for processing data on behalf of the data controller. She listens for data processing requests and returns, along with the output of the process, a Zero Knowledge Proof of correct computation over the requested data set.
+The data processor is responsible for processing data on behalf of the data controller. It listens for data processing requests and returns, along with the output of the process, a Zero Knowledge Proof of correct computation over the requested data set.
 
 \subsection{Data Requester}
 \label{solution:entities:data_req}
@@ -66,6 +66,29 @@ The supported algorithms are:
 
 The above algorithms are not considered to be privacy-preserving as it is outside the scope of the initial prototype and should be implemented on future work(§~\ref{future_work:ppq}).
 
+\section{Zero-Knowledge Verifiable Computation}
+\label{solution:proof}
+
+Every data processor provides a proof of correctness for the execution of a computation on a given dataset without revealing the dataset itself. As the processor is obligated to provide a proof---a rational verifier rejects a computation without it---it is impossible for the processor a) to pretend that it done a processing without actually make any computation at all; b) to process a different dataset of its choice; c) to execute a different algorithm other than the requested one. It is evident that a Zero-Knowledge proof of computation plays a crucial role as it address various threats by malicious processors and enforce them to be honest.
+
+Constructions of zkSNARKs require a one-time trusted setup in which a common-reference string (CRS) is generated; the public parameters of the system. The CRS is used to construct and verify proofs. Proof generation and verification requires two publicly available keys which derived from the CRS: the evaluation key $ek_f$ and the verification key $vk_f$. For each of the available algorithms processors use, a trusted setup must be done to produce the key pair $(ek_f, vk_f)$. Anybody that can obtained the trapdoor information corresponding to the CRS can produce fake proofs. For that reason, whomever runs the setup should be trusted. Various alternatives to bypass the trusted party---such as secure multi-party computation for CRS generation~\cite{zcash_mpc} or multi-string models~\cite{groth2014cryptography} where a set of untrusted authorities generate a random trusted string---have been proposed. In our solution, we assume that the trusted entity, that registers and verifies the parties through the PKI, is also responsible for key generation and distribution. The distribution can be done either by saving the public parameters on the blockchain or in a publicly available server.
+
+The processor executes an algorithm $F$ with public input $u$ and private input $w$. Using  the evaluation key $ek_f$ it generates a zero knowledge proof with which the requestor using the verification key $vk_f$ can verify that the processor executed the algorithm $F$ correctly with inputs $u$ and $w$.
+
+First, the data processor want to prove to the verifier that the computation is indeed done on the requested dataset without disclosing the dataset to it. The dataset is the private input $w$. For better understanding of the construction of the proof we define a game where tree participants are involved: a trusted oracle, a  computationally bounded processor and a requestor. The trusted oracle has a list of datasets and their hashes. The oracle cannot cheat or collaborate with any of the participant and for the same dataset it produces the same hash. At any moment the oracle selects randomly a dataset, gives it to the processor and announce the hash of the dataset to the requestor. The requestor ask the processor to compute the hash of the dataset as a proof. The requestor accepts the proof if and only if the hash of the processor match the hash of the oracle and rejects otherwise. The processor is forced to correctly compute the hash of the dataset as it is the only way to convince the requestor; hash functions are one-way and the oracle is trusted. Let's modify our game and assume now that the oracle gives the hash of the dataset to both the processor and requestor. The processor can easily convince the requestor without computing the hash; it knows the hash beforehand. To countermeasure that, the requestor demands from the processor to produce a proof of verifiable computation. It gives as function $F$ the same hash function $H$ the oracle used and ask the processor to generate a proof for $F = H(h, d)$ where $d$ is the dataset given by the oracle and $h$ the hash of it. The hash is the public input $u$. As processor wants to disclose the dataset $d$ it produces a zero knowledge proof. The requestor verifies the proof and accept if and only if the proof is valid. Again, the processor can not done anything but to comply and computes the digest. The data controller combined with the blockchain acts as the trusted oracle. The data controller is trusted to publish in the correct digest of the dataset in the blockchain and the immutability property of it prevent a malicious processor to change the digest to its preferences.
+
+What remains, is to include inside $F$ the processing procedure of the dataset. The algorithm $F$ with private inputs $d$ and public input $h$, for which a zero knowledge proof of correct computation is generated, consists of a) hash generation of dataset $d$; b) dataset processing.
+
+Informally, let $d$ be a private dataset, $H$ a cryptographic hash function and $h = H(d)$ the digest of $d$ over $H$. Let $\calp$ be a prover (data processor) and $\calv$ the verifier (data requestor). Prover $\calp$ produces a zkSNARK proof (§~\ref{zkp:snarks}) $\pi$ for the following \textbf{NP statement}:
+
+Given the public digest $h$, an outsourced function $F$ and an output $y$ I know a private dataset $d$ such that:
+  \begin{enumerate}
+    \item $H(d) = h$
+    \item $F(d) = y$
+  \end{enumerate}
+
+The irreversibility of cryptographic hash function in conjunction with the immutability of Blockchain and the trust for data integrity to data controller, that produced the digest of the dataset in the first place, guarantees that indeed the prover $\calp$ processed the requested dataset without revealing it.
+
 \section{Flow}
 \label{solution:flow}
 
@@ -74,7 +97,7 @@ The above algorithms are not considered to be privacy-preserving as it is outsid
 
 Naturally, for datasets to be available for processing a data registration process is needed. Anyone who register a dataset automatically becomes a data controller who is responsible for the availability and quality of it. The dataset should be publicly available on any location of choice provided that the controller expose an API for data retrieval. The location can be in a distributed file system~\cite{ipfs}, a decentralized cloud storage~\cite{storj} or a central server. As long as the involved participants communicate over the same protocol the choice is irrelevant; the system can be agnostic concerning data storage.
 
-The confidentiality of the dataset must rely solely on cryptographic primitives with strong guarantees. Therefore, every dataset, before stored, is encrypted using the symmetric encryption algorithm \verb|AES| with \verb|256-bit| key length and \verb|CTR| as mode of operation. For each dataset a different encryption key is created and used. This approach bear the burden of key generation and management but on the other hand if an attacker manages to obtain a key the security of other datasets is not compromised~\cite{schneier1997improved}.The hash of contents of the unencrypted dataset is computed, and stored in the blockchain, using the cryptographic hash function \verb|SHA256|. The hash of the file plays an important role in the application. Assuming data controller's trust for integrity, it is an essential component of proof as the processor can prove, without disclosing the dataset to the requestor, that the process actually takes places to the selected dataset and not a fabricated one. The processor is required to prove that it can produce the same digest as of the original and the only way to do this is by computing the hash of the genuine dataset. In addition, the immutability of blockchain prevent a malicious processor to change the digest to its preferences.
+The confidentiality of the dataset must rely solely on cryptographic primitives with strong guarantees. Therefore, every dataset, before stored, is encrypted using the symmetric encryption algorithm \verb|AES| with \verb|256-bit| key length and \verb|CTR| as mode of operation. For each dataset a different encryption key is created and used. This approach bear the burden of key generation and management but on the other hand if an attacker manages to obtain a key the security of other datasets is not compromised~\cite{schneier1997improved}.The hash of contents of the unencrypted dataset is computed, and stored in the blockchain, using the cryptographic hash function \verb|SHA256|. As discussed in~\ref{solution:proof}, the hash of the file plays an important role in the application.
 
 A dataset is actually registered and available when a \textbf{register} transaction is sent to blockchain, signed by the data controller. The transaction needs to include the name of the dataset, a category, the location (URI) and the checksum (hash) of the file. From the name of the dataset a unique persistent identifier is created, to which all participants refer to. Two datasets with the same name cannot be saved; the transaction is rejected in the case of name duplication.
 
@@ -224,6 +247,8 @@ The request for processing procedure is summarized in Algorithm~\ref{alg:data_re
 \subsection{Dataset processing}
 \label{solution:flow:pr_data}
 
+As it has already been mentioned in our study, the role of a data processor is crucial. By task assignments, it decrease the pressure over data controllers and are exploited by them to entrust specific data processing operations on behalf of data requestors. Data processors can only perform pre-agreed algorithms (~\ref{solution:algorithms}) on datasets. The source code of the algorithms is crucial to be open-source as
+
 A data processor:
 
 \begin{enumerate}
@@ -238,13 +263,13 @@ A data processor:
 \begin{algorithm}[!htb]
   \caption{Dataset processing}\label{alg:data_processing}
   \begin{algorithmic}[1]
-  \Function{\sf zkp}{$d$, algorithmID, $h$}
+  \Function{\sf compute}{$d$, algorithmID, $h$, $ek_f$}
     \Let{valid}{false}
     \Let{h^{'}}{H(d)} \Comment{Get the digest of the dataset}
     \If{$h^{'} == h$} \Comment{Check if the digest match}
       \Let{valid}{true}
     \EndIf
-    \Let{y}{\textsf{Compute($d$)}} \Comment{Process dataset}
+    \Let{y}{\textsf{$F$($d$)}} \Comment{Process dataset}
     \State \Return{$(\pi, y, valid)$} \Comment{Return results}
   \EndFunction
   \Procedure{\sf process}{e}
@@ -255,7 +280,7 @@ A data processor:
     \Let{c_{d}}{get(location)} \Comment{Get encrypted dataset}
     \Let{d}{Dec_{k}(c_{d})} \Comment{Decrypt dataset}
     \CommentLine{Process dataset and get proof of computation}
-    \Let{(\pi, y, valid)}{zkp(d, algorithmID, h)}
+    \Let{(\pi, y, valid)}{compute(d, algorithmID, h, ek_f)}
     \Let{tx}{(H(\pi), Enc_{pk_r}(\pi, y, valid))} \Comment{Send results to requestor}
     \State $tx.send()$
   \EndProcedure
@@ -276,7 +301,7 @@ A data processor:
     \Let{(proof)}{(tx)} \Comment{Get request info}
     \Let{(h, c)}{proof}
     \Let{(\pi, y, valid)}{Dec_{sk_{r}}(c)} \Comment{Decrypt results}
-    \Let{result}{\_verify(\pi, y ,valid)} \Comment{Verify proof}
+    \Let{result}{\_verify(\pi, y ,valid, vk_f)} \Comment{Verify proof}
     \If{!valid || !result} \Comment{Reject if not valid}
       \State \textbf{reject}
     \EndIf
@@ -313,23 +338,6 @@ A data processor:
   \caption{Data processing}
   \label{fig:arch:process}
 \end{figure}
-
-\section{Proof of correctness of computation}
-\label{solution:proof}
-
-Let $d$ be a private dataset, $H$ a cryptographic hash function and $h = H(d)$ the digest of $d$ over $H$. Let $\calp$ be a prover (data processor) and $\calv$ the verifier (data requester). Prover $\calp$ produces a zk-SNARK proof (§~\ref{zkp:snarks}) $\pi$ for the following NP statement:
-
-\blockquote{
-  Given the digest $h$, an outsourced function $F$ and an output $y$ I know a private dataset $d$ such that:
-    \begin{itemize}
-      \item $H(d) = h$
-      \item $F(d) = y$
-    \end{itemize}
-}
-
-The proof $\pi$ allows to a prover $\calp$ to prove to a verifier $\calv$ that computation is done at the specific dataset $d$, the verifier chose, without revealing the dataset itself.
-
-The irreversibility of cryptographic hash function in conjunction with the immutability of Blockchain and the trust for data integrity to data controller, that produced the digest of the dataset in the first place, guarantees that indeed the prover $\calp$ processed the requested dataset.
 
 \begin{figure}[ht!]
   \begin{tikzpicture}
