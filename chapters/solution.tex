@@ -114,10 +114,7 @@ The proof generation procedure is summarized in Algorithm~\ref{alg:zkp}.
   \end{algorithmic}
 \end{algorithm}
 
-\section{Flow}
-\label{solution:flow}
-
-\subsection{Dataset Registration}
+\section{Dataset Registration}
 \label{solution:flow:reg_data}
 
 Naturally, for datasets to be available for processing a data registration process is needed. Anyone who register a dataset automatically becomes a data controller who is responsible for the availability and quality of it. The dataset should be publicly available on any location of choice provided that the controller expose an API for data retrieval. The location can be in a distributed file system~\cite{ipfs}, a decentralized cloud storage~\cite{storj} or a central server. As long as the involved participants communicate over the same protocol the choice is irrelevant; the system can be agnostic concerning data storage.
@@ -170,7 +167,7 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
   \label{fig:arc:reg}
 \end{figure}
 
-\subsection{Entity Registration}
+\section{Entity Registration}
 \label{solution:flow:entity_reg}
 
 \begin{enumerate}
@@ -204,7 +201,7 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
   \label{fig:arch:entity_reg}
 \end{figure}
 
-\subsection{Request for processing}
+\section{Request for processing}
 \label{solution:flow:pr_req}
 
 A request for processing is the procedure where a participant of the network request a specific processing algorithm to be performed on a dataset of its choice. The requestor can only choose from datasets that are registered on the network and publicly available on the blockchain. A request for data processing is registered when the requestor sign and sent a request transaction to the blockchain. In its payload the public key of the requestor is included. The public key is needed by the processor to be able to encrypt data processing results as it crucial to be private from other parties. When a request is registered, a \verb|request| event is emitted notifying the interested parties. All data controllers are listening to \verb|request| events and are responsible for notifying a data processor for that request. The data controller, if the request concerns its dataset, selects randomly a data processor and encrypts the symmetric key of the dataset with its public key. The choice of the data processor could be also done sequentially; the data controller choose the next in line data processor. Selection by popularity in the existence of a decentralized ranking system is a another viable option. A transaction is sent to the blockchain to notify the selected data processor passing the id of the request and the encrypted symmetric key.
@@ -269,7 +266,7 @@ The request for processing procedure is summarized in Algorithm~\ref{alg:data_re
   \label{fig:arch:req_pr}
 \end{figure}
 
-\subsection{Dataset processing}
+\section{Dataset processing}
 \label{solution:flow:pr_data}
 
 As it has already been mentioned in our study, the role of a data processor is crucial. By task assignments, it decrease the pressure over data controllers which they exploit them by entrusting specific data processing operations on behalf of data requestors. Data processors can only perform pre-agreed algorithms (§~\ref{solution:algorithms}) on datasets. Each processing must be accompanied by a proof of correctness of computation and an encrypted output which are published on the blockchain. A processor is constantly listening for \verb|process| events related to it. The controller notify the processor by emitting those events including the ID of the request and the encrypted symmetric key of the dataset. The processor, having all the needed information, signs a transaction to get the details of that request; the dataset ID and the algorithm ID. Another transaction is made to get the location and the hash of the dataset. As all informations are saved only in the blockchain, for traceability, accountability and provenance tracking to be enabled, those transactions are needed. The processor is ready to process the dataset. At first, it decrypts the symmetric key with its private key $sk_p$, downloads the dataset from the provided location and decrypts it. Assuming no errors, the computation is started and a proof, as analyzed in~\ref{solution:proof}, is generated with the evaluation key $ek_f$. The results are encrypted with the public key of the processor $pk_r$. Final, a transaction is sent to the blockchain with the proof $\pi$ and the encrypted results and an event is emitted to notify the requestor for the completion of the procedure.
@@ -304,7 +301,7 @@ The data processing procedure is summarized in Algorithm~\ref{alg:data_processin
   \end{algorithmic}
 \end{algorithm}
 
-\subsection{Proof verification}
+\section{Proof verification}
 \label{solution:flow:verify}
 
 The requestor, as zkSNARKs are non-interactive, can verify any time the correctness of the processing. It can either watch for \verb|process_done| events or by manually checking into the blockchain if a proof exists. Either way, is in its best interest to verify the proof. A transaction has again to be sent for request information retrieval. By sending the request ID the requestor gets the proof and the encrypted results. Then, it decrypts the results and verifies the proof with the verification key $vk_f$. In case of verification failure or the value of the \verb|valid| output variable is \verb|false| the proof is rejected.
