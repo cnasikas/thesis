@@ -89,6 +89,27 @@ Given the public digest $h$, an outsourced function $F$ and an output $y$ I know
 
 The irreversibility of cryptographic hash function in conjunction with the immutability of Blockchain and the trust for data integrity to data controller, that produced the digest of the dataset in the first place, guarantees that indeed the prover $\calp$ processed the requested dataset without revealing it.
 
+\begin{algorithm}[!htb]
+  \caption{Zero Knowledge Proof}\label{alg:zkp}
+  \begin{algorithmic}[1]
+  \Function{\sf compute}{$F, $$d$, $h$, $ek_f$, $s$}
+    \Let{\textsf{valid}}{\textsf{false}}
+    \Let{h^{'}}{H(d)} \Comment{Get the digest of the dataset}
+    \If{$h^{'} == h$} \Comment{Check if the digest match}
+      \Let{\textsf{valid}}{\textsf{true}}
+    \EndIf
+    \Let{y}{\textsf{$F$($d$)}} \Comment{Process dataset}
+    \Let{\textsf{out}}{\textsf{($y$, valid, $s$)}}
+    \State \Return{($\pi$, out)} \Comment{Return results}
+  \EndFunction
+  \Procedure{zkp}{$ek_f$, $F$, $u$, $w$}
+    \Let{d}{w} \Comment{Private input}
+    \Let{(h, s)}{u} \Comment{Public input}
+    \Let{(\pi, out)}{\textsf{compute($F$, $d$, $h$, $ek_f$, $s$)}}
+  \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
 \section{Flow}
 \label{solution:flow}
 
@@ -117,7 +138,7 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
 
         \Let{h_{meta}}{H(name || uri || category || hash)}
         \Let{tx}{(name, uri, category, hash, h_{meta})}
-        \State $tx.send()$
+        \State $tx$.send()
         \State \Return{$tx$}
   \EndFunction
   \Procedure{\sf register}{name, file, category}
@@ -158,7 +179,7 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
   \begin{algorithmic}[1]
   \Procedure{\sf register\_entity}{name, $p_k$, address}
     \Let{tx}{(name, p_k, address)}
-    \State $tx.send()$
+    \State $tx$.send()
     \State \Return{$tx$}
   \EndProcedure
   \end{algorithmic}
@@ -196,7 +217,7 @@ The request for processing procedure is summarized in Algorithm~\ref{alg:data_re
     \Let{(pk_p)}{tx.send()} \Comment{Get processor public key}
     \Let{c}{Enc_{pk_p}(k)} \Comment{Encrypt symmetric key}
     \Let{tx}{(requestID, c)} \Comment{Notify processor}
-    \State $tx.send()$
+    \State $tx$.send()
     \State \Return{$tx$}
   \EndFunction
   \Procedure{\sf watch}{\null}
@@ -209,7 +230,7 @@ The request for processing procedure is summarized in Algorithm~\ref{alg:data_re
   \EndProcedure
   \Procedure{\sf request}{datasetID, algorithmID, $p_{k}$}
     \Let{tx}{(datasetID, algorithmID, p_{k})} \Comment{Request for processing}
-    \State $tx.send()$
+    \State $tx$.send()
     \State \Return{$tx$}
   \EndProcedure
   \end{algorithmic}
@@ -247,42 +268,29 @@ The request for processing procedure is summarized in Algorithm~\ref{alg:data_re
 \subsection{Dataset processing}
 \label{solution:flow:pr_data}
 
-As it has already been mentioned in our study, the role of a data processor is crucial. By task assignments, it decrease the pressure over data controllers and are exploited by them to entrust specific data processing operations on behalf of data requestors. Data processors can only perform pre-agreed algorithms (~\ref{solution:algorithms}) on datasets. The source code of the algorithms is crucial to be open-source as
+As it has already been mentioned in our study, the role of a data processor is crucial. By task assignments, it decrease the pressure over data controllers which they exploit them by entrusting specific data processing operations on behalf of data requestors. Data processors can only perform pre-agreed algorithms (§~\ref{solution:algorithms}) on datasets. Each processing must be accompanied by a proof of correctness of computation and an encrypted output which are published on the blockchain. A processor is constantly listening for \verb|process| events related to it. The controller notify the processor by emitting those events including the ID of the request and the encrypted symmetric key of the dataset. The processor, having all the needed information, signs a transaction to get the details of that request; the dataset ID and the algorithm ID. Another transaction is made to get the location and the hash of the dataset. As all informations are saved only in the blockchain, for traceability, accountability and provenance tracking to be enabled, those transactions are needed. The processor is ready to process the dataset. At first, it decrypts the symmetric key with its private key $sk_p$, downloads the dataset from the provided location and decrypts it. Assuming no errors, the computation is started and a proof, as analyzed in~\ref{solution:proof}, is generated with the evaluation key $ek_f$. The results are encrypted with the public key of the processor $pk_r$. Final, a transaction is sent to the blockchain with the proof $\pi$ and the encrypted results and an event is emitted to notify the requestor for the completion of the procedure.
 
-A data processor:
-
-\begin{enumerate}
-  \item Get the symmetric key
-  \item Decrypt the data set
-  \item Process the data
-  \item Creates a Zero Knowledge Proof (§~\ref{zkp}) of the correctness of the computation for the specific dataset
-  \item Encrypts the results with the public key of the requestor
-  \item Submits the encrypted result of the computation on the Blockchain along with the proof.
-\end{enumerate}
+The data processing procedure is summarized in Algorithm~\ref{alg:data_processing}.
 
 \begin{algorithm}[!htb]
   \caption{Dataset processing}\label{alg:data_processing}
   \begin{algorithmic}[1]
-  \Function{\sf compute}{$d$, algorithmID, $h$, $ek_f$}
-    \Let{valid}{false}
-    \Let{h^{'}}{H(d)} \Comment{Get the digest of the dataset}
-    \If{$h^{'} == h$} \Comment{Check if the digest match}
-      \Let{valid}{true}
-    \EndIf
-    \Let{y}{\textsf{$F$($d$)}} \Comment{Process dataset}
-    \State \Return{$(\pi, y, valid)$} \Comment{Return results}
-  \EndFunction
   \Procedure{\sf process}{e}
-    \Let{(requestID, algorithmID, c_{k}, pk_r)}{e}
-    \Let{tx}{(requestID)}
-    \Let{(datasetID, location, h)}{(tx)} \Comment{Get dataset info}
+    \Let{(\textsf{requestID}, \textsf{algorithmID}, c_{k}, pk_r)}{e}
+    \Let{tx}{(\textsf{requestID})} \Comment{Get dataset id}
+    \Let{(\textsf{datasetID}, \textsf{\textsf{algorithmID}})}{(tx)} \Comment{Get dataset info}
+    \Let{(\textsf{location}, h)}{(tx)}
     \Let{k}{Dec_{sk_{p}}(c_{k})} \Comment{Decrypt symmetric key}
-    \Let{c_{d}}{get(location)} \Comment{Get encrypted dataset}
+    \Let{c_{d}}{\textsf{get(location)}} \Comment{Get encrypted dataset}
     \Let{d}{Dec_{k}(c_{d})} \Comment{Decrypt dataset}
     \CommentLine{Process dataset and get proof of computation}
-    \Let{(\pi, y, valid)}{compute(d, algorithmID, h, ek_f)}
-    \Let{tx}{(H(\pi), Enc_{pk_r}(\pi, y, valid))} \Comment{Send results to requestor}
-    \State $tx.send()$
+    \State $s \rselect{\{0, 1\}^{l}}$ \Comment{Salt generation with security parameter}
+    \Let{F}{\textsf{algorithms['algorithmID']}}
+    \Let{u}{(h, s)} \Comment{Public input}
+    \Let{w}{d} \Comment{Private input}
+    \Let{(\pi, \textsf{out})}{zkp(ek_f, F, u, w)} \Comment{Algorithm~\ref{alg:zkp}}
+    \Let{tx}{(\pi, Enc_{pk_r}(\textsf{out}))} \Comment{Send results to requestor}
+    \State $tx$.send()
   \EndProcedure
   \Procedure{\sf watch}{\null}
     \While{$e \in$ events['process']} \Comment{Listen data processing notifications}
