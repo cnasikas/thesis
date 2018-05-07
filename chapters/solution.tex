@@ -53,18 +53,33 @@ Each of these entities have different resources and goals. These are explained b
 \subsection{Malicious data controller}
 \label{solution:treat_model:mcontroller}
 
-A malicious data controller is a controller who tries to manipulate the results of the processing by crafting fabricated datasets. For example, an adversary could manipulate the dataset to make a classifier produce false negatives~\cite{dalvi2004adversarial} or the image representations in a deep neural network (DNN) to mimic those of other natural image~\cite{sabour2015adversarial}.
+A malicious data controller is a controller who tries to manipulate the results of the processing by either crafting fabricated datasets or working in collusion with the data processor. For example, an adversary could manipulate the dataset to make a classifier produce false negatives~\cite{dalvi2004adversarial} or the image representations in a deep neural network (DNN) to mimic those of other natural image~\cite{sabour2015adversarial}.
 
-In our solution we do not address those issues. We assume that a data controller is authorized by a trusted entity, through a PKI, that ensures the quality of the datasets.
+In our solution we do not address those issues. We assume that a data controller is honest and is authorized by a trusted entity, through a PKI, that ensures the quality of the datasets.
 
 \subsection{Malicious data processor}
 \label{solution:treat_model:mprocessor}
 
+As data controllers certain data processors may want to manipulate the results of the processing. A malicious data processor could influence the results of the processing with the following means:
+
+\begin{itemize}
+  \item Fake computation
+  \item Process different dataset
+  \item Use different algorithm
+  \item Expose a dataset
+\end{itemize}
+
+We aim to fully protect requestors from such malicious actors except data disclosure.
+
 \subsection{Malicious requestor}
 \label{solution:treat_model:mrequestor}
 
+The role of a requestor is certain: it can only make requests. Therefore, the only attack a malicious requestor can perform is a distributed denial-of-service attacks (DDoS) by flooding the network with requests in an attempt to overload the data processors and prevent other requests from being fulfilled. DDoS attacks are not address in this work and are left for future work (§~\ref{future_work:incentives}).
+
 \subsection{Malicious public user}
 \label{solution:treat_model:mpublic_user}
+
+As the blockchain is public, malicious external users should be taken into account. External actors can perform Sybil attacks~\cite{sybil_attack} by impersonating the various actors of the system. All the possible attacks that can be performed by the previous malicious actor they can also be performed by an external user. The PKI assumption prevents forging controller and processor identifies.
 
 \section{Algorithms}
 \label{solution:algorithms}
