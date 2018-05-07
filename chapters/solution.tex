@@ -20,7 +20,7 @@ In our scheme we assume that the data controller already has consent to access o
 
 The data controller is in charge of a data set. It run on behalf of a data subject (person)
 that authorizes the data controller to access its personal data, with the possibility of forwarding
-them to a data processor that will be responsible for processing the data on behalf of controller~\cite{DBLP:journals/corr/NeisseSF17}. Data
+them to a data processor that will be responsible for processing the data on behalf of controller~\cite{DBLP:journals/corr/NeisseSF17}.
 
 \subsection{Data Processor}
 \label{solution:entities:data_processor}
@@ -88,6 +88,10 @@ Given the public digest $h$, an outsourced function $F$ and an output $y$ I know
   \end{enumerate}
 
 The irreversibility of cryptographic hash function in conjunction with the immutability of Blockchain and the trust for data integrity to data controller, that produced the digest of the dataset in the first place, guarantees that indeed the prover $\calp$ processed the requested dataset without revealing it.
+
+The proof $\pi$ is publicly available for anyone to verify. In our solution, the result of the computation remains private and is encrypted with the public key of the requestor. Thus, only the requestor can verify the proof; the output is needed from the verification algorithm. A malicious adversary who wants to learn the output $y$ can potentially do this $y$ by brute-force attacking $y$ using the public parameters of the zkSNARK setting. A realistic example could be when $F$ computes the summation of a list of integers and return $0$ if the sum is even and $1$ if it is odd. An adversary can use the verification algorithm for both possible outputs and guess $y$ correctly. To avoid this, a random salt $s \rselect{\{0, 1\}^{l}}$, with security parameter $l$, is used as an additional input of the proof. Each proof should use a unique salt. Although, the processor generates the salt before constructing a proof and is private to anybody than the requestor, in the zkSNARK setting it is considered as a public input.
+
+The proof generation procedure is summarized in Algorithm~\ref{alg:zkp}.
 
 \begin{algorithm}[!htb]
   \caption{Zero Knowledge Proof}\label{alg:zkp}
