@@ -437,7 +437,7 @@ publications}\gdef\@lopfileinternal{#1}}
     \end{center}
     \clearpage
 
-    \newpage\null\newpage
+    % \newpage\null\newpage
 }
 
 %
@@ -486,9 +486,9 @@ publications}\gdef\@lopfileinternal{#1}}
 
 {
 \ifenglishcommitteepage
-	{\bfseries THREE-MEMBER ADVISORY COMMITTEE:}
+	{\bfseries EXAMINATION COMMITTEE:}
 \else
-	{\bfseries ΤΡΙΜΕΛΗΣ ΕΠΙΤΡΟΠΗ ΠΑΡΑΚΟΛΟΥΘΗΣΗΣ:}
+	{\bfseries ΕΞΕΤΑΣΤΙΚΗ ΕΠΙΤΡΟΠΗ:}
 \fi
 }
 
@@ -496,68 +496,15 @@ publications}\gdef\@lopfileinternal{#1}}
 \ifenglishcommitteepage
 \hspace{2cm}{\bfseries \@advisorEn{}}, \@advisorRankEn{} \@advisorOrgEn{}
 
-\hspace{2cm}{\bfseries \@boardTwoEn{}}, \@boardTwoRankEn{} \@boardTwoOrgEn{}
+\hspace{2cm}{\bfseries \@boardTwoEn{}}, \@boardTwoRankEn{} \@boardTwoOrgEn{} \\
 
-\hspace{2cm}{\bfseries \@boardThreeEn{}}, \@boardThreeRankEn{}
-\@boardThreeOrgEn{}\\
 \else
 \hspace{2cm}{\bfseries \@advisorGr{}}, \@advisorRankGr{} \@advisorOrgGr{}
 
-\hspace{2cm}{\bfseries \@boardTwoGr{}}, \@boardTwoRankGr{} \@boardTwoOrgGr{}
+\hspace{2cm}{\bfseries \@boardTwoGr{}}, \@boardTwoRankGr{} \@boardTwoOrgGr{} \\
 
-\hspace{2cm}{\bfseries \@boardThreeGr{}}, \@boardThreeRankGr{}
-\@boardThreeOrgGr{}\\
 \fi
 }
-
-\begin{center}
-{\bfseries
-\ifenglishcommitteepage
-	SEVEN-MEMBER EXAMINATION COMMITTEE
-\else
-	ΕΠΤΑΜΕΛΗΣ ΕΞΕΤΑΣΤΙΚΗ ΕΠΙΤΡΟΠΗ
-\fi
-}
-\end{center}
-
-{\bfseries
-\centering
-\begin{tabular*}{\textwidth}{p{0.5\textwidth} p{1.5cm} m{0.35\textwidth}}
-                                    & &                    \\[1cm]
-\ifenglishcommitteepage
-\@advisorEn{},                      & & \@boardTwoEn{},    \\
-\@advisorRankEn{} \@advisorOrgEn{}  & & \@boardTwoRankEn{} \@boardTwoOrgEn{}\\
-
-                                         & &                \\[1cm]
-\@boardThreeEn{},                        & & \@examFourEn{},\\
-\@boardThreeRankEn{} \@boardThreeOrgEn{} & &\@examFourRankEn{}
-\@examFourOrgEn{}\\
-
-                                     & &                    \\[1cm]
-\@examFiveEn{},                      & &\@examSixEn{},      \\
-\@examFiveRankEn{} \@examFiveOrgEn{} & &\@examSixRankEn{} \@examSixOrgEn{} \\
-
-                                       & &                  \\[1cm]
-\@examSevenEn{},                       & &                  \\
-\@examSevenRankEn{} \@examSevenOrgEn{} & &                  \\
-\else
-\@advisorGr{},                      & & \@boardTwoGr{},    \\
-\@advisorRankGr{} \@advisorOrgGr{}  & & \@boardTwoRankGr{} \@boardTwoOrgGr{}\\
-
-                                         & &                \\[1cm]
-\@boardThreeGr{},                        & & \@examFourGr{},\\
-\@boardThreeRankGr{} \@boardThreeOrgGr{} & &\@examFourRankGr{}
-\@examFourOrgGr{}\\
-
-                                     & &                    \\[1cm]
-\@examFiveGr{},                      & &\@examSixGr{},      \\
-\@examFiveRankGr{} \@examFiveOrgGr{} & &\@examSixRankGr{} \@examSixOrgGr{} \\
-
-                                       & &                  \\[1cm]
-\@examSevenGr{},                       & &                  \\
-\@examSevenRankGr{} \@examSevenOrgGr{} & &                  \\
-\fi
-\end{tabular*}}
 
 
 \vfill
@@ -571,7 +518,7 @@ publications}\gdef\@lopfileinternal{#1}}
 }
 \end{center}
 \clearpage
-\newpage\null\newpage
+% \newpage\null\newpage
 }
 
 %
