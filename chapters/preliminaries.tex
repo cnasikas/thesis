@@ -738,7 +738,7 @@ $1/2^{k}$.
   \label{fig:zkp:alibaba}
 \end{figure}
 
-\subsection{Formal Definition}
+\subsection[Formal Definition]{Formal Definition~\cite{kiagias:crypto}}
 \label{zkp:definition}
 
 Let $<\calp, \calv>$ be a pair of interactive programs. Define $\text{out}^{\calp}_{\calp, \calv}(x,w,z)$
@@ -773,9 +773,7 @@ properties hold~\cite{kiagias:crypto}.
 Completeness is very similar to correctness. Assuming both the prover and verifier follow the protocol faithfully, completeness guarantees that the
 protocol will succeed with a sufficiently high probability.
 Soundness ensures that if the statement is false, no cheating prover can convince the honest verifier that it is true, except with some small probability.
-Intuitively, statistical zero-knowledge is a property that prohibits a verifier from extracting information from an honest prover.
-A weaker version of zero-knowledge is honest-verifier zero-knowledge (HVZK). Here it is assumed that the verifier executes the protocol faithfully,
-but makes additional computations~\cite{kiagias:crypto}.
+Intuitively, statistical zero-knowledge is a property that prohibits a verifier from extracting information from an honest prover. A weaker version of zero-knowledge is honest-verifier zero-knowledge (HVZK). Here it is assumed that the verifier executes the protocol faithfully, but makes additional computations.
 
 \subsection{Verifiable Computation (VC)}
 \label{zkp:vc}
