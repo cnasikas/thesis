@@ -53,6 +53,10 @@ Each of these entities have different resources and goals. These are explained b
 \subsection{Malicious data controller}
 \label{solution:treat_model:mcontroller}
 
+A malicious data controller is a controller who tries to manipulate the results of the processing by crafting fabricated datasets. For example, an adversary could manipulate the dataset to make a classifier produce false negatives~\cite{dalvi2004adversarial} or the image representations in a deep neural network (DNN) to mimic those of other natural image~\cite{sabour2015adversarial}.
+
+In our solution we do not address those issues. We assume that a data controller is authorized by a trusted entity, through a PKI, that ensures the quality of the datasets.
+
 \subsection{Malicious data processor}
 \label{solution:treat_model:mprocessor}
 
