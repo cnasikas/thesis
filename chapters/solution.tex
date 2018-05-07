@@ -300,6 +300,13 @@ The data processing procedure is summarized in Algorithm~\ref{alg:data_processin
   \end{algorithmic}
 \end{algorithm}
 
+\subsection{Proof verification}
+\label{solution:flow:verify}
+
+The requestor, as zkSNARKs are non-interactive, can verify any time the correctness of the processing. It can either watch for \verb|process_done| events or by manually checking into the blockchain if a proof exists. Either way, is in its best interest to verify the proof. A transaction has again to be sent for request information retrieval. By sending the request ID the requestor gets the proof and the encrypted results. Then, it decrypts the results and verifies the proof with the verification key $vk_f$. In case of verification failure or the value of the \verb|valid| output variable is \verb|false| the proof is rejected.
+
+The verification procedure is summarized in Algorithm~\ref{alg:data_verify}.
+
 \begin{algorithm}[!htb]
   \caption{Proof verification}\label{alg:data_verify}
   \begin{algorithmic}[1]
@@ -308,8 +315,9 @@ The data processing procedure is summarized in Algorithm~\ref{alg:data_processin
     \Let{tx}{(requestID)}
     \Let{(proof)}{(tx)} \Comment{Get request info}
     \Let{(h, c)}{proof}
-    \Let{(\pi, y, valid)}{Dec_{sk_{r}}(c)} \Comment{Decrypt results}
-    \Let{result}{\_verify(\pi, y ,valid, vk_f)} \Comment{Verify proof}
+    \Let{(\pi, \textsf{out})}{Dec_{sk_{r}}(c)} \Comment{Decrypt results}
+    \Let{\textsf{($y$, valid, $s$)}}{\textsf{out}}
+    \Let{result}{\_verify(\pi, y, valid, s, vk_f)} \Comment{Verify proof}
     \If{!valid || !result} \Comment{Reject if not valid}
       \State \textbf{reject}
     \EndIf
