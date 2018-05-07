@@ -683,8 +683,8 @@ publications}\gdef\@lopfileinternal{#1}}
     \@frontpage
 
     % frontpage - english version
-    \englishfrontpagetrue
-    \@frontpage
+    % \englishfrontpagetrue
+    % \@frontpage
 
     % examination committe page - greek version
     \@committeepage
