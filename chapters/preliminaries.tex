@@ -32,7 +32,7 @@ Above three, collision resistance is the strongest property and a strong securit
 
 In a data sharing system, cryptographic hash functions can be used to provide verification of file integrity and trackability~\cite{10.1109/SPW.2015.27, Azaria2016}. Anyone can detect file modification in transit as changing even a bit will result in the output of a different digest. A digest of a dataset or the dataset's metadata can also serve as means of unique file identification; unique persistent identifiers (PID) that can be used as pointers to data location. Any change to the PID will be visible and trackable~\cite{dist_pid}.
 
-Blockchains make heavy use of cryptographic hash functions. They are used to create unique transactions and blocks IDs, to provide proof of inclusions--a proof that a transaction is contained in a block---and above all to prevent Sybil and double-spend attacks. In particular, Bitcoin use the SHA256 and RIPEMD160 hash functions. It is evident, that cryptographic hash function play an important role in the Blockchain ecosystem.
+Blockchains make heavy use of cryptographic hash functions. They are used to create unique transactions and blocks IDs, to provide proof of inclusions--a proof that a transaction is contained in a block---and above all to prevent Sybil~\cite{sybil_attack} and double-spend attacks. In particular, Bitcoin use the SHA256 and RIPEMD160 hash functions. It is evident, that cryptographic hash function play an important role in the Blockchain ecosystem.
 
 \section{Symmetric-key cryptography}
 \label{preliminaries:sym}
