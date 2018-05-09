@@ -133,13 +133,9 @@ The proof generation procedure is summarized in Algorithm~\ref{alg:zkp}.
   \caption{Zero Knowledge Proof}\label{alg:zkp}
   \begin{algorithmic}[1]
   \Function{\sf compute}{$F, $$d$, $h$, $ek_f$, $s$}
-    \Let{\textsf{valid}}{\textsf{false}}
-    \Let{h^{'}}{H(d)} \Comment{Get the digest of the dataset}
-    \If{$h^{'} == h$} \Comment{Check if the digest match}
-      \Let{\textsf{valid}}{\textsf{true}}
-    \EndIf
+    \Let{h^{'}}{H(d)} \Comment{Compute the digest of the dataset}
     \Let{y}{\textsf{$F$($d$)}} \Comment{Process dataset}
-    \Let{\textsf{out}}{\textsf{($y$, valid, $s$)}}
+    \Let{\textsf{out}}{(y, h^{'}, s)}
     \State \Return{($\pi$, out)} \Comment{Return results}
   \EndFunction
   \Procedure{zkp}{$ek_f$, $F$, $u$, $w$}
