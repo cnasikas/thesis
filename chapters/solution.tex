@@ -349,11 +349,14 @@ The verification procedure is summarized in Algorithm~\ref{alg:data_verify}.
   \begin{algorithmic}[1]
   \Procedure{\sf verify}{e}
     \Let{(requestID)}{e}
-    \Let{tx}{(requestID)}
-    \Let{(\pi, c, h)}{tx.send()} \Comment{Get request info}
-    \Let{(\pi, (y, valid, s))}{Dec_{sk_{r}}(c)} \Comment{Decrypt results}
-    \Let{result}{\_verify(\pi, y, valid, h, s, vk_f)} \Comment{Verify proof}
-    \If{!valid || !result} \Comment{Reject if not valid}
+    \Let{(\pi, c, \textsf{datasetID})}{tx(requestID).send()} \Comment{Get request info}
+    \Let{h}{tx(datasetID).send()} \Comment{Get dataset info}
+    \Let{(\pi, (y, h^{'}, s))}{Dec_{sk_{r}}(c)} \Comment{Decrypt results}
+    \If{$h^{'}$ !== $h$} \Comment{Reject if digest not match}
+      \State \textbf{reject}
+    \EndIf
+    \Let{valid}{\_verify(\pi, (y, h^{'}), (h, s), vk_f)} \Comment{Verify proof}
+    \If{!valid} \Comment{Reject if not valid}
       \State \textbf{reject}
     \EndIf
   \EndProcedure
