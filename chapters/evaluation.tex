@@ -243,7 +243,7 @@ Each action by the participants has a cost in gas and therefore in money. Table~
 Lastly, a series of benchmarks are performed to measure the performance of the basic parts of zero knowledge proofs. Proof generation is divided in three phases: \verb|Setup|, \verb|Compute| and \verb|Verify|. \verb|Setup| phase consists of the compilation of a \verb|C| programm to QAP (§~\ref{zkp:snarks}) and the generation of the keys for proof construction and verification. \verb|Setup| phase is executed once at application bootstrap and per processing algorithm. \verb|Compute| phase consists of circuit evaluation, polynomial solving and proof generation using the evaluation key. Lastly, \verb|Verification| phase consists of proof verification by the verifier using the verification key.
 
 Tables~\ref{table:zkp_01} to~\ref{table:zkp_03} provide details of ZKP performance for each query the application supports for inputs of size \verb|100|, \verb|1.000| and \verb|10.000|. For each query, we measure the time execution of each one of the three phases and the size of the keys and proofs. The keys are reasonably sized, with evaluation key typically requiring
-10 to 100 MB and the verirication key 100KB. Due to the succinctness property of zkSNARKs the size of the proof is very small and constant for all programs regardless of input size. The size of the keys and the execution time of the phases are proportional to program complexity. 
+10 to 100 MB and the verirication key 100KB. Due to the succinctness property of zkSNARKs the size of the proof is very small and constant for all programs regardless of input size. The size of the keys and the execution time of the phases are proportional to program complexity.
 
 \begin{table}[!htb]
 \centering
@@ -271,7 +271,7 @@ Tables~\ref{table:zkp_01} to~\ref{table:zkp_03} provide details of ZKP performan
  Count & 15 & 9 & 37 & 0.036 & 100 & 304 \\ \hline
  Max & 29 & 14 & 34 & 17 & 100 & 304 \\ \hline
  Min & 28 & 14 & 49 & 17 & 100 & 304 \\ \hline
- Mean & 17 & 8 & 41 & 182 & 100 & 304 \\ \hline
+ Mean & 17 & 8 & 41 & 0.182 & 100 & 304 \\ \hline
  Median & 1701 & - & 12 & 64 & 100 & 304 \\ \hline
 \end{tabular}
 \captionsetup{format=hang, justification=centering}
