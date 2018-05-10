@@ -607,11 +607,15 @@ Blockchain uses elliptic curves for key pair generation and transaction signing 
 \section{Homomorphic Encryption}
 \label{preliminaries:homo}
 
-Homomorphic encryption allows computation on encrypted data. It allows, without having access to unencrypted data, to perform computations over ciphertexts and return encrypted results that when decrypted matches the result of the operations as if they had been performed on the plaintext.
+Homomorphic encryption allows specific types of computation on encrypted data. It allows to perform computations over ciphertexts and return encrypted results that when decrypted matches the result of the operations as if they had been performed on the plaintext. An encryption scheme is called homomorphic when it has the homomorphic property. In particular, if for all $m_1, m_2 \in \calm$ and $k \in \calk$ (secret key or public key):
 
 \begin{equation*}
-  Enc(m_1) \otimes Enc(m_2) = Enc(m_1 \oplus m_2)
+  Enc_k(m_1) \otimes Enc_k(m_2) = Enc_k(m_1 \oplus m_2)
 \end{equation*}
+
+then the encryption scheme is homomorphic.
+
+Homomorphic encryption schemes are by nature malleable and have weaker security properties than non-homomorphic schemes. Various known encryption schemes are homomorphic such as the unpadded RSA and El Gamal.
 
 \section{Zero Knowledge Proofs}
 \label{zkp}
