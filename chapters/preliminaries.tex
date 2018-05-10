@@ -813,8 +813,12 @@ The acronym zkSNARK stands for `Zero-Knowledge Succinct Non-Interactive Argument
 
 The first zkSNARKs constructions where inspired by the PCP theorem allowing faster and shorter proofs~\cite{zksnark_basics}. In this section we analyze the zk-SNARK model proposed by Gennaro et al~\cite{ggpr} and the Pinnochio protocol proposed by Parno et al~\cite{pinocchio-nearly-practical-verifiable-computation} without getting into rigorous mathematical proofs, security assumptions or implementations. The purpose of this chapter is to provide a high level understanding of zkSNARKs and their core mechanisms.
 
+\note{Implementations of zksnark (pinnochio, Hawk, Zcash etc)}
+
 \subsection{Main idea}
 \label{zkp:snarks:main_idea}
+
+To be able to construct zkSNARKs for a computation problem it had to encoded to a specific form, which is equivalent to the original problem, from which zkSNARKs can be derived. This form is called Quadratic Arithmetic Program (QAP).
 
 The main idea for constructing zkSNARKs is firstly to transform the generic program as a quadratic equation of polynomials (QAP)~\cite{ggpr}: $p(x)q(x) = s(x)r(x)$, where the equality holds if and only if the program is computed correctly. So the prover wants to convince the verifier that the equality holds.
 
@@ -856,12 +860,10 @@ At high level, zkSNARKs consist of four basic steps (Figure ~\ref{fig:zkp:zksnar
 \subsubsection{Arithmetic circuits}
 \label{zkp:snarks:circuits}
 
-An arithmetic circuit $C$ over a finite field $\F$ is a circuit that contains
-only addition and multiplication gates. It takes inputs that are elements in $\F$ and its gates output elements in $\F$~\cite{184425, zcash}.
+An arithmetic circuit $C$ over a finite field $\F_p$ is a circuit that contains
+only addition and multiplication gates. It takes as inputs elements in $\F_p$ and its gates output elements in $\F_p$~\cite{184425, zcash}. The outputs are determined by the inputs which pass through the gates where their values are changed accordingly. Any program  can be reduced to  an arithmetic circuit~\cite{pankova_succinct_2013, 10.1007/978-3-642-40084-1_6} and normally the circuit is associated to the function it computes; the outsource function the prover works upon.
 
-Any program  can be reduced to  an arithmetic circuit~\cite{pankova_succinct_2013, 10.1007/978-3-642-40084-1_6} and normally the circuit is associated to the function it computes; the outsource function the Prover works upon.
-
-Given a circuit evaluation, the task of the Prover is to convince the Verifier that there exist valuations of intermediate gates such that the circuit indeed produces such an output with such an input~\cite{pankova_succinct_2013}.
+A legal or valid assignment for an arithmetic circuit $C$ is a tuple $(c_1, c_2, \dots, c_n) \in \F_p$ such that $C(c_1, c_2, \dots, c_k) = (c_{k+1}, c_2, \dots, c_n)$ where $k$ is the number of all input and $n - k$ the number of all outputs of the circuit. Given a circuit evaluation, the task of the prover is to convince the verifier that there exist evaluations of intermediate gates such that the circuit indeed produces such an output with such an input~\cite{pankova_succinct_2013}. For example, if Alice wants to prove to Bob that she knows $c_1, c_2, c_3 \in \F_p$ such as $(c_{1}c_{2})(c_1 + c_3) = 7$ she has to encode the computation to an arithmetic circuit $C$. The presentation of $C$ is shown in Figure~\ref{fig:zkp:circuit}. Alice, equivalently, wants to prove that she knows a valid assignment $(c_1, c_2, c_3, c_4, c_5)$, where $c_4 = c_{1}c_{2}$ and $c_5 = c_{4}(c_1 + c_3)$, such that $c_5 = 7$.
 
 \begin{figure}[ht!]
   \center
@@ -874,33 +876,127 @@ Given a circuit evaluation, the task of the Prover is to convince the Verifier t
       node distance=2cm
     ]
 
-    \node[gate] (x1) at (0, 0) {$x_1$};
-    \node[gate] (x2) at (2, 0) {$x_2$};
-    \node[gate] (1) at (4, 0) {$1$};
+    \node[gate] (c1) at (0, 0) {$c_1$};
+    \node[gate] (c2) at (2, 0) {$c_2$};
+    \node[gate] (c_3) at (4, 0) {$c_3$};
 
-    \node[gate] (p1) at (1, 2) {$+$};
-    \node[gate] (p2) at (3, 2) {$+$};
+    \node[gate] (g1) at (1, 2) {$*$};
+    \node[gate] (_g) at (3, 2) {$+$};
 
-    \node[gate] (m1) at (2, 4) {$*$};
+    \node[gate] (g2) at (2, 4) {$*$};
 
-    \draw[->] (x1) -- (p1);
-    \draw[->] (x2) -- (p1);
-    \draw[->] (x2) -- (p2);
-    \draw[->] (x2) -- (m1);
+    \draw[->] (c1) -- (g1);
+    \draw[->] (c1) -- (_g);
+    \draw[->] (c2) -- (g1);
 
-    \draw[->] (1) -- (p2);
+    \draw[->] (c_3) -- (_g);
 
-    \draw[->] (p1) -- (m1);
-    \draw[->] (p2) -- (m1);
+    \draw[->] (g1) -- (g2);
+    \draw[->] (_g) -- (g2);
+
+    \draw[->] (g2) -- ++(0, 2);
 
   \end{tikzpicture}
   \caption{A simple arithmetic circuit}
   \label{fig:zkp:circuit}
 \end{figure}
 
-\subsubsection{Quadratic Arithmetic Program (QAP)}
+\subsubsection[Quadratic Arithmetic Program (QAP)]{Quadratic Arithmetic Program (QAP)~\cite{zksnark_basics, zcash_snarks}}
 \label{zkp:snarks:qap}
 
-Geranno et. al~\cite{ggpr} showed how to encode efficiently computation as quadratic programs called Quadratic Arithmetic Programs (QSP) to obtain zk-SNARKs. A Quadratic Span Program consists of a set of polynomials and the task is to find a linear combination of those that is a multiple of another given polynomial.
+Geranno et. al~\cite{ggpr} showed how to encode efficiently computation as quadratic programs called Quadratic Arithmetic Programs (QAP) to obtain zk-SNARKs. QAPs play an important role as they enable the prover to construct the proof $\pi$ for the claim that she knows a valid assignment of a circuit $C$.
 
-\note{Implementations of zksnark (pinnochio, Hawk, Zcash etc)}
+A  QAP $Q(C) = (L, R, O, T)$ for a given circuit $C$ is a set of three polynomials
+
+\begin{align*}
+  L = \sum_{i=1}^{m}c_{i}L_{i} && R = \sum_{i=1}^{m}c_{i}R_{i} && O = \sum_{i=1}^{m}c_{i}O_{i} && (m \geq n)
+\end{align*}
+
+and a target polynomial $T$ such that $T$ divides the polynomial:
+
+\begin{equation*}
+  P = LR - O
+\end{equation*}
+
+if and only if $(c_1, c_2, \dots, c_n)$ is a valid assignment for $C$. The prover constructs the polynomial for his proof $\pi$ and the verifier check the divisibility of $P$ by $T$. Εquivalent, $P = TH$ for some polynomial $H$.
+
+To translate the $C$ into a QAP the wires and gates must be labeled in a specific way:
+
+\begin{itemize}
+  \item Each multiplication gate has exactly two input wires: left and right wire
+  \item Each multiplication gate has a unique label
+  \item Addition gates are not labeled
+  \item Outgoing wires to more than one gate are labeled as one wire
+  \item Outgoing wires from an addition gate to a multiplication gate are not labeled; the inputs of an addition gate go directly to the multiplication gate
+\end{itemize}
+
+A label assignment of circuit of Figure~\ref{fig:zkp:circuit} is shown in Figure~\ref{fig:zkp:circuit_label}.
+
+\begin{figure}[ht!]
+  \center
+  \begin{tikzpicture}[
+        gate/.style={
+        circle,
+        minimum size=1cm,
+        draw
+      },
+      node distance=2cm
+    ]
+
+    \node[gate] (c1) at (0, 0) {$c_1$};
+    \node[gate] (c2) at (2, 0) {$c_2$};
+    \node[gate] (c_3) at (4, 0) {$c_3$};
+
+    \node[gate, label={left:$g_1$}] (g1) at (1, 2) {$*$};
+    \node[gate] (_g) at (3, 2) {$+$};
+
+    \node[gate, label={right:$g_2$}] (g2) at (2, 4) {$*$};
+
+    \draw[->] (c1) -- (g1) node[midway,left] {$w_1$};
+    \draw[->] (c1) -- (_g);
+    \draw[->] (c2) -- (g1) node[midway,right] {$w_2$};
+
+    \draw[->] (c_3) -- (_g) node[midway,right] {$w_3$};
+
+    \draw[->] (g1) -- (g2) node[midway,left] {$w_4$};
+    \draw[->] (_g) -- (g2);
+
+    \draw[->] (g2) -- ++(0, 2) node[midway,left] {$w_5$};
+
+  \end{tikzpicture}
+  \caption{Circuit label assignment}
+  \label{fig:zkp:circuit_label}
+\end{figure}
+
+The circuit is ready to be transformed to a QAP. Let $M$ is the set of the index of the multiplication gates and $W$ the set of input and output wires. The points in $M$ are called target points. For each gate $g \in M$ we construct a set of left, right, and output polynomials as follows: for each wire a polynomial is constructed in such way that it evaluates at zero on all target point expect the ones that correspond to the multiplication gate.
+
+\textbf{QAP construction of circuit of Figure~\ref{fig:zkp:circuit_label}}: Gate $g_1$, with target point $1$, has $w_1$ as left wire, $w_2$ as right wire and $w_4$ as output label. Thus, we construct $L_1 = R_2 = O_4 = 2 - x$ as the polynomial on point $1$ corresponding to $g_1$ is one and zero on point $2$ corresponding to $g_2$. Similar, for gate $g_2$ $L_4 = R_1 = R_3 = O_5 = x - 1$. Note that the wires $w_2$ and $w_3$ are both right inputs of $g_2$.
+
+The wire polynomials:
+
+\begin{align*}
+  L_1 = (2 - x) && L_2 = 0 && L_3 = 0 && L_4 = (x - 1) && L_5 = 0
+\end{align*}
+\begin{align*}
+  R_1 = (x - 1) && R_2 = (2 - x) && R_3 = (x - 1) && R_4 = 0 && R_5 = 0
+\end{align*}
+\begin{align*}
+  O_1 = 0 && O_2 = 0 && O_3 = 0 && O_4 = (2 - x) && O_5 = (x - 1)
+\end{align*}
+
+The total left, right and output polynomials:
+
+\begin{align*}
+  L &= \sum_{i=1}^{5}c_{i}L_{i} & R &= \sum_{i=1}^{5}c_{i}R_{i} & O &= \sum_{i=1}^{5}c_{i}O_{i} \\
+    &= c_1L_1 + c_4L_4 & &= c_1R_1 + c_2R_2 + c_3R_3 & &= c_4O_4 + c_5O_5 \\
+    &= c_1(2 - x) + c_4(x - 1) & &= c_1(x - 1) + c_2(2 - x) + c_3(x - 1) & &= c_4(2 - x) + c_5(x - 1)
+\end{align*}
+
+Now if we evaluate the these polynomials at the target point $1$ and at the target point $2$ we get:
+
+\begin{align*}
+  P(1) &= L(1)R(1) - O(1) & P(2) &= L(2)R(2) - O(2) \\
+       &= c_1c_2 - c_4 & &=c_4(c_1 + c_3) - c_5
+\end{align*}
+
+Hence, $T(x) = (x - 1)(x - 2)$ divides $P(x)$ if and only $1, 2$ are roots of $P(x)$; $(c_1, c_2, \dots, c_5)$ is a valid assignment for $C$.
