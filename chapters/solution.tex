@@ -37,9 +37,9 @@ The requester can be any entity that requests a computation over a data set. It 
 
 Before we explain in detail our architecture and the trust issues, we would like to introduce our thread model and what exactly our goals are. It is important to understand the possible roles of adversaries, their strengths and their resources.
 
-In our model we assume a public blockchain where the involved entities that interact with a data set---the data controller and the data processor---are identified and verified through a public key infrastructure (PKI)~\cite{adams_understanding_2003}. Furthermore, each entity is a trusted entity with certain trust properties. Τhe data controller is trusted for integrity and confidentiality and the data processor only for confidentiality.
+In our model we assume a public blockchain where the involved entities that interact with a data set---the data controller and the data processor---are identified and verified through a public key infrastructure (PKI)~\cite{adams_understanding_2003}. Furthermore, each of the authenticated entities has certain trust properties. Τhe data controller is trusted for integrity and confidentiality and the data processor only for confidentiality.
 
-Adversaries can be categories in 4 categories:
+Adversaries can be divided in 4 categories:
 
 \begin{itemize}
   \item Malicious data controller
@@ -55,7 +55,7 @@ Each of these entities have different resources and goals. These are explained b
 
 A malicious data controller is a controller who tries to manipulate the results of the processing by either crafting fabricated datasets or working in collusion with the data processor. For example, an adversary could manipulate the dataset to make a classifier produce false negatives~\cite{dalvi2004adversarial} or the image representations in a deep neural network (DNN) to mimic those of other natural image~\cite{sabour2015adversarial}.
 
-In our solution we do not address those issues. We assume that a data controller is honest and is authorized by a trusted entity, through a PKI, that ensures the quality of the datasets.
+In our solution we do not address those issues. We assume that a data controller is honest and is authorized by a PKI that ensures the quality of the datasets.
 
 \subsection{Malicious data processor}
 \label{solution:treat_model:mprocessor}
@@ -74,7 +74,7 @@ We aim to fully protect requestors from such malicious actors except data disclo
 \subsection{Malicious requestor}
 \label{solution:treat_model:mrequestor}
 
-The role of a requestor is certain: it can only make requests. Therefore, the only attack a malicious requestor can perform is a distributed denial-of-service attacks (DDoS) by flooding the network with requests in an attempt to overload the data processors and prevent other requests from being fulfilled. DDoS attacks are not address in this work and are left for future work (§~\ref{future_work:incentives}).
+The role of a requestor is certain: it can only make requests. Therefore, the only attack a malicious requestor can perform is a distributed denial-of-service attacks (DDoS) by flooding the network with requests in an attempt to overload the data processors and prevent other requests from being fulfilled. DDoS attacks are not address in this work and are left for future work (§~\ref{future_work:incentives}). An easy solution is to introduce a scalable payment system where the requestor pays per byte processed.
 
 \subsection{Malicious public user}
 \label{solution:treat_model:mpublic_user}
@@ -83,6 +83,8 @@ As the blockchain is public, malicious external users should be taken into accou
 
 \section{Blockchain}
 \label{solution:blockchain}
+
+
 
 \section{Algorithms}
 \label{solution:algorithms}
