@@ -21,7 +21,7 @@ Using an MPC protocol based on secret sharing the need for transferring the symm
 
 Data queries can be computed in a distributed way, using an MPC cluster of data processors. Data can be split between data processors without having access to the data in its entirety~\cite{DBLP:journals/corr/ZyskindNP15}.
 
-That way, there is no need for the data processor to be a trusted entity as the data processor never have access to the dataset, as data are encrypted and shared among the other processors, and and still compute the data query.
+This way, the need for a trusted processor is eliminated as the data processors do not have access to the unciphered dataset and still process the dataset in a privacy-preserving manner.
 
 \section{Fees}
 \label{future_work:fees}
@@ -36,7 +36,7 @@ A payment system helps to prevent DDoS attacks as each request has cost and the 
 \section{Reputation system}
 \label{future_work:ranking_system}
 
-The use of a decentralized reputation system~\cite{trust_is_risk} could eliminate the need of a trusted entity that identifies and verifies the entities of the system.
+A decentralized reputation system~\cite{trust_is_risk}, resilient to Sybil attacks, could eliminate the need of a centralized trust model of a public key infrastructure (PKI), which relies on a trusted entity to authenticate, identify and verify the participants of the system. The benefits of such system are pseudonymity of participants, truly decentralization and trust is build by the system itself. The users in such systems built trust relationships among them and measure trustworthiness in a setting where assets can be exchanged between them~\cite{trust_is_risk}. A data controller, whom its dataset are of bad quality or fabricated with malicious intents, could be identified by the users of the system and gain bad reputation. It is evident, that the users of the network should choose datasets where their owners have high trust. The same applies to data processors and even the requestor themselves.
 
 \section{Analytics}
 \label{future_work:analytics}
