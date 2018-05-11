@@ -17,14 +17,18 @@ Multi-party computation protocols a have a wide range of applications. They can 
 
 Most MPC protocols make use of secret sharing. A secret sharing scheme allows a value to be shared among $n$ parties where some of the parts or all of them are needed in order to reconstruct the secret~\cite{Kamm:2015:ASM:2836836}. Usually, there is a threshold $t$ so that at least $t$ part of the secret are needed to reconstruct the original secret.
 
-Using an MPC protocol based on secret sharing the need for transferring the symmetric key to the data processor and the decryption of the data (§~\ref{solution:flow:pr_req}, §~\ref{solution:flow:handle_request}, §~\ref{solution:flow:pr_data})---so the processing can be applied---can be eliminated.
+Using an MPC protocol based on secret sharing the need for transferring the symmetric key to the data processor and the decryption of the data (§~\ref{solution:flow:pr_req}, §~\ref{solution:flow:pr_data})---so the processing can be applied---can be eliminated.
 
 Data queries can be computed in a distributed way, using an MPC cluster of data processors. Data can be split between data processors without having access to the data in its entirety~\cite{DBLP:journals/corr/ZyskindNP15}.
 
 That way, there is no need for the data processor to be a trusted entity as the data processor never have access to the dataset, as data are encrypted and shared among the other processors, and and still compute the data query.
 
-\section{Incentives}
-\label{future_work:incentives}
+\section{Fees}
+\label{future_work:fees}
+
+As discussed in~\ref{solution:treat_model:mrequestor} a malicious requestor can attack the system by overflowing the network with multiple requests aiming to prevent other request to be fulfilled. A scalable payment system could be used as a countermeasure to this type of attacks where a requestor pays a fixed price per byte processed. The price can decrease as the data size increases.
+
+A payment system helps to prevent DDoS attacks as each request has cost and the attack becomes expensive. A rational malicious requestor has to significantly gain more than the cost of the attack to be profitable. Moreover, a payment system will incentivize the data processors to be honest and contribute to the prosperity of the network.
 
 \section{Privacy Preserving Queries}
 \label{future_work:ppq}
