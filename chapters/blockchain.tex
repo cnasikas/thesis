@@ -444,9 +444,7 @@ and provide equal security guarantees~\cite{Kiayias2017}. Unlike PoW where the n
 of the block creator among the miners is random, yet relative to the stake the node possesses according to the current blockchain ledger. Maintaining
 the blockchain relies on the stakeholders themselves and assigns work to them based on the amount of stake that each possesses as reported in the ledger~\cite{Kiayias2017}. The higher the stake participant, the higher the possibility to be chosen.
 
-Proof-of-Stake algorithms suffer from the so-called “nothing at stake” problem. The “nothing at stake” problem refers to attacks against PoS blockchain systems where shareholders do not have
-incentives to follow the protocol and vote simultaneously on multiple blockchains exploiting the fact that little computational effort
-is needed to build a PoS blockchain~\cite{Kiayias2017}. Ouroboros is the first provable secure PoS algorithm~\cite{Kiayias2017} and is the main consensus algorithm of the Cardano blockchain~\cite{cardano_site}.
+Proof-of-Stake algorithms suffer from the so-called “nothing at stake” problem. The “nothing at stake” problem refers to attacks against PoS blockchain systems where shareholders do not have incentives to follow the protocol and vote simultaneously on multiple blockchains exploiting the fact that little computational effort is needed to build a PoS blockchain~\cite{Kiayias2017}. Blockchains with PoS as a consensus mechanism can be either permissioned or permissionless in the sense of stake availability rather than node authorization. A node to participate in block election it has to possess a stake. The stake have to be available for anyone through a market for the network to be considered as truly permissionless. Otherwise, the initial stakeholders can sell stake selectively to participants of their choice. Ouroboros is the first provable secure PoS algorithm~\cite{Kiayias2017} and is the main consensus algorithm of the Cardano blockchain~\cite{cardano_site}.
 
 \subsection{Practical Byzantine Fault Tolerance (PBFT)}\label{blockchain:consensus:PBFT}
 
@@ -472,7 +470,6 @@ global consensus is achieved when certain conditions are being met~\cite{DBLP:jo
     Power consumption &	High &	Low &	Low \\ \hline
     Token needed &	Yes &	Yes &	No \\ \hline
     Cost of participation &	Yes &	Yes &	No \\ \hline
-    Adversary tolerance &	$\leq$ 25\%	& Depends &	$\leq$ 33\% \\ \hline
   \end{tabular}
   \caption{Blockchain consensus mechanisms. Adapted and modified from~\cite{bl_consensus,Vukolić2016}}
   \label{table:blockchain_consensus}
