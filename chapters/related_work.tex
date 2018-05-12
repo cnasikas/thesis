@@ -16,3 +16,8 @@ MedRec is a decentralized decentralized record management system to handle Elect
 \label{rel_work:datum}
 
 Datum is a decentralized market place where users can share or sell their data. Data are encrypted and stored in a decentralized data store running by storing nodes. Storing nodes are paid by the users for their service in a token called DAT. Data, before leaving the client storage, are cleaned from personally identifying information and then saved to the network. Data consumers can request and buy datasets that are stored in the network. When a user accepts a buy request from a data consumer, it authorized it and the decryption key is sent to the data consumer which in turn pays the user with DAT. The procedure of data exchange is governed by a smart contract responsible for fairness in the system.
+
+\section{ADSNARK}
+\label{rel_work:adsnark}
+
+Succinct Non-Interactive Arguments of Knowledge on Authenticated Data (AD-SNARK) is a cryptographic primitive in which privacy-preserving proofs on authenticated data can be generated and verified. In a AD-SNARK setting a party is requested for a proof of computation over a dataset acquired from a trusted source who vouch for the quality and legitimacy of the data. The verifier is able to check the validity of the dataset authenticated by the source. The creators of ADSNARK are inspired by ZQL~\cite{zql}, a query language for expressing simple computations on private data. ADSNARK is achieved by embedding digital signatures into SNARKs. The data source, which is trusted, authorizes the data by producing a valid digital signature which is taken as public input to a proof algorithm that outputs the proof.
