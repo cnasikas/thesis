@@ -251,6 +251,8 @@ Only the contract creator can execute the \verb|registerProvider| function.
 \subsection{General functions}
 \label{implemenation:contracts:general}
 
+Various general function are provided to facilitate the user of the system.
+
 \begin{itemize}
   \item \verb|getDataSetInfo|: Given a data set id it returns all the information of the data set
   \item \verb|getRequestInfo|: Given a requestor address it returns all the information of the request
@@ -302,15 +304,33 @@ Only the contract creator can execute the \verb|registerProvider| function.
   );
 \end{lstlisting}
 
-\subsection{Process output and Zero Knowledge Proof}
+\subsection{Zero Knowledge Proof}
 \label{implemenation:contracts:zkp}
 
+
+When a data processor does the computation and generate the proof it has to sent a \verb|addProof| transaction, to store the proof and the encrypted output, with the following values:
+
+\begin{itemize}
+  \item \verb|_subscriber|: The address of the requestor
+  \item \verb|proof|: The proof in hex format
+  \item \verb|output|: The encrypted output
+\end{itemize}
+
+\begin{lstlisting}[language=Solidity, caption={Data sharing application events}]
+
+function addProof(
+  address _subscriber,
+  string proof,
+  string output
+) public returns (bool success);
+
+\end{lstlisting}
 \subsection{Events}
 \label{implemenation:contracts:events}
 
-For every transaction that is sent to the data share smart contract that executes a function an event is being triggered. Every node of the network can register to listen to those events.
+Every function that is executed by a signed transaction triggers an event associated with the action. Every node of the network can register to listen to those events.
 
-Events:
+Those are:
 
 \begin{itemize}
   \item \verb|NewDataSet|: A data set is being registered
@@ -434,7 +454,7 @@ All code written in \verb|JavaScript| follows the \verb|ES6 (ECMAScript 2015)|~\
     \begin{scope}[node distance=2cm]
       \node[entity] (eth_node_pr) [below=of blockchain, xshift=-2cm, yshift=0.65cm] {Ethereum node};
       \node[entity] (processor) [below=of eth_node_pr] {Processor};
-      \node[entity] (zkp) [below=of processor] {ZKP Oracle};
+      \node[entity] (zkp) [below=of processor] {ZKP};
       \node[database] (db_pr) [right=of processor, yshift=-0.3cm] {Mongodb};
     \end{scope}
 
