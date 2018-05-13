@@ -73,7 +73,7 @@ We aim to fully protect requestors from such malicious actors except data disclo
 \subsection{Malicious requestor}
 \label{solution:treat_model:mrequestor}
 
-The role of a requestor is certain: it can only make requests. Therefore, the only attack a malicious requestor can perform is a distributed denial-of-service attacks (DDoS) by flooding the network with requests in an attempt to overload the data processors and prevent other requests from being fulfilled. DDoS attacks are not address in this work and are left for future work (§~\ref{future_work:incentives}).
+The role of a requestor is certain: it can only make requests. Therefore, the only attack a malicious requestor can perform is a distributed denial-of-service attacks (DDoS) by flooding the network with requests in an attempt to overload the data processors and prevent other requests from being fulfilled. DDoS attacks are not address in this work and are left for future work (§~\ref{future_work:fees}).
 
 \subsection{Malicious public user}
 \label{solution:treat_model:mpublic_user}
@@ -139,10 +139,10 @@ The proof generation procedure is summarized in Algorithm~\ref{alg:zkp}.
     \Let{\textsf{out}}{(y, h^{'}, s)}
     \State \Return{($\pi$, out)} \Comment{Return results}
   \EndFunction
-  \Procedure{zkp}{$ek_f$, $F$, $u$, $w$}
+  \Procedure{\sf zkp}{$ek_f$, $F$, $u$, $w$}
     \Let{d}{w} \Comment{Private input}
     \Let{(h, s)}{u} \Comment{Public input}
-    \Let{(\pi, out)}{\textsf{compute($F$, $d$, $h$, $ek_f$, $s$)}}
+    \Let{(\pi, \textsf{out})}{\textsf{compute($F$, $d$, $h$, $ek_f$, $s$)}}
   \EndProcedure
   \end{algorithmic}
 \end{algorithm}
@@ -162,22 +162,22 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
   \caption{Dataset registration}\label{alg:data_registration}
   \begin{algorithmic}[1]
   \Function{\sf save}{file}
-      \Let{h}{H(file)}
-      \Let{k}{\calg}
-      \Let{c}{Enc_{k}(file)}
-      \Let{uri}{store(c)}
-      \State \Return{$(h, k, uri)$}
+      \Let{h}{H(\textsf{file})} \Comment{Compute the digest of the dataset}
+      \Let{k}{\calg} \Comment{Generate symmetric key}
+      \Let{c}{Enc_{k}(\textsf{file})} \Comment{Encrypt dataset}
+      \State uri $\leftarrow$ store($c$) \Comment{Store dataset}
+      \State \Return{($h, k$, uri)}
   \EndFunction
   \Function{\sf broadcast}{name, uri, category, hash}
 
-        \Let{h_{meta}}{H(name || uri || category || hash)}
-        \Let{tx}{(name, uri, category, hash, h_{meta})}
-        \State $tx$.send()
+        \Let{h_{meta}}{H\textsf{(name || uri || category || hash)}} \Comment{Compute the hash of the metadata}
+        \Let{tx}{(\textsf{name, uri, category, hash}, h_{meta})} \Comment{Create transaction}
+        \State $tx$.send() \Comment{Send transaction}
         \State \Return{$tx$}
   \EndFunction
   \Procedure{\sf register}{name, file, category}
-    \Let{(h, k, uri)}{save(file)}
-    \Let{tx}{broadcast(name, uri, category, h)}
+    \Let{(h, k, \textsf{uri})}{\textsf{save(file)}} \Comment{Save dataset}
+    \State $tx \rightarrow$ broadcast(name, uri, category, h) \Comment{Register dataset}
     \State \Return{$(tx, k)$}
   \EndProcedure
   \end{algorithmic}
@@ -212,7 +212,7 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
   \caption{Entity registration}\label{alg:entity_registration}
   \begin{algorithmic}[1]
   \Procedure{\sf register\_entity}{name, $p_k$, address}
-    \Let{tx}{(name, p_k, address)}
+    \Let{tx}{(\textsf{name}, p_k, \textsf{address})}
     \State $tx$.send()
     \State \Return{$tx$}
   \EndProcedure
@@ -246,11 +246,11 @@ The request for processing procedure is summarized in Algorithm~\ref{alg:data_re
   \begin{algorithmic}[1]
   \Function{\sf notify}{$e$}
     \State $p \rselect \{ p_1, p_2, \dots p_n \}$ \Comment{Select randomly processor}
-    \Let{(requestID)}{e}
+    \Let{(\textsf{requestID})}{e}
     \Let{tx}{(p)}
-    \Let{(pk_p)}{tx.send()} \Comment{Get processor public key}
+    \Let{(pk_p)}{tx.\textsf{send()}} \Comment{Get processor public key}
     \Let{c}{Enc_{pk_p}(k)} \Comment{Encrypt symmetric key}
-    \Let{tx}{(requestID, c)} \Comment{Notify processor}
+    \Let{tx}{(\textsf{requestID}, c)} \Comment{Notify processor}
     \State $tx$.send()
     \State \Return{$tx$}
   \EndFunction
@@ -263,7 +263,7 @@ The request for processing procedure is summarized in Algorithm~\ref{alg:data_re
     \EndWhile
   \EndProcedure
   \Procedure{\sf request}{datasetID, algorithmID, $p_{k}$}
-    \Let{tx}{(datasetID, algorithmID, p_{k})} \Comment{Request for processing}
+    \Let{tx}{(\textsf{datasetID, algorithmID}, p_{k})} \Comment{Request for processing}
     \State $tx$.send()
     \State \Return{$tx$}
   \EndProcedure
@@ -345,9 +345,9 @@ The verification procedure is summarized in Algorithm~\ref{alg:data_verify}.
   \caption{Proof verification}\label{alg:data_verify}
   \begin{algorithmic}[1]
   \Procedure{\sf verify}{e}
-    \Let{(requestID)}{e}
-    \Let{(\pi, c, \textsf{datasetID})}{tx(requestID).send()} \Comment{Get request info}
-    \Let{h}{tx(datasetID).send()} \Comment{Get dataset info}
+    \Let{(\textsf{requestID})}{e}
+    \Let{(\pi, c, \textsf{datasetID})}{tx(\textsf{requestID}).send()} \Comment{Get request info}
+    \Let{h}{tx(\textsf{datasetID}).send()} \Comment{Get dataset info}
     \Let{(\pi, (y, h^{'}, s))}{Dec_{sk_{r}}(c)} \Comment{Decrypt results}
     \If{$h^{'}$ !== $h$} \Comment{Reject if digest not match}
       \State \textbf{reject}
