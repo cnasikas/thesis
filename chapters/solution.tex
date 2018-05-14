@@ -2,9 +2,11 @@
 \chapter{Solution}
 \label{solution}
 
-In our solution a public blockchain is used as the controller of the application. It is responsible for keeping an audit, immutable, tamper-proof and transparent log of all actions of the participants.
+In our solution we use a protocol where datasets can be registered to the system and be made available for processing. Anyone can request for data processing over a registered dataset and algorithm of their choice. A request is served by a data processor to whom the dataset is transferred by the data controller.
 
-Blockchain does not provides an extra security layer concerning datasets. The datasets are stored off-chain, data controllers are responsible for the security of their system and the participants can still collaborate outside the Blockchain network. Nevertheless, the use of the Blockchain can guarantee accountability, auditability and provenance tracking of the data increasing the trust for the system.
+A public blockchain is used as the controller of the application. It is responsible for keeping an audit, immutable, tamper-proof and transparent log of all actions of the participants. All participants are accountable for their actions and cannot challenge the validity of them. Dataset are stored off-chain and the data controllers, the owners of the dataset, are responsible for their quality, availability and security. To increase trust to data processors, a zero knowledge verifiable scheme is used. The data processors are obligated to produce a proof of correctness of computation, along with the output, that the requestor verifies.
+
+It have to be noted that the blockchain does not provides an extra security layer concerning datasets. The datasets are stored off-chain, data controllers are responsible for the security of their system and the participants can still collaborate outside the Blockchain network. Nevertheless, the use of the Blockchain can guarantee accountability, auditability and provenance tracking of the data increasing the trust for the system.
 
 \section{Participants}
 \label{solution:entities}
