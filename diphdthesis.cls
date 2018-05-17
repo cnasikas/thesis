@@ -637,8 +637,8 @@ publications}\gdef\@lopfileinternal{#1}}
     \@committeepage
 
     % examination committe page - greek version
-    % \englishcommitteepagetrue
-    % \@committeepage
+    \englishcommitteepagetrue
+    \@committeepage
 
     % abstract (greek and english version)
     \@absEn
