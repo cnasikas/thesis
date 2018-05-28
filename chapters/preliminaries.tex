@@ -814,12 +814,6 @@ The first zkSNARKs constructions where inspired by the PCP theorem allowing fast
 
 To be able to construct zkSNARKs for a computation problem it had to encoded to a specific form, which is equivalent to the original problem, from which zkSNARKs can be derived. This form is called Quadratic Arithmetic Program (QAP).
 
-The main idea for constructing zkSNARKs is firstly to transform the generic program as a quadratic equation of polynomials (QAP)~\cite{ggpr}: $p(x)q(x) = s(x)r(x)$, where the equality holds if and only if the program is computed correctly. So the prover wants to convince the verifier that the equality holds.
-
-Succinctness is achieved by random sampling. The verifier chooses a secret evaluation point $x_0$ to reduce the problem from polynomial multiplication and equality to simple number arithmetic checks: $p(x_0)q(x_0) = s(x_0)r(x_0)$. To allow the prover to compute the evaluation of the polynomials at $x_0$, without revealing $x_0$, Homomorphic encryption is used:  $E(p(x_0))E(q(x_0)) = E(s(x_0))E(r(x_0))$.
-
-Finally the prover obfuscates the encrypted values by multiplying with a number so that the verifier can still check the correctness of the structure without knowing the actual encrypted values: $E(k + p(x_0))E(k + q(x_0)) = E(k + s(x_0))E(k + r(x_0))$.
-
 At high level, zkSNARKs consist of four basic steps (Figure ~\ref{fig:zkp:zksnark_flow}):
 
 \begin{enumerate}

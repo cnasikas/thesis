@@ -190,3 +190,11 @@ Enigma is a decentralized computation platform with guaranteed privacy~\cite{DBL
 different parties to store and run computation on data while keeping privacy. Enigma uses a highly optimized version of secure multi-party computation (MPC)
 guaranteed by a verifiable secret-sharing scheme~\cite{DBLP:journals/corr/ZyskindNP15}. A blockchain is utilized as the controller of the network, managing access to the data and identities.
 The data are stored off-chain, encrypted in a distributed database, and a modified distributed hash table (DTH), accessible through the blockchain, is used for holding only references to the data.
+
+\subsection{zksnarks}\label{zksnarks}
+
+The main idea for constructing zkSNARKs is firstly to transform the generic program as a quadratic equation of polynomials (QAP)~\cite{ggpr}: $p(x)q(x) = s(x)r(x)$, where the equality holds if and only if the program is computed correctly. So the prover wants to convince the verifier that the equality holds.
+
+Succinctness is achieved by random sampling. The verifier chooses a secret evaluation point $x_0$ to reduce the problem from polynomial multiplication and equality to simple number arithmetic checks: $p(x_0)q(x_0) = s(x_0)r(x_0)$. To allow the prover to compute the evaluation of the polynomials at $x_0$, without revealing $x_0$, Homomorphic encryption is used:  $E(p(x_0))E(q(x_0)) = E(s(x_0))E(r(x_0))$.
+
+Finally the prover obfuscates the encrypted values by multiplying with a number so that the verifier can still check the correctness of the structure without knowing the actual encrypted values: $E(k + p(x_0))E(k + q(x_0)) = E(k + s(x_0))E(k + r(x_0))$.
