@@ -459,6 +459,7 @@ global consensus is achieved when certain conditions are being met~\cite{DBLP:jo
 
 \begin{table}[!ht]
   \centering
+  \caption{Blockchain consensus mechanisms. Adapted and modified from~\cite{bl_consensus,Vukolić2016}}
   \begin{tabular}{|l|l|l|l|}
     \hline
     & PoW &	PoS &	PBFT \\ \hline
@@ -471,7 +472,6 @@ global consensus is achieved when certain conditions are being met~\cite{DBLP:jo
     Token needed &	Yes &	Yes &	No \\ \hline
     Cost of participation &	Yes &	Yes &	No \\ \hline
   \end{tabular}
-  \caption{Blockchain consensus mechanisms. Adapted and modified from~\cite{bl_consensus,Vukolić2016}}
   \label{table:blockchain_consensus}
 \end{table}
 
@@ -594,6 +594,7 @@ There are various types of blockchains varying in restrictions on data access an
 
 \begin{table}[!ht]
   \centering
+  \caption{Blockchain Types. Source~\cite{hub-bl-types}}
   \begin{tabular}{|l|l|l|l|}
     \hline
      & Public & \makecell[cl]{Permissioned \\ (Multiple Entities)} & \makecell[cl]{Private \\ (Single Entity)} \\ \hline
@@ -601,7 +602,6 @@ There are various types of blockchains varying in restrictions on data access an
      Data Access & Public & Public or Restricted & Restricted \\ \hline
      Consensus & PoW, PoS & FBTA, PoS & FBTA \\ \hline
   \end{tabular}
-  \caption{Blockchain Types. Source~\cite{hub-bl-types}}
   \label{table:blockchain_types}
 \end{table}
 
@@ -675,6 +675,7 @@ Additionally, transactions contain also an extra field, called the data field. T
 
 \begin{table}[!ht]
   \centering
+  \caption{Ethereum accounts}
   \begin{tabular}{|c|c|c|}
   \hline
    & Personal account  & Contract account \\ \hline
@@ -684,7 +685,6 @@ Additionally, transactions contain also an extra field, called the data field. T
    balance & \multicolumn{2}{c|}{ETH} \\ \hline
    nonce &  \multicolumn{2}{c|}{\# transaction sent}  \\ \hline
   \end{tabular}
-  \caption{Ethereum accounts}
   \label{fig:eth_accounts}
 \end{table}
 
@@ -694,6 +694,7 @@ Contract accounts can send messages to other contracts accounts. Messages are li
 
 \begin{table}[!ht]
   \centering
+  \caption{Ethereum transactions}
   \begin{tabular}{|c|c|c|c|}
   \hline
    & create & send & call \\ \hline
@@ -703,7 +704,6 @@ Contract accounts can send messages to other contracts accounts. Messages are li
    amount & \multicolumn{3}{c|}{ETH} \\ \hline
    data & code & $\emptyset$ & $f, args$ \\ \hline
   \end{tabular}
-  \caption{Ethereum transactions}
   \label{fig:eth_transactions}
 \end{table}
 
@@ -735,6 +735,7 @@ The cost of each opcode (operation code) of EVM is defined in Ethereum's yellow 
 
 \begin{table}[!ht]
   \centering
+  \caption{Ethereum opcodes gas costs}
   \begin{tabular}{|l|l|l|}
   \hline
    Operation & Gas  & Description \\ \hline
@@ -755,7 +756,6 @@ The cost of each opcode (operation code) of EVM is defined in Ethereum's yellow 
    CALL & 25.000 & Create a new account using CALL \\ \hline
    LOG & 375 & Logging operation \\ \hline
   \end{tabular}
-  \caption{Ethereum opcodes gas costs}
   \label{table:opcode_gas_cost}
 \end{table}
 

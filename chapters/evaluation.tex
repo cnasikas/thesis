@@ -22,6 +22,7 @@ At the time of the experiments the price of Ether is at 942.99 US dollars and th
 
 \begin{table}[!htb]
 \centering
+\caption{Data storage costs.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei}
 \begin{tabular}{|l|l|l|}
 \hline
  Size & Gas  & USD \\ \hline
@@ -33,7 +34,6 @@ At the time of the experiments the price of Ether is at 942.99 US dollars and th
  1GB & 700.000.000.000  & \$13,104,000 \\ \hline
 \end{tabular}
 \captionsetup{format=hang, justification=centering}
-\caption{Data storage costs.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei}
 \label{table:bytes_usd_cost}
 \end{table}
 
@@ -61,6 +61,8 @@ At the time of the experiments the price of Ether is at 942.99 US dollars and th
 
 \begin{table}[!htb]
   \centering
+  \captionsetup{format=hang, justification=centering}
+  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 32 bytes}
   \begin{tabular}{|l|l|l|l|}
   \hline
   Type & Size & Gas  & USD \\ \hline
@@ -69,13 +71,13 @@ At the time of the experiments the price of Ether is at 942.99 US dollars and th
   Data logging & 32 bytes & 25.995  & \$0.048 \\ \hline
   Hash pointer logging & 32 bytes & 25.995  & \$0.048 \\ \hline
   \end{tabular}
-  \captionsetup{format=hang, justification=centering}
-  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 32 bytes}
   \label{table:data_store_comparison_01}
 \end{table}
 
 \begin{table}[!htb]
   \centering
+  \captionsetup{format=hang, justification=centering}
+  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 1KB}
   \begin{tabular}{|l|l|l|l|}
   \hline
     Type & Size & Gas  & USD \\ \hline
@@ -84,13 +86,13 @@ At the time of the experiments the price of Ether is at 942.99 US dollars and th
     Data logging & 1KB & 104.310  & \$0.194 \\ \hline
     Hash pointer logging & 32 bytes & 25.995  & \$0.048 \\ \hline
   \end{tabular}
-  \captionsetup{format=hang, justification=centering}
-  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 1KB}
   \label{table:data_store_comparison_02}
 \end{table}
 
 \begin{table}[!htb]
   \centering
+  \captionsetup{format=hang, justification=centering}
+  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 10KB}
   \begin{tabular}{|l|l|l|l|}
     \hline
       Type & Size & Gas  & USD \\ \hline
@@ -99,13 +101,13 @@ At the time of the experiments the price of Ether is at 942.99 US dollars and th
       Data logging & 10KB & 832.604  & \$1.547 \\ \hline
       Hash pointer logging & 32 bytes & 25.995  & \$0.048 \\ \hline
   \end{tabular}
-  \captionsetup{format=hang, justification=centering}
-  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 10KB}
   \label{table:data_store_comparison_03}
 \end{table}
 
 \begin{table}[!htb]
   \centering
+  \captionsetup{format=hang, justification=centering}
+  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 100KB}
   \begin{tabular}{|l|l|l|l|}
     \hline
     Type & Size & Gas  & USD \\ \hline
@@ -114,13 +116,13 @@ At the time of the experiments the price of Ether is at 942.99 US dollars and th
     Data logging & 100KB & 8.186.883  & \$15.211 \\ \hline
     Hash pointer logging & 32 bytes & 25.995  & \$0.048 \\ \hline
   \end{tabular}
-  \captionsetup{format=hang, justification=centering}
-  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 100KB}
   \label{table:data_store_comparison_04}
 \end{table}
 
 \begin{table}[!htb]
   \centering
+  \captionsetup{format=hang, justification=centering}
+  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 1MB}
   \begin{tabular}{|l|l|l|l|}
     \hline
     Type & Size & Gas  & USD \\ \hline
@@ -129,8 +131,6 @@ At the time of the experiments the price of Ether is at 942.99 US dollars and th
     Data logging & 1MB & 88.857.033  & \$165.096 \\ \hline
     Hash pointer logging & 32 bytes & 25.995  & \$0.048 \\ \hline
   \end{tabular}
-  \captionsetup{format=hang, justification=centering}
-  \caption{Comparing methods of data storage.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei - Data Size: 1MB}
   \label{table:data_store_comparison_05}
 \end{table}
 
@@ -223,6 +223,8 @@ Each action by the participants has a cost in gas and therefore in money. Table~
 
 \begin{table}[!htb]
 \centering
+\captionsetup{format=hang, justification=centering}
+\caption{Application Costs.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei}
 \begin{tabular}{|l|l|l|l|}
 \hline
  Type & Gas & ETH & USD \\ \hline
@@ -232,8 +234,6 @@ Each action by the participants has a cost in gas and therefore in money. Table~
  Register processor & 83.274 & 0.0001665 & \$0.15 \\ \hline
  Notify processor & 25.279 & 0.00005 & \$0.04 \\ \hline
 \end{tabular}
-\captionsetup{format=hang, justification=centering}
-\caption{Application Costs.\\ ETH Price: \$942.99 (Feb 18, 2018) - Gas Price: 2 Gwei}
 \label{table:app_costs}
 \end{table}
 
@@ -247,6 +247,8 @@ Tables~\ref{table:zkp_01} to~\ref{table:zkp_03} provide details of ZKP performan
 
 \begin{table}[!htb]
 \centering
+\captionsetup{format=hang, justification=centering}
+\caption{ZKP Performance: 100 values}
 \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
  & Setup (s) & Compute (s) & Verify (ms) & Eval Key (MB) & Ver Key (KB) & Proof (B)  \\ \hline
@@ -257,13 +259,13 @@ Tables~\ref{table:zkp_01} to~\ref{table:zkp_03} provide details of ZKP performan
  Min & 17 & 9 & 51 & 1.7 & 100 & 304 \\ \hline
  Mean & 16 & 8 & 19 & 0.054 & 100 & 304 \\ \hline
 \end{tabular}
-\captionsetup{format=hang, justification=centering}
-\caption{ZKP Performance: 100 values}
 \label{table:zkp_01}
 \end{table}
 
 \begin{table}[!htb]
 \centering
+\captionsetup{format=hang, justification=centering}
+\caption{ZKP Performance: 1.000 values}
 \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
  & Setup (s) & Compute (s) & Verify (ms) & Eval Key (MB) & Ver Key (KB) & Proof (B)  \\ \hline
@@ -274,13 +276,13 @@ Tables~\ref{table:zkp_01} to~\ref{table:zkp_03} provide details of ZKP performan
  Mean & 17 & 8 & 41 & 0.182 & 100 & 304 \\ \hline
  Median & 1701 & - & 12 & 64 & 100 & 304 \\ \hline
 \end{tabular}
-\captionsetup{format=hang, justification=centering}
-\caption{ZKP Performance: 1.000 values}
 \label{table:zkp_02}
 \end{table}
 
 \begin{table}[!htb]
 \centering
+\captionsetup{format=hang, justification=centering}
+\caption{ZKP Performance: 10.000 values}
 \begin{tabular}{|l|l|l|l|l|l|l|}
 \hline
  & Setup (s) & Compute (s) & Verify (ms) & Eval Key (MB) & Ver Key (KB) & Proof (B)  \\ \hline
@@ -291,7 +293,5 @@ Tables~\ref{table:zkp_01} to~\ref{table:zkp_03} provide details of ZKP performan
  Mean & 22 & 9 & 27 & 1.5 & 100 & 304 \\ \hline
  Median & - & - & - & - & - & - \\ \hline
 \end{tabular}
-\captionsetup{format=hang, justification=centering}
-\caption{ZKP Performance: 10.000 values}
 \label{table:zkp_03}
 \end{table}
