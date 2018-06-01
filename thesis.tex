@@ -63,6 +63,7 @@
 \usepackage{pgfplots}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{chngcntr}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%% User-specific configuration %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,6 +89,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+
+% counting
+
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+\counterwithout{lstlisting}{chapter}
 
 % the front matter
 
