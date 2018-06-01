@@ -506,17 +506,6 @@ publications}\gdef\@lopfileinternal{#1}}
 \fi
 }
 
-
-\vfill
-\begin{center}
-{\bfseries
-\ifenglishcommitteepage
-	Examination Date: \@examinationDateEn
-\else
-	Ημερομηνία Εξέτασης: \@examinationDateGr
-\fi
-}
-\end{center}
 \clearpage
 % \newpage\null\newpage
 }
