@@ -635,10 +635,11 @@ publications}\gdef\@lopfileinternal{#1}}
     \@frontpage
 
     % examination committe page - greek version
+    \englishcommitteepagetrue
     \@committeepage
 
     % examination committe page - greek version
-    \englishcommitteepagetrue
+    \englishcommitteepagefalse
     \@committeepage
 
     % abstract (greek and english version)
