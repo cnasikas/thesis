@@ -626,11 +626,12 @@ publications}\gdef\@lopfileinternal{#1}}
     \input{frontmatter/thanks}
 
     \pagestyle{empty}
-    % frontpage - greek version
-    \@frontpage
-
     % frontpage - english version
     \englishfrontpagetrue
+    \@frontpage
+
+    % frontpage - greek version
+    \englishfrontpagefalse
     \@frontpage
 
     % examination committe page - greek version
