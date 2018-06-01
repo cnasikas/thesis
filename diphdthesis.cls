@@ -716,8 +716,6 @@ publications}\gdef\@lopfileinternal{#1}}
 
     \include{chapters/abbreviations}
 
-    \bibliography{./references}
-
     % appendix
     \begin{appendix}
       % mark the beginning of the appendix
@@ -731,7 +729,7 @@ publications}\gdef\@lopfileinternal{#1}}
       \include{chapters/appendixB}
     \end{appendix}
     \bibliographystyle{plain}
-    % \bibliography{./references.bib} - Moved to root due to cite autocomplete bugs with atom-latextools package
+    \bibliography{./references.bib}
     % include it also in ToC (do sth on your own)
     \addcontentsline{toc}{chapter}{References}
 }
