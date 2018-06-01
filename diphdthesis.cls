@@ -182,6 +182,7 @@ includehead,includefoot]{geometry} % add option showframe=true for debugging
 \providecommand{\authorFirstAbrEn}[1]{\gdef\@authorFirstAbrEn{#1}}
 \providecommand{\authorMiddleEn}[1]{\gdef\@authorMiddleEn{#1}}
 \providecommand{\authorLastEn}[1]{\gdef\@authorLastEn{#1}}
+\providecommand{\authorID}[1]{\gdef\@authorID{#1}}
 
 %
 % Commands for the title of the thesis (greek and english versions)
@@ -470,7 +471,15 @@ publications}\gdef\@lopfileinternal{#1}}
 	\@authorFirstGr{} \@authorMiddleGr{} \@authorLastGr
 \fi
 }
-\linebreak\linebreak
+\linebreak
+{\bfseries
+\ifenglishcommitteepage
+	Α.Μ.: \@authorID{}
+\else
+	Α.Μ.: \@authorID{}
+\fi
+}
+\linebreak\linebreak\linebreak
 \end{center}
 
 {
@@ -481,8 +490,8 @@ publications}\gdef\@lopfileinternal{#1}}
 	\@advisorOrgGr{}\\
 \fi
 }
-%\linebreak\linebreak
-%\linebreak
+\linebreak\linebreak
+\linebreak
 
 {
 \ifenglishcommitteepage
