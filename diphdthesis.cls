@@ -738,7 +738,10 @@ publications}\gdef\@lopfileinternal{#1}}
       \include{chapters/appendixB}
     \end{appendix}
     \bibliographystyle{plain}
-    \bibliography{./references.bib}
+    {
+      \footnotesize
+      \bibliography{./references.bib}
+    }
     % include it also in ToC (do sth on your own)
     \addcontentsline{toc}{chapter}{References}
 }
@@ -800,17 +803,17 @@ publications}\gdef\@lopfileinternal{#1}}
 %
 %\pagestyle{fancy}
 \fancyhf{}
-\fancyhead[LEO]{{\footnotesize \@titleEn{}}}
-\fancyfoot[C]{{\footnotesize \thepage}}
-\fancyfoot[LE,RO]{{\footnotesize \@authorFirstAbrEn{} \@authorLastEn{}}}
+\fancyhead[LE,RO]{{\scriptsize \@titleEn{}}}
+\fancyfoot[C]{{\scriptsize \thepage}}
+\fancyfoot[LE,RO]{{\scriptsize \@authorFirstAbrEn{} \@authorLastEn{}}}
 
 % needed redefinition, because commands like \chapter call
 % \thispagestyle{plain} automatically
 \fancypagestyle{plain} {
   \fancyhf{}
-  \fancyhead[LO]{{\footnotesize \@titleEn{}}}
-  \fancyfoot[C]{{\footnotesize \thepage}}
-  \fancyfoot[LE,RO]{{\footnotesize \@authorFirstAbrEn{} \@authorLastEn{}}}
+  \fancyhead[LO,RO]{{\scriptsize \@titleEn{}}}
+  \fancyfoot[C]{{\scriptsize \thepage}}
+  \fancyfoot[LE,RO]{{\scriptsize \@authorFirstAbrEn{} \@authorLastEn{}}}
 }
 \renewcommand{\headrulewidth}{0pt}
 
