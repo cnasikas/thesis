@@ -16,7 +16,7 @@ Hash functions has many application. They are used in data structures such as ha
 
 A hash function at minimum guarantees that for the same input yields the same output. Since the size of the output is fixed, the output range is finite. As a result, it is possible that for two different inputs a hash function produce the same output. This phenomenon is called collision.
 
-Cryptographic hash functions have much stronger properties than regular hash function~\cite{crypto_101}. The ideal cryptographic hash function should be easily computable, noninvertible and collision-resistant~\cite{Katz:2014:IMC:2700550, kiagias:crypto}.
+Cryptographic hash functions have much stronger properties than regular hash function. The ideal cryptographic hash function should be easily computable, noninvertible and collision-resistant~\cite{Katz:2014:IMC:2700550, kiagias:crypto, crypto_101}.
 
 More formally, a cryptographic hash function $H$ is a deterministic polynomial algorithm that takes as input any string $x \in \{0, 1\}^{*}$ and outputs a string $H(x) \in \{0, 1\}^{k}$ where $k$ is of fixed size. A collision for a hash function $H$ is a pair of distinct messages $m_0, m_1$ where $m_0 \neq m_1$ and $H(m_0) = H(m_1)$. A hash function $H$ is collision-resistant if finding collisions is infeasible for any polynomial-time algorithm.
 
@@ -824,9 +824,10 @@ At high level, zkSNARKs consist of four basic steps (Figure ~\ref{fig:zkp:zksnar
 \end{enumerate}
 
 \begin{figure}[ht!]
+  \center
   \begin{tikzpicture}[
-    flow/.style={rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black,font=\small},
-    scale=0.9
+    flow/.style={rectangle, minimum width=2cm, minimum height=1cm, text centered, draw=black,font=\footnotesize},
+    scale=0.8
   ]
     \node[flow] (comp) at (0, 0) {Computation};
     \node[flow] (alg) at (4, 0) {Arithmetic Circuit};

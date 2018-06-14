@@ -283,7 +283,7 @@ To achieve chronological order Bitcoin utilize a data structure called the block
 As in a transaction, every bitcoin block has a unique \textbf{block id} which is derived from the double hash of the header of the block with the use of the SHA-256 cryptographic hash function. Each block references to a previous block id, known as the parent block, through a pointer. Thus, every next block contains the hash of the previous block. This results in every next block in the chain requiring the previous block to have been computed before it can be computed~\cite{zindros_thesis}.
 
 \begin{figure}[ht!]
-  \begin{subfigure}[t]{0.50\textwidth}
+  \begin{subfigure}[t]{0.40\textwidth}
     \centering
     \begin{tikzpicture}
       \draw (0,0) rectangle (5,3);
@@ -297,7 +297,7 @@ As in a transaction, every bitcoin block has a unique \textbf{block id} which is
     \caption{A block}
     \label{fig:block:a}
   \end{subfigure}
-  \begin{subfigure}[t]{0.50\textwidth}
+  \begin{subfigure}[t]{0.40\textwidth}
     \centering
     \begin{tikzpicture}[scale=0.9]
       \draw (0,0) rectangle (5,3);
@@ -693,7 +693,7 @@ Contract accounts can send messages to other contracts accounts. Messages are li
 
 \begin{figure}[!ht]
   \centering
-  \begin{tikzpicture}[node distance=3 cm,outer sep = 0pt]
+  \begin{tikzpicture}[scale=0.5, node distance=2.5 cm,outer sep = 0pt]
     \node[node, fill=blue!30] (pr_1) {Personal Account};
     \node[node, fill=blue!30, below=of pr_1] (pr_2) {Personal Account};
     \node[node, fill=orange!30, right=of pr_1] (c_1) {Contract Account};
@@ -806,7 +806,7 @@ The start gas can be larger than the cost of the computation. In this case, all 
     \draw[->] (sender) -- (start);
     \draw[->] (start) -- (op_1) node[midway, above, red]{\footnotesize{Use -50 gas}};
     \draw[->] (op_1) -- (op_2) node[midway, above, red]{\footnotesize{Use -30 gas}};
-    \draw[->] ([yshift=-0.55cm]op_2.south) -- (op_3) node[midway, right, red]{\footnotesize{Use -170 gas}};
+    \draw[->] ([yshift=-0.55cm]op_2.south) -- (op_3) node[midway, left, red]{\footnotesize{Use -170 gas}};
     \draw[->] (op_3) -- (op_4) node[midway, above, red]{\footnotesize{Out of gas}};
 
     \draw[red!100, thick] ([yshift=1cm]sender |- receiver.north) -- ([yshift=1cm]receiver.north) node[midway, below, red]{\footnotesize{Revert state}};
