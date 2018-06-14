@@ -2,12 +2,14 @@
 \chapter{Implementation}
 \label{implemenation}
 
-As mention at §~\ref{solution} the Blockchain act as the controller of the network. As a result, the application is separated in two parts. The off-chain network and the Blockchain network. The dataset storage, transmission and processing lives off-chain while dataset registration, requests for processing, processing outputs and Zero Knowledge proofs leave on the Blockchain. Every node on the network---a data share node--- is connected to the Blockchain and track every transaction specified for the application. That way it can track and index every registered dataset, request for processing and processing outputs and proofs and act accordingly.
+To cover the needs of the data sharing ecosystem the application is separated in two parts: the off-chain network and the blockchain network. The off-chain network is responsible for dataset storage, dataset distribution, and dataset processing. The blockchain is responsible for recording dataset registrations, requests for processing and processing outputs along with proofs of computations. For that reason, every node of the network---a data share node--- is connected to the blockchain and track every transaction specified for the application. This way it can track and index every registered dataset, all requests for processing and all processing outputs and proofs which in turn the node can act accordingly.
+
+To implement those functionalities and services a variety of tools and APIs are made. They are analyzed in the following sections.
 
 \section{RESTful API}
 \label{implemenation:rest}
 
-A RESTful API is provided to facilitate communication between any application, that follows the REST architecture, and the data sharing Blockchain ecosystem. The REST API expose the blockchain business network that can be easily consumed by HTTP or REST clients. That way, any developer familiar with existing web technologies and frameworks is not obligated to learn the interval mechanisms of a Blockchain system to develop and deploy applications atop.
+A RESTful API is provided to facilitate communication between any application, that follows the REST architecture, and the data sharing ecosystem. The REST API expose the blockchain business network that can be easily consumed by HTTP or REST clients. That way, any developer familiar with existing web technologies and frameworks is not obligated to learn the interval mechanisms of the blockchain system to develop and deploy applications atop.
 
 Through the REST API one can:
 
@@ -20,7 +22,7 @@ Through the REST API one can:
   \item Get a specific request
   \item Get all processors
   \item Register a processor
-  \item Get all Blockchain accounts
+  \item Get all blockchain accounts
 \end{itemize}
 
 The REST API expose a set of routes each one having an HTTP method and a URI. All available routes are shown at Table~\ref{table:api_routes}.
@@ -50,68 +52,70 @@ The REST API expose a set of routes each one having an HTTP method and a URI. Al
 \section{Distributed Application}
 \label{implemenation:dapp}
 
-The distributed application is a web-based application providing a graphical user interface (UI) to facilitate the data sharing platform usage. The goal of the distributed application is to provide to the end-user an easy, self-explanatory and efficient way of interacting with the data sharing ecosystem. As most users are already familiar with the use of web applications and platforms, such as webmails, cloud services and social media, such interfaces makes the user feel accustomed. The user does not and should not need to know that interacts with a Blockchain icosystem.
+The distributed application is a web-based application providing a graphical user interface (UI) to facilitate the data sharing platform usage. The goal of the distributed application is to provide to the end-user an easy, self-explanatory and efficient way of interacting with the data sharing ecosystem. As most users are already familiar with the use of web applications and platforms, such as webmails, cloud services and social media, such interfaces makes the user feel accustomed. The user does not and should not need to know that interacts with the blockchain.
 
 The distributed application consumes the REST API and yields the same functionalities.
 
 \section{Controller}
 \label{implemenation:controller}
 
-The controller is a data sharing node that is connected to the Blockchain and listens for processing requests. See §~\ref{solution:entities:data_controller} and §~\ref{solution:flow:pr_req} for more information.
+The controller is a data sharing node that is responsible for providing a dataset for data processing. It listens for processing requests and forwards the dataset to a data processor. Is implemented as described in §~\ref{solution:entities:data_controller} and §~\ref{solution:flow:pr_req}.
 
 \section{Processor}
 \label{implemenation:processor}
 
-The controller is a data sharing node that is connected to the Blockchain and listens for processing notifications by a controller node.  See §~\ref{solution:entities:data_processor} and §~\ref{solution:flow:pr_data} for more information.
+The processor is a data sharing node that is waiting for data processing notifications from a data controller. It is also connected to the blockchain and when it is notified for processing it processes the dataset and produces a Zero Knowledge proof for the correctness of the computation. Is implemented as described in §~\ref{solution:entities:data_processor} and §~\ref{solution:flow:pr_data}.
 
 \section{Libraries}
 \label{implemenation:libs}
 
+Various libraries have been build to facilitate the interaction with the various components of the system. Each one is analyzed in the following sections.
+
 \subsection{Blockchain}
 \label{implemenation:libs:bl}
 
-The Blockchain library offers a set of functionalities that makes communication with any Blockchain implementation easier. Is a wrapper library over Blockchain specific libraries, such as Ethereum's \verb|web3|, and it's main purpose is to be Blockchain agnostic allowing the use of different Blockchains. For the moment only the Ethereum Blockchain is supported.
+The blockchain library offers a set of functionalities that makes communication with any blockchain implementation easier. Is a wrapper library over blockchain specific libraries, such as Ethereum's \verb|web3|, and it's main purpose is to be blockchain agnostic allowing the use of different Blockchains. For the moment only the Ethereum blockchain is supported.
 
 Abstract Functions:
 
 \begin{itemize}
-  \item \verb|isConnected|: Return true if a connection to a Blockchain node exists and false otherwise.
-  \item \verb|getProvider|: Get the current provider (Blockchain node)
-  \item \verb|setProvider|: Set provider (Blockchain node)
+  \item \verb|isConnected|: Return true if a connection to a blockchain node exists and false otherwise.
+  \item \verb|getProvider|: Get the current provider (blockchain node)
+  \item \verb|setProvider|: Set provider (blockchain node)
   \item \verb|getBalance|: Get the balance of an address
   \item \verb|setDefaultAccount|: Set the default address
   \item \verb|getDefaultAccount|: Get the default address
   \item \verb|getAccounts|: Get all accounts
-  \item \verb|getLibInstance|: Get the Blockchain library
+  \item \verb|getLibInstance|: Get the instance of the blockchain library
   \item \verb|getFilter|: Get a filter object
-  \item \verb|toBytes|: Covert string to bytes
-  \item \verb|fromBytes|: Covert bytes to string
+  \item \verb|toBytes|: Covert a string to bytes
+  \item \verb|fromBytes|: Covert bytes to a string
 \end{itemize}
 
 \subsection{Crypto}
 \label{implemenation:libs:cr}
 
-The crypto library provides cryptographic functionality that includes a set of wrappers for \verb|SJCL| and \verb|Node.js Crypto module| functions.
+The crypto library provides various cryptographic functionalities. It wraps various \verb|SJCL| and \verb|Node.js Crypto module| functions.
 
 Functions:
 
 \begin{itemize}
   \item \verb|generateKeyPair|: Generate an asymmetric encryption key pair
   \item \verb|generateKey|: Generate a symmetric encryption key
-  \item \verb|pubEncrypt|: Encrypt a string with a public key
-  \item \verb|pubDecrypt|: Decrypt a ciphertext with a secret key
-  \item \verb|encryptFile|: Encrypt a file with a symmetric key
-  \item \verb|decryptFile|: Decrypt a file with a symmetric key
-  \item \verb|bytesToHex|: Convert bytes to hex
-  \item \verb|hextoBytes|: Convert hex to bytes
-  \item \verb|hashFile|: Hash a file with SHA256
-  \item \verb|hash|: Hash an array of values with SHA256
+  \item \verb|pubEncrypt|: Encrypt a string with a public key with the use of ECC
+  \item \verb|pubDecrypt|: Decrypt a ciphertext with a secret key with the use of ECC
+  \item \verb|encryptFile|: Encrypt a file with a symmetric key with the use of AES256
+  \item \verb|decryptFile|: Decrypt a file with a symmetric key with the use of AES256
+  \item \verb|bytesToHex|: Convert bytes to a hex
+  \item \verb|hextoBytes|: Convert a hex to bytes
+  \item \verb|hashFile|: Hash a file with the use of SHA256
+  \item \verb|hash|: Hash an array of values with the use of SHA256
 \end{itemize}
 
 \section{Command-line interface}
 \label{implemenation:cli}
 
-A Command-line interface that provides a set of useful commands for the data sharing application.
+A command-line interface that provides a set of useful commands for the data sharing application.
 
 Usage:
 
@@ -136,12 +140,12 @@ Options:
 \section{Smart contracts}
 \label{implemenation:contracts}
 
-The data sharing application is governed by a smart contract deployed on the Ethereum network. The smart contract allows data controllers to register new data sets, processor registration and request for data set processing. The Data Sharing smart contract is public available and can be used by any other contract in the network.
+The data sharing application is governed by a smart contract deployed on the Ethereum network. The smart contract contains the logic of the application. Thought the smart contract one can register a new dataset, request for data processing, register a data controller or a data processor, and save a ZKP proof along with the output of the computation. The data sharing smart contract is publicly available and can be used by any other contract in the network.
 
 \subsection{Data set registration}
 \label{implemenation:contracts:data_reg}
 
-In order to register a new data set to the application the data controller needs to register with the smart contract by sending a \verb|registerDataSet| transaction with the following values:
+In order to register a new data set to the application an entity needs to call the \verb|registerDataSet| function with the following arguments:
 
 \begin{itemize}
   \item \verb|_id|: The id of the data set. Data sets ids must be unique and will be converted to lowercase. It can be any string as long as it have not been already registered and it's length is less that 32
@@ -170,25 +174,22 @@ In order to register a new data set to the application the data controller needs
 
 The request for processing consists of two parts: A show of interest by a requestor for data processing and a notification to the processor informing that there is a request that needs attention.
 
-In order to request for data processing a \verb|requestProcessing| transaction needs to be sent with the following values:
+In order to request for data processing the \verb|requestProcessing| function needs to be invoked with the following arguments:
 
 \begin{itemize}
-  \item \verb|_dataSetID|: The dataset id of interest
+  \item \verb|_dataSetID|: The id of the dataset of interest
   \item \verb|_subscriber|: The address of the requestor
-  \item \verb|queryID|: The id of the query that the processor will execute over the data set
+  \item \verb|queryID|: The id of the algorithm that the processor will apply over the data set
   \item \verb|pubKey|: The public key of the requestor
 \end{itemize}
 
-In order to notify a data processor that there is an available request for processing a \verb|notifyProcessor| transaction needs to be sent with the following values:
+In order to notify a data processor that a request for data processing is pending a call to the \verb|notifyProcessor| function must be made with the following arguments:
 
 \begin{itemize}
   \item \verb|_providerAddress|: The address of the owner of the data source
   \item \verb|_subscriber|: The address of the requestor
-  \item \verb|cipher|: The encryption of symmetric key with which the dataset had been encrypted
+  \item \verb|cipher|: The encryption of the symmetric key with which the dataset has been encrypted
 \end{itemize}
-
-Normally the \verb|notifyProcessor| transaction is sent internally by the data controller that listen to data requests and want to forward the symmetric key to the processor.
-
 
 \begin{lstlisting}[language=Solidity, caption={Request for processing functions}]
   function requestProcessing(
@@ -209,12 +210,12 @@ Normally the \verb|notifyProcessor| transaction is sent internally by the data c
 \subsection{Processor Registration}
 \label{implemenation:contracts:reg_processor}
 
-In order for a data processor to be register a \verb|registerProcessor| transaction need to be sent with the following values:
+A data processor can be registered by a transaction that invokes the  \verb|registerProcessor| function with the following inputs:
 
 \begin{itemize}
-  \item \verb|_processorAddress|: The address of data processor
-  \item \verb|name|: The name of the processor. It can be an arbitrary string
-  \item \verb|pubKey|: The public key of the processor
+  \item \verb|_processorAddress|: The address of the data processor
+  \item \verb|name|: The name of the data processor. It can be an arbitrary string
+  \item \verb|pubKey|: The public key of the data processor
 \end{itemize}
 
 Only the contract creator can execute the \verb|registerProcessor| function.
@@ -230,15 +231,15 @@ Only the contract creator can execute the \verb|registerProcessor| function.
 \subsection{Data Controller Registration}
 \label{implemenation:contracts:reg_processor}
 
-In order for a data processor to be register a \verb|registerProvider| transaction need to be sent with the following values:
+Likewise, a data processor can be registered by a transaction that invokes the \verb|registerProvider| function with the following inputs:
 
 \begin{itemize}
-  \item \verb|_providerAddress|: The address of data controller
-  \item \verb|name|: The name of the processor. It can be an arbitrary string
-  \item \verb|pubKey|: The public key of the processor
+  \item \verb|_providerAddress|: The address of the data controller
+  \item \verb|name|: The name of the data controller. It can be an arbitrary string
+  \item \verb|pubKey|: The public key of the data controller
 \end{itemize}
 
-Only the contract creator can execute the \verb|registerProvider| function.
+Again, only the contract creator can execute the \verb|registerProvider| function.
 
 \begin{lstlisting}[language=Solidity, caption={Data controller registration function}]
   function registerProvider(
@@ -251,13 +252,13 @@ Only the contract creator can execute the \verb|registerProvider| function.
 \subsection{General functions}
 \label{implemenation:contracts:general}
 
-Various general function are provided to facilitate the user of the system.
+Various general function are provided to facilitate the usage of the system.
 
 \begin{itemize}
-  \item \verb|getDataSetInfo|: Given a data set id it returns all the information of the data set
-  \item \verb|getRequestInfo|: Given a requestor address it returns all the information of the request
-  \item \verb|getDataProviderInfo|: Given a data controller address it returns all the information of the data controller
-  \item \verb|getDataProcessorInfo|: Given a data processor address it returns all the information of the data processor
+  \item \verb|getDataSetInfo|: Given a data set id it returns all the information of the specific data set
+  \item \verb|getRequestInfo|: Given a requestor address it returns all the information of the specific request
+  \item \verb|getDataProviderInfo|: Given a data controller address it returns all the information of the specific data controller
+  \item \verb|getDataProcessorInfo|: Given a data processor address it returns all the information of the specific data processor
 \end{itemize}
 
 \begin{lstlisting}[language=Solidity, caption={General functions}]
@@ -307,8 +308,7 @@ Various general function are provided to facilitate the user of the system.
 \subsection{Zero Knowledge Proof}
 \label{implemenation:contracts:zkp}
 
-
-When a data processor does the computation and generate the proof it has to sent a \verb|addProof| transaction, to store the proof and the encrypted output, with the following values:
+A data processor can save the ZKP proof and the output of the computation by calling the \verb|addProof| function with the following arguments:
 
 \begin{itemize}
   \item \verb|_subscriber|: The address of the requestor
@@ -319,7 +319,7 @@ When a data processor does the computation and generate the proof it has to sent
 \begin{lstlisting}[language=Solidity, caption={Data sharing application events}]
 
 function addProof(
-  address _subscriber,
+  address _requestor,
   string proof,
   string output
 ) public returns (bool success);
@@ -328,16 +328,16 @@ function addProof(
 \subsection{Events}
 \label{implemenation:contracts:events}
 
-Every function that is executed by a signed transaction triggers an event associated with the action. Every node of the network can register to listen to those events.
+Every function that is invoked by a signed transaction emits an event notifying the occurrence of the action by a specific participant. Every node of the network can register and listen to this events.
 
-Those are:
+In particular:
 
 \begin{itemize}
-  \item \verb|NewDataSet|: A data set is being registered
-  \item \verb|NewProvider|: A data controller is being registered
-  \item \verb|NewProcessor|: A data processor is being registered
-  \item \verb|NewRequest|: A request for processing is being made
-  \item \verb|Process|: A notification for data processing is being sent to a specific processor
+  \item \verb|NewDataSet|: A data set is registered
+  \item \verb|NewProvider|: A data controller is registered
+  \item \verb|NewProcessor|: A data processor is registered
+  \item \verb|NewRequest|: A request for processing is made
+  \item \verb|Process|: A notification for data processing is sent to a specific processor
 \end{itemize}
 
 \begin{lstlisting}[language=Solidity, caption={Data sharing application events}]
@@ -380,7 +380,11 @@ Those are:
 \section{Zero Knowledge Proofs}
 \label{implemenation:zkp}
 
-For zkSNARKs proof generation and verification the \verb|Pequin| library~\cite{pequin} was used. \verb|Pequin| is a toolchain to verifiably execute programs expressed in the C programming language. \verb|Pequin| consists of a front-end and a back-end. The front-end takes C programs and transforms them to a set of arithmetic constraints. The back-end in Pequin is a zk-SNARK. Pequin uses \verb|SCIPR Lab's libsnark|~\cite{libsnark}, which is an optimized implementation of the back-end of \verb|Pinocchio|~\cite{pinocchio-nearly-practical-verifiable-computation}, itself a refinement and implementation of \verb|GGPR|~\cite{ggpr}.
+To generate and verify zkSNARKs proofs the \verb|Pequin| library~\cite{pequin} is used. \verb|Pequin| is a toolchain to verifiably execute programs expressed in the C programming language. \verb|Pequin| consists of a front-end and a back-end. The front-end takes C programs and transforms them to a set of arithmetic constraints as described in ~\ref{zkp:snarks}. The back-end in Pequin is a zk-SNARK. Pequin uses \verb|SCIPR Lab's libsnark|~\cite{libsnark}, which is an optimized implementation of the back-end of \verb|Pinocchio|~\cite{pinocchio-nearly-practical-verifiable-computation}, itself a refinement and implementation of \verb|GGPR|~\cite{ggpr}.
+
+Each of the supported algorithm (§~\ref{solution:algorithms}) is written in the C programming language. A trusted setup has been run and a key pair $(e_k, v_k)$ has been generated for each of the available algorithms. The evaluation keys and the compiled programs are available to all data processors as they are necessary components for proof generation and data computation. The verification keys are also publicly available to all requestors as they are needed for the proof verification.
+
+A set of various bash scripts are made to facilitate the data processors and the data requestors. They provide simple commands and abstract the interaction with the \verb|Pequin| library.
 
 \section{Programming details}
 \label{implemenation:details}
