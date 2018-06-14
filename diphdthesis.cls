@@ -1,17 +1,18 @@
-% diphdthesis.cls
+% dithesis.cls
 %
-% A LaTeX2e document class for writing PhD theses in the Department of
-% Informatics and Telecommunications (DI&T) of the National and Kapodistrian
+% A LaTeX2e document class for writing MSc theses in English for the Department
+% of Informatics and Telecommunications (DI&T) of the National and Kapodistrian
 % University of Athens (NKUA).
 %
 % Copyright (c) 2014, 2015 Charalampos S. Nikolaou <charnik@di.uoa.gr>
+%                     2017 Ergys Dona <errikosd@gmail.com>
 %
 % This work may be distributed and/or modified under the conditions of the
 % LaTeX Project Public License. The latest version of this license is in
 %   http://www.latex-project.org/lppl.txt.
 %
 % This work consists of the following files:
-% diphdthesis.cls
+% dithesis.cls
 %		This document class file
 %
 % sample.tex
@@ -47,6 +48,9 @@
 
 % Document Versions
 %
+% Version 1.2, 2017/02/26
+%   Refactored the document to allow it to be used to write BSc Theses.
+%
 % Version 1.1, 2015/11/06
 %		Updated document class so as to be compatible with the template file
 %		regarding the appearance of headers/footers and appendix names. Require
@@ -65,10 +69,9 @@
 %
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{diphdthesis}[2015/11/06 v1.1 LaTeX class for PhD Theses
+\ProvidesClass{dithesis}[2017/02/26 v1.2 LaTeX class for BSc Theses
 submitted to the Department of Informatics and Telecommunications of the
-National and Kapodistrian University of Athens (by Charalampos Nikolaou
-<charnik@di.uoa.gr>)]
+National and Kapodistrian University of Athens]
 
 %
 % Declare and initialize global ifs
@@ -105,6 +108,12 @@ National and Kapodistrian University of Athens (by Charalampos Nikolaou
 \newif\ifappendixstarted
 \appendixstartedfalse
 
+% controls whether we want to print dual-page or single page
+% when enabled, the page numbering will occur in the centre of the page
+% otherwise, it will occur at the right
+\newif\ifdualpage
+\dualpagefalse
+
 %
 % Check passed options
 %
@@ -120,20 +129,23 @@ National and Kapodistrian University of Athens (by Charalampos Nikolaou
 \DeclareOption{lop}{
   \loppagetrue
 }
+\DeclareOption{dualpage}{
+  \dualpagetrue
+}
 
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
 \ProcessOptions\relax
 
-\LoadClass[12pt,twoside,openright]{book}
+\LoadClass[12pt,oneside]{book}
 
 %
 % Required packages and configuration
 %
 \RequirePackage[a4paper,
 top=2cm,bottom=2cm,bindingoffset=0.5cm,left=2cm,right=2cm,
-headheight=15pt,headsep=1.25cm,footskip=1.25cm,
-includehead,includefoot]{geometry} % add option showframe=true for debugging
+headsep=0.5cm,footskip=0.75cm,
+]{geometry} % add option showframe=true for debugging
 \RequirePackage{fancyhdr}
 \RequirePackage[final]{graphicx}
 \RequirePackage{sectsty}   % needed for formatting chapter headings
@@ -144,9 +156,10 @@ includehead,includefoot]{geometry} % add option showframe=true for debugging
 \RequirePackage{etoolbox}  % needed for patchcmd
 \RequirePackage{tabularx}  % needed for tabular* environment
 \RequirePackage{longtable} % needed for splitting big tables across pages
+\RequirePackage{xifthen}
 
 %(e.g., abbreviations)
-%\RequirePackage[toc,page,titletoc]{appendix} % needed for configuring
+% \RequirePackage[toc,page,titletoc]{appendix} % needed for configuring
 %%appendices
 
 %
@@ -362,7 +375,7 @@ publications}\gdef\@lopfileinternal{#1}}
 %
 \def\@frontpage{
 \begin{center}
-\includegraphics{emblems/athena-black}
+\includegraphics[scale=0.85]{emblems/athena-black}
 \end{center}
 \begin{minipage}[t]{\textwidth}
     \begin{center}
@@ -626,7 +639,7 @@ publications}\gdef\@lopfileinternal{#1}}
 % Configure the frontmatter page
 %
 \renewcommand{\frontmatter}{
-    \pagenumbering{arabic}
+    \pagenumbering{Roman}
     \input{frontmatter/personalize}
     \input{frontmatter/abstract}
     \input{frontmatter/preface}
@@ -642,7 +655,7 @@ publications}\gdef\@lopfileinternal{#1}}
     \englishfrontpagefalse
     \@frontpage
 
-    % examination committe page - greek version
+    % examination committe page - english version
     \englishcommitteepagetrue
     \@committeepage
 
@@ -650,7 +663,7 @@ publications}\gdef\@lopfileinternal{#1}}
     \englishcommitteepagefalse
     \@committeepage
 
-    % abstract (greek and english version)
+    % abstract (english and greek version)
     \@absEn
     \@absGr
 
@@ -687,18 +700,20 @@ publications}\gdef\@lopfileinternal{#1}}
     \pagestyle{empty}
     \addcontentsline{toc}{chapter}{\listfigurename}
     \listoffigures
-    %\cleardoublepage
+    \cleardoublepage
     \endgroup
 
     % list of tables
     \addcontentsline{toc}{chapter}{\listtablename}
     \listoftables
     \thispagestyle{empty}
+    \cleardoublepage
 
     % list of algorithms
     \addcontentsline{toc}{chapter}{List of Algorithms}
     \listofalgorithms
     \thispagestyle{empty}
+    \cleardoublepage
 
     % list of listings
     \addcontentsline{toc}{chapter}{\lstlistlistingname}
@@ -721,7 +736,7 @@ publications}\gdef\@lopfileinternal{#1}}
 \renewcommand{\mainmatter}{
 	% just set the style of the pages to be fancy
     \pagestyle{fancy}
-    \cleardoublepage%\pagenumbering{arabic}
+    \cleardoublepage\pagenumbering{arabic}
 }
 \renewcommand{\backmatter}{
 	% just set the style of the pages to be fancy
@@ -813,17 +828,25 @@ publications}\gdef\@lopfileinternal{#1}}
 %
 %\pagestyle{fancy}
 \fancyhf{}
-\fancyhead[LE,RO]{{\scriptsize \@titleEn{}}}
-\fancyfoot[C]{{\scriptsize \thepage}}
-\fancyfoot[LE,RO]{{\scriptsize \@authorFirstAbrEn{} \@authorLastEn{}}}
+\fancyhead[LEO]{{\scriptsize \@titleEn{}}}
+\ifdualpage
+\fancyfoot[C]{{\fontsize{10pt}{10pt}\selectfont \thepage}}
+\else
+\fancyfoot[R]{{\fontsize{10pt}{10pt}\selectfont \thepage}}
+\fi
+\fancyfoot[L,LO]{{\scriptsize \@authorFirstAbrEn{} \@authorLastEn{}}}
 
 % needed redefinition, because commands like \chapter call
 % \thispagestyle{plain} automatically
 \fancypagestyle{plain} {
   \fancyhf{}
-  \fancyhead[LO,RO]{{\scriptsize \@titleEn{}}}
-  \fancyfoot[C]{{\scriptsize \thepage}}
-  \fancyfoot[LE,RO]{{\scriptsize \@authorFirstAbrEn{} \@authorLastEn{}}}
+  \fancyhead[LO]{{\scriptsize \@titleEn{}}}
+  \ifdualpage
+  \fancyfoot[C]{{\fontsize{10pt}{10pt}\selectfont \thepage}}
+  \else
+  \fancyfoot[R]{{\fontsize{10pt}{10pt}\selectfont \thepage}}
+  \fi
+  \fancyfoot[L,LO]{{\scriptsize \@authorFirstAbrEn{} \@authorLastEn{}}}
 }
 \renewcommand{\headrulewidth}{0pt}
 
