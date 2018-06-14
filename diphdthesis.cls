@@ -514,6 +514,16 @@ publications}\gdef\@lopfileinternal{#1}}
 
 \fi
 }
+\vfill
+\begin{center}
+{\bfseries
+ \ifenglishcommitteepage
+  \@dateEn
+ \else
+  \@dateGr
+ \fi
+ }
+\end{center}
 
 \clearpage
 % \newpage\null\newpage
