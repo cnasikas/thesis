@@ -639,7 +639,6 @@ publications}\gdef\@lopfileinternal{#1}}
 % Configure the frontmatter page
 %
 \renewcommand{\frontmatter}{
-    \pagenumbering{Roman}
     \input{frontmatter/personalize}
     \input{frontmatter/abstract}
     \input{frontmatter/preface}
@@ -736,7 +735,7 @@ publications}\gdef\@lopfileinternal{#1}}
 \renewcommand{\mainmatter}{
 	% just set the style of the pages to be fancy
     \pagestyle{fancy}
-    \cleardoublepage\pagenumbering{arabic}
+    \cleardoublepage
 }
 \renewcommand{\backmatter}{
 	% just set the style of the pages to be fancy
