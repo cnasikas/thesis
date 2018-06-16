@@ -2,53 +2,54 @@
 \chapter{Future Work}
 \label{future_work}
 
+\section{Zero Knowledge Proof Verification}
+\label{future_work:zkp_ver}
+
 \section{Secure Multi party computation}
 \label{future_work:mpc}
 
 In the setting of multiparty computation~\cite{Ben-Or:1988:CTN:62212.62213}, sets of two or more parties with private inputs wish to jointly compute some (predetermined) function of their inputs~\cite{mpc}. Secure multiparty computation assume malicious behavior by a subset of participant entities.
 
-The two important requirements of any secure computation protocol are privacy and correctness. The privacy requirement states that the parties should not learn anything else than the output of the computation and the correctness requirement states that that each party should receive its correct output~\cite{mpc}.
+The two important requirements of any secure computation protocol are privacy and correctness. The privacy requirement states that the parties should not learn anything else than the output of the computation and the correctness requirement states that each party should receive its correct output~\cite{mpc}.
 
-Informally, consider $n$ parties with private inputs $x_1, x_2, \dots$. The parties want to compute the outcome of the function $f(x_1, x_2, \dots)$ where the respective inputs remain private.
+Informally, consider $n$ parties with private inputs $x_1, x_2, \dots, x_n$. The parties want to compute the outcome of the function $f(x_1, x_2, \dots, x_n)$ where the respective inputs remain private.
 
-The first secure multiparty computation problem was described by Yao in~\cite{Yao:1982:PSC:1398511.1382751} and is called the Yao's Millionaires' problem. The problem discusses two millionaires, Alice and Bob, who are interested in knowing which of them is richer without revealing their actual wealth. Specifically, Yao’s millionaires’ problem is the problem of computing the predicate, $a \geq b$ where $a$ is Alice's holding and $b$ Bob's holding, without disclosing anything more than the result to either party~\cite{mpc_ioannidis}.
+The first secure multiparty computation problem was described by Yao in~\cite{Yao:1982:PSC:1398511.1382751} and is called the Yao's Millionaires' problem. The problem discusses two millionaires, Alice and Bob, who are interested in knowing which of them is richer without revealing their actual wealth. Specifically, Yao’s millionaires’ problem is the problem of computing the predicate, $a \geq b$ where $a$ is Alice's holding and $b$ is Bob's holding, without disclosing anything more than the result to either party~\cite{mpc_ioannidis}.
 
-Multi-party computation protocols a have a wide range of applications. They can be used in voting systems where each party votes for a candidate and they want to compute the winner of the voting without revealing their vote. Another use case it that of auctions. Several parties are bidding for a product where the winning party and maximum bid should be determined, without revealing bids of other parties
+Multi-party computation protocols have a wide range of applications. They can be used in voting systems where each party votes for a candidate and they want to compute the winner of the voting without revealing their vote. Another use case it that of auctions. Several parties are bidding for a product where the winning party and maximum bid should be determined, without revealing bids of other parties
 
 Most MPC protocols make use of secret sharing. A secret sharing scheme allows a value to be shared among $n$ parties where some of the parts or all of them are needed in order to reconstruct the secret~\cite{Kamm:2015:ASM:2836836}. Usually, there is a threshold $t$ so that at least $t$ part of the secret are needed to reconstruct the original secret.
 
-Using an MPC protocol based on secret sharing the need for transferring the symmetric key to the data processor and the decryption of the data (§~\ref{solution:flow:pr_req}, §~\ref{solution:flow:pr_data})---so the processing can be applied---can be eliminated.
-
-Data queries can be computed in a distributed way, using an MPC cluster of data processors. Data can be split between data processors without having access to the data in its entirety~\cite{DBLP:journals/corr/ZyskindNP15}.
-
-This way, the need for a trusted processor is eliminated as the data processors do not have access to the unciphered dataset and still process the dataset in a privacy-preserving manner.
+Using an MPC protocol based on secret sharing eliminates the need of symmetric key exchange and dataset decryption and exposition (§~\ref{solution:flow:pr_req}, §~\ref{solution:flow:pr_data}). Data queries can be computed in a distributed way with the use of an MPC cluster of data processors. In addition, datasets can be split between data processors without them having access to the data in its entirety~\cite{DBLP:journals/corr/ZyskindNP15}. This way, the need for a trusted processor is eliminated as the data processors do not have access to the unciphered dataset.
 
 \section{Fees}
 \label{future_work:fees}
 
-As discussed in~\ref{solution:treat_model:mrequestor} a malicious requestor can attack the system by overflowing the network with multiple requests aiming to prevent other request to be fulfilled. A scalable payment system could be used as a countermeasure to this type of attacks where a requestor pays a fixed price per byte processed. The price can decrease as the data size increases.
+As discussed in~\ref{solution:treat_model:mrequestor} a malicious requestor can threat the system by overflowing the network with multiple requests aiming to prevent other request to be fulfilled. A scalable payment system could be used as a countermeasure to this type of attacks where a requestor pays a fixed price per byte processed. The price can decrease as the data size increases.
 
-A payment system helps to prevent DDoS attacks as each request has cost and the attack becomes expensive. A rational malicious requestor has to significantly gain more than the cost of the attack to be profitable. Moreover, a payment system will incentivize the data processors to be honest and contribute to the prosperity of the network.
+A payment system helps to prevent DDoS attacks as each request has a cost and the attack becomes more expensive as the requests are increasing. A rational malicious requestor has to significantly gain more than the cost of the attack to be profitable. Moreover, a payment system will incentivize the data processors to follow the protocol honestly and contribute to the prosperity of the network.
 
 \section{Privacy Preserving Queries}
 \label{future_work:ppq}
 
-The algorithms (queries) the system supports are not privacy-preserving. The privacy of the individuals in the dataset must be protected with various privacy-preserving techniques such as differential privacy~\cite{differential_privacy}, ~\cite{Samarati98protectingprivacy} and l-diversity~\cite{Aggarwal2008}. This techniques can be either applied by the data controllers before handing over the dataset to the processor or by the processors themselves where a requestor wants the de-identification of the dataset as a processing procedure.
+The algorithms (queries) the system supports are not privacy-preserving. The privacy of the individuals in the dataset must be protected with various privacy-preserving techniques such as differential privacy~\cite{differential_privacy}, k-anonymity~\cite{Samarati98protectingprivacy} and l-diversity~\cite{Aggarwal2008}. This techniques can be either applied by the data controllers before handing over the dataset to the processor or by the processors themselves where a requestor wants the de-identification of the dataset as a processing procedure.
 
 \section{Reputation system}
 \label{future_work:ranking_system}
 
-A decentralized reputation system~\cite{trust_is_risk}, resilient to Sybil attacks, could eliminate the need of a centralized trust model of a public key infrastructure (PKI), which relies on a trusted entity to authenticate, identify and verify the participants of the system. The benefits of such system are pseudonymity of participants, truly decentralization and trust is build by the system itself. The users in such systems built trust relationships among them and measure trustworthiness in a setting where assets can be exchanged between them~\cite{trust_is_risk}. A data controller, whom its dataset are of bad quality or fabricated with malicious intents, could be identified by the users of the system and gain bad reputation. It is evident, that the users of the network should choose datasets where their owners have high trust. The same applies to data processors and even the requestor themselves.
+A decentralized reputation system~\cite{trust_is_risk}, resilient to Sybil attacks, could eliminate the need of a centralized trust model of a public key infrastructure (PKI), which relies on a trusted entity to authenticate, identify and verify the participants of the system. The users in such systems built trust relationships among them and measure trustworthiness in a setting where assets can be exchanged between them~\cite{trust_is_risk}. The benefits of such systems are pseudonymity of the participants, truly decentralization and the increasing trust for the system itself.
+
+A data controller, whom its dataset are of bad quality or fabricated with malicious intents, could be identified by the users of the system and gain bad reputation. It is evident, that the users of the network should choose datasets where their owners have high trust. The same applies to data processors and even the requestor themselves.
 
 \section{Analytics}
 \label{future_work:analytics}
 
-The activity of the system could be analyzed by various tools to measure the functionality and the prosperity of the system. To achieve that, blockchain should be indexed and monitor constantly by an analytic node that stores in a database all the needed information. Various charts and results can be derived by such analysis. For example:
+The activity of the system could be analyzed by various tools to measure the functionality and the prosperity of the system. To achieve that, blockchain should be indexed and be monitored constantly by an analytic node that stores in a database all the needed information. Various charts and results can be derived by such analysis. For example:
 
 \begin{itemize}
   \item Transaction chart
   \item Address growth chart
-  \item Hash Rate Growth Cart
+  \item Hash rate growth chart
   \item Block difficulty
   \item Pending transactions per minute
   \item Network transaction fees
@@ -56,18 +57,18 @@ The activity of the system could be analyzed by various tools to measure the fun
   \item Total datasets
   \item Total processors
   \item Total data controllers
-  \item Most trusted processor or controller
-  \item Most used dataset
-  \item Most used algorithm
+  \item Most trusted processors or controllers
+  \item Most used datasets
+  \item Most used algorithms
   \item Top 10 charts
 \end{itemize}
 
 \section{Consent}
 \label{future_work:consent}
 
-A key aspect that is missing from the current solution is the implementation of dynamic consent to empower data owners. With the use of smart contracts data access policies could be implemented where data controllers are obligate to comply to them. Data owners could have total control over their data and decide when and by whom their data are accessed.
+A key aspect that is missing from the current solution is the implementation of dynamic consent which can empower the data owners. With the use of smart contracts data access policies could be implemented where data controllers are obligate to comply to them. That way, data owners have total control over their data and can decide when and by whom their data are accessed.
 
-Modelling dynamic consent in smart contracts should be carefully analyzed taking into account design issues that are related to smart contracts lifecycle, required state variables for storing contract’s information, and access restrictions to those variables.
+Modeling dynamic consent in smart contracts should be carefully analyzed taking into account design issues that are related to smart contracts lifecycle, required state variables for storing contract’s information, and access restrictions to those variables.
 
 Neisse et al.~\cite{DBLP:journals/corr/NeisseSF17} proposed the following three models for data accountability and provenance tracking that comply with the GDPR(§~\ref{problem:regulations}):
 
