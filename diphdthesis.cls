@@ -547,7 +547,7 @@ publications}\gdef\@lopfileinternal{#1}}
 %
 \def\@absEn{
   \chapter*{Abstract}
-  \addcontentsline{toc}{chapter}{Abstract}
+  % \addcontentsline{toc}{chapter}{Abstract}
   \thispagestyle{empty}
   \@abstractEn{}
   \vfill
