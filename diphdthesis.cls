@@ -715,7 +715,7 @@ publications}\gdef\@lopfileinternal{#1}}
     \cleardoublepage
 
     % list of listings
-    \addcontentsline{toc}{chapter}{\lstlistlistingname}
+    % \addcontentsline{toc}{chapter}{\lstlistlistingname}
     \lstlistoflistings
     \thispagestyle{empty}
 
