@@ -697,7 +697,7 @@ publications}\gdef\@lopfileinternal{#1}}
     \makeatother
 
     \pagestyle{empty}
-    \addcontentsline{toc}{chapter}{\listfigurename}
+    % \addcontentsline{toc}{chapter}{\listfigurename}
     \listoffigures
     \cleardoublepage
     \endgroup
