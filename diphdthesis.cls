@@ -709,7 +709,7 @@ publications}\gdef\@lopfileinternal{#1}}
     \cleardoublepage
 
     % list of algorithms
-    \addcontentsline{toc}{chapter}{List of Algorithms}
+    % \addcontentsline{toc}{chapter}{List of Algorithms}
     \listofalgorithms
     \thispagestyle{empty}
     \cleardoublepage
