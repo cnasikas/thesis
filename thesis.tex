@@ -23,7 +23,8 @@
 %%%%%%%%%%%%%%%%%%%% User-specific package inclusions %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{booktabs}
-\PassOptionsToPackage{hyphens}{url}\usepackage[hidelinks]{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks]{hyperref}
 \usepackage{hyperref}
 \hypersetup{
     unicode=true,                     % non-Latin characters in bookmarks
@@ -37,6 +38,7 @@
     urlcolor=black,                   % color of external links
     pdftitle={},                      % title
     pdfauthor={},                     % author
+    breaklinks=true,                  % break links
     pdfsubject={}                     % subject of the document
 }
 
@@ -70,6 +72,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \include{configuration}
+
+\def\UrlBreaks{ % break hex url
+    \do\a\do\b\do\c\do\d\do\e\do\f
+    \do\0\do\1\do\2\do\3\do\4\do\5\do\6\do\7\do\8\do\9
+    \do\*\do\-\do\~\do\'\do\"\do\-
+  }
 
 %
 % Set the .bib file containing your paper publications (leave the extension out)
