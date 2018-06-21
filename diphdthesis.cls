@@ -703,7 +703,7 @@ publications}\gdef\@lopfileinternal{#1}}
     \endgroup
 
     % list of tables
-    \addcontentsline{toc}{chapter}{\listtablename}
+    % \addcontentsline{toc}{chapter}{\listtablename}
     \listoftables
     \thispagestyle{empty}
     \cleardoublepage
