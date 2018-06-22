@@ -398,7 +398,47 @@
 
 % TOC %
 
+\makeatletter
+\begingroup
+  \let\newcounter\@gobble
+  \let\setcounter\@gobbletwo
+  \globaldefs\@ne
+  \let\c@loadepth\@ne
+  \newlistof{algorithms}{loa}{\listalgorithmname}
+\endgroup
+\let\l@algorithm\l@algorithms
+\makeatother
+
+\makeatletter
+\begingroup
+  \let\newcounter\@gobble
+  \let\setcounter\@gobbletwo
+  \globaldefs\@ne
+  \let\c@loldepth\@ne
+  \newlistof{listings}{lol}{\lstlistlistingname}
+\endgroup
+\let\l@lstlisting\l@listings
+\makeatother
+
+\renewcommand{\lstlistoflistings}{\listoflistings}
+%\renewcommand{\cftlistingsfont}{\itshape}
+
 \renewcommand{\cftsecfont}{\normalfont\bfseries}% section titles in bold
+\renewcommand{\cftfignumwidth}{5em}
+\renewcommand{\cftfigpresnum}{Figure }
+\renewcommand{\cftfigaftersnum}{:}
+
+\renewcommand{\cfttabnumwidth}{4.5em}
+\renewcommand{\cfttabpresnum}{Table }
+\renewcommand{\cfttabaftersnum}{:}
+
+\renewcommand{\cftalgorithmsnumwidth}{6em}
+\renewcommand{\cftalgorithmspresnum}{Algorithm }
+\renewcommand{\cftalgorithmsaftersnum}{:}
+
+\renewcommand{\cftlistingsnumwidth}{4.5em}
+\renewcommand{\cftlistingspresnum}{Code }
+\renewcommand{\cftlistingsaftersnum}{:}
 
 % Various %
 
