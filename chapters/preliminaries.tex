@@ -26,43 +26,43 @@ Three levels of security~\cite{Katz:2014:IMC:2700550} can be identified:
   \item Collision resistance: It is hard to find a pair of messages $m_0, m_1$ where $m_0 \neq m_1$ and $H(m_0) = H(m_1)$
 \end{itemize}
 
-Above three, collision resistance is the strongest property and a strong security requirement for cryptographic hash functions.
+Collision resistance is the strongest security property and a requirement for cryptographic hash functions.
 
-In a data sharing system, cryptographic hash functions can be used to provide verification of file integrity and provenance tracking~\cite{10.1109/SPW.2015.27, Azaria2016}. Anyone can detect file modifications in transit as changing even a bit will result in the output of a different digest. A digest of a dataset or the dataset's metadata can also serve as means of unique file identification; unique persistent identifiers (PID) that can be used as pointers to data location. Any change to the PID will be visible and trackable~\cite{dist_pid}.
+In a data sharing system, cryptographic hash functions can be used to provide file integrity verification and provenance tracking~\cite{10.1109/SPW.2015.27, Azaria2016}. File modifications in transit can be easily detected, as all changes output a different digest. A digest of a dataset serves as a means of unique file identification; unique persistent identifiers (PID) can be used as pointers to a data location. Any change to the PID is visible and trackable~\cite{dist_pid}.
 
-Blockchains make heavy use of cryptographic hash functions. They are used to create unique transactions and blocks IDs, to provide proof of inclusions--a proof that a transaction is contained in a block---and above all to prevent Sybil~\cite{sybil_attack} and double-spend attacks. In particular, Bitcoin use the SHA256 and RIPEMD160 hash functions. It is evident, that cryptographic hash function play an important role in the blockchain ecosystem.
+Cryptographic hash functions are heavily used in the blockchain. They are used to create unique transactions and block IDs, to provide proofs of inclusion -- meaning to prove if a transaction is contained in a block -- and, most importantly, to achieve decentralized consensus among the participants. In particular, Bitcoin makes use of the SHA256 and RIPEMD160 hash functions. That said, cryptographic hash functions play an important role in the blockchain ecosystem.
 
 \section{Symmetric-key cryptography}
 \label{preliminaries:sym}
 
-In a symmetric cryptosystem, two parties share a common secret key that has been agreed prior to communication. The key is used for both encryption and decryption. When a party wants to securely send a message she has to use the secret key to encrypt it and then sent it. The receiver uses the same secret key to decrypt and recover the message. More formally, a symmetric cryptosystem is composed of the following algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
+In a symmetric cryptosystem two parties share a common secret key agreed prior to communication. The key is used for both encryption and decryption. When a party wants to securely send a message she has to use the secret key to encrypt it and then sent it. The receiver uses the same secret key to decrypt and recover the message. More formally, a symmetric cryptosystem is composed of the following algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
 \begin{itemize}
-  \item A key generation algorithm $\calg$ that takes as input a security parameter $1^{n}$ it and outputs a key $k$.
+  \item A key generation algorithm $\calg$ that takes as input a security parameter $1^{n}$ and outputs a key $k$.
   \item An encryption algorithm $\cale$ that takes as input a key $k$ and a plaintext $m$ and outputs a ciphertext $c$.
   \item A decryption algorithm $\cald$ that takes as input a key $k$ and a ciphertext $c$ and outputs a plaintext $m$.
 \end{itemize}
 
-The set of all possible keys derived from the key generation algorithm $\calg$ is called the key space $\calk$. Respectively, the set of all possible plaintext is called the plaintext message space, denoted $\calm$, and the set of all possible ciphertexts is called ciphertext message space, denoted $\calc$. In practice keys are usually of some fixed length; 256-bit keys are very common. On the other hand, messages and ciphertexts can be of arbitrary length. For example, a message may be a video or a music file or even a single bit.
+The set of all possible keys which can derive from the key generation algorithm $\calg$ is called the key space $\calk$. Respectively, the set of all possible plaintext is called the plaintext message space denoted $\calm$, and the set of all possible ciphertexts is called ciphertext message space denoted $\calc$. In practice, keys are usually of some fixed length; 256-bit keys are very common. On the other hand, messages and ciphertexts can be of arbitrary length. For example, a message may be a video or a music file or even a single bit.
 
-A symmetric cryptosystem must satisfy the correctness property: for all $m \in \calm$ and $k \in \calk$, it holds that
+A symmetric cryptosystem must satisfy the correctness property: for all $m \in \calm$ and $k \in \calk$, it holds that:
 
 \begin{equation*}
   \cald_{k}(\cale_{k}(m)) = m
 \end{equation*}
 
-Any deterministic cryptosystem can not be secure~\cite{Katz:2014:IMC:2700550, kiagias:crypto}. To this end, randomness is essential to any encryption scheme.
+Any deterministic cryptosystem can not be secure~\cite{Katz:2014:IMC:2700550, kiagias:crypto}. For this reason, randomness is essential to any encryption scheme.
 
-In the following chapters, the notions of cipher and symmetric encryption scheme or symmetric scheme are identical and will be used interchangeably.
+In the following chapters the notions of cipher and symmetric encryption scheme or symmetric scheme are identical and will be used interchangeably.
 
 \subsection{Block Ciphers}
 \label{preliminaries:sym:block}
 
-A block cipher is a deterministic algorithm that encrypts blocks---a sequence of bits---of fixed length. The plaintext and the ciphertext is always of the same size. The size is fixed by the block cipher and is called the \textbf{block size}. The message space $\calm$ and ciphertext space $\calc$ are the same finite set $\{ 0, 1\}^{n}$ and the key space is  $\calk = \{ 0, 1\}^{l}$.
+A block cipher is a deterministic algorithm that encrypts blocks -- a sequence of bits -- of fixed length. The plaintext and the ciphertext is always of the same size. The size is fixed by the block cipher and is called the \textbf{block size}. The message space $\calm$ and ciphertext space $\calc$ are the same finite set $\{ 0, 1\}^{n}$ and the key space is  $\calk = \{ 0, 1\}^{l}$.
 
-Formally, a block cipher is a keyed permutation function $F: \{ 0, 1\}^{n} \times \{ 0, 1\}^{l} \rightarrow \{ 0, 1\}^{n}$ where $n$ is the block size and $l$ the key size. Usually, the block size and the key size is the same; common key and block sizes range from $128$ to $512$ bits. The function $F$ must be \textbf{one-to-one} for every key $k \in \calk$ and both $F$ and its inverse $F^{-1}$ should be efficient; there is polynomial-time algorithm that given $k$ computes $F$ and $F^{-1}$. The number of total permutation a block cipher can produce is $2^{n}!$.
+Formally, a block cipher is a keyed permutation function $F: \{ 0, 1\}^{n} \times \{ 0, 1\}^{l} \rightarrow \{ 0, 1\}^{n}$ where $n$ is the block size and $l$ the key size. Usually, the block size and the key size are the same; common key and block sizes range from $128$ to $512$ bits. The function $F$ must be \textbf{one-to-one} for every key $k \in \calk$ and both $F$ and its inverse $F^{-1}$ should be easily computed; there is polynomial-time algorithm that given $k$ computes $F$ and $F^{-1}$. The number of total permutation a block cipher can produce is $2^{n}!$.
 
-The security of a block cipher is much stronger than semantic security~\cite{boneh_crypto}: A permutation produced by $F$ is indistinguishable from a random permutation. That allows the build of cryptographic schemes based on block ciphers with rigorous proofs of security.
+The security of a block cipher is much stronger than semantic security~\cite{boneh_crypto}: A permutation produced by $F$ is indistinguishable from a random permutation. Cryptographic schemes based on block ciphers with rigorous proofs of security can, therefore, be constructed.
 
 \begin{figure}[!ht]
     \centering
@@ -79,35 +79,35 @@ The security of a block cipher is much stronger than semantic security~\cite{bon
 \subsubsection[Modes of Operation]{Modes of Operation~\cite{Katz:2014:IMC:2700550}}
 \label{preliminaries:sym:modes}
 
-A mode of operation is a way of encrypting arbitrary-length messages using block ciphers of fixed message length. A message is broken into $l$ blocks each of size equal to the block size $n$ and the block cipher operates on each block. If the size of the last block is less than the block size, the block is padded to a full size block. In most modes, a random initial vector (IV) of length $n$ is required. The IV ensures distinct ciphertexts to each encryption even for the same plaintext and same key. The IV is not secret, as is crucial for completing decryption. For a mode to be secure, the IV must be distinct and random for each encryption~\cite{Katz:2014:IMC:2700550}
+A mode of operation is a way to encrypt arbitrary-length messages using block ciphers of fixed message length. A message is broken into $l$ blocks of size $n$, the block cipher operating on each block. If the size of the last block is less than the block size, the block is padded to a full size block. In most modes of operation, a random initial vector (IV) of length $n$ is required. The IV ensures distinct ciphertexts for each encryption even for the same plaintext and key. The IV is not secret as it is crucial for completing decryption. For a mode to be secure, the IV must be distinct and random in each encryption~\cite{Katz:2014:IMC:2700550}
 
-All the modes presented next, are vulnerable either to padding oracle attacks~\cite{padding_attacks}---an attack that exploits the padding validation to decrypt the ciphertext---or are malleable~\cite{malleability}; the property of transforming a ciphertext into another which decrypts to a different plaintext. To countermeasure padding oracle attacks or changes to the ciphertext, message authentication~\cite{Katz:2014:IMC:2700550} should be used along with encryption to detect tampering with the ciphertext. Notable modes that combine encryption with authentication are CCM, OCB and GCM.
+Several modes of operation are presented below. These modes are vulnerable either to padding oracle attacks~\cite{padding_attacks} -- attacks that exploit the padding validation to decrypt the ciphertext -- or malleable~\cite{malleability} -- the property of transforming one ciphertext into another which decrypts to a different plaintext. To countermeasure padding oracle attacks, or changes to the ciphertext, message authentication~\cite{Katz:2014:IMC:2700550} should be used along with encryption to detect tampering with the ciphertext. Notable modes that combine encryption with authentication are CCM, OCB and GCM.
 
 \epar{Electronic Codebook (ECB)}
 \label{preliminaries:sym:modes:ecb}
 
-The Electronic Codebook (ECB) is the simplest mode of operation. Given a plaintext $m = m_1, m_2, \dots, m_l$ each block is encrypted---direct application of the pseudorandom permutation on the plaintext block---separately. The ciphertext is $c = F_k(m_1), F_k(m_2), \dots, F_k(m_l)$. ECB mode is not secure and should never be used.
+The Electronic Codebook (ECB) is the simplest mode of operation. Given a plaintext $m = m_1, m_2, \dots, m_l$ each block is encrypted separately. The ciphertext is $c = F_k(m_1), F_k(m_2), \dots, F_k(m_l)$. ECB mode is not secure and should never be used.
 
 \epar{Cipher Block Chaining (CBC)}
 \label{preliminaries:sym:modes:cbc}
 
 The Cipher Block Chaining (CBC) mode outputs a sequence of cipher blocks where each plaintext block is XORed with the previous ciphertext block. Each ciphertext is dependent on all preceding blocks. First, a random IV of length $n$ is selected. The first plaintext block is XORed with the IV. The second block is XORed with the first cipher block $c_1$. In general, let $c_0 = IV$ then $c_i = F_k(c_{i-1} \xor m_i) \mbox{, } \forall i \in [1, l]$.
 
-The main drawback of CBC mode is that encryption and decryption is sequential and cannot be parallelized.
+The main drawback of CBC mode is that encryption and decryption are sequential -- meaning that they cannot be parallelized.
 
 \epar{Output Feedback (OFB)}
 \label{preliminaries:sym:modes:ofb}
 
-The Output Feedback (OFB) mode uses the block cipher to generate a pseudorandom stream which is then XORed with the plaintext. The stream is generated only by repeatedly encrypting the IV independently of the plaintext. The stream is generated as follows: Set the $i$th block of the stream to $r_i = F_k(r_{i-1})$ where $r_0 = IV \rselect{\{ 0, 1 \}^{n}}$. The ciphertext is produced by XORing the plaintext with the appropriate stream block; that is, $c_i = m_i \xor r_i$.
+The Output Feedback (OFB) mode uses the block cipher to generate a pseudorandom stream which is then XORed with the plaintext. The stream is generated only by repeatedly encrypting the IV independently of the plaintext. The stream is generated as follows. Set the $i$-th block of the stream to $r_i = F_k(r_{i-1})$ where $r_0 = IV \rselect{\{ 0, 1 \}^{n}}$. The ciphertext is produced by XORing the plaintext with the appropriate stream block; that is, $c_i = m_i \xor r_i$.
 
 As in CBC, the encryption and decryption cannot be parallelized. On the other hand, the pseudorandom stream can be computed independently of the actual message encryption and can be prepared ahead of time.
 
 \epar{Counter (CTR)}
 \label{preliminaries:sym:modes:ctr}
 
-The Counter (CTR) mode, as with OFB, generates also a pseudorandom stream. First, a random $CTR \rselect{\{ 0, 1 \}^{n}}$ is chosen; as the IV in previous modes. The stream is generated as $r_i = F_k(CTR + i)$ where $r_0 = CTR$. Again, the ciphertext is computed as $c_i = m_i \xor r_i$.
+The Counter (CTR) mode, like OFB, also generates a pseudorandom stream. First, a random $CTR \rselect{\{ 0, 1 \}^{n}}$ is chosen -- much like the IV in previous modes. The stream is generated as $r_i = F_k(CTR + i)$ where $r_0 = CTR$. Same as before, the ciphertext is computed as $c_i = m_i \xor r_i$.
 
-CTR mode has many advantages. One of the main advantages of CTR mode is that both encryption and decryption can be fully parallelized. Secondly, as with OFB stream, it can be computed in advance. Finally, it is possible to decrypt the $i$-th block of the ciphertext without the need to decrypt anything else. This property is called random access.
+CTR mode has many advantages. One of the main advantages of CTR mode is that both encryption and decryption can be fully parallelized. Secondly, as with OFB, the stream can be computed in advance. Finally, it is possible to decrypt the $i$-th block of the ciphertext without having to decrypt any other cipher block. This property is called random access.
 
 \begin{figure}[!ht]
     \centering
