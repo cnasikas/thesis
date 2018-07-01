@@ -235,23 +235,23 @@ CTR mode has many advantages. One of the main advantages of CTR mode is that bot
 \section{Public Key Cryptography}
 \label{preliminaries:pub}
 
-As we see in~\ref{preliminaries:sym} a secret key has to been agreed prior to communication. In 1976, Whitfield Diffie and Martin Hellman published a paper called New Directions in Cryptography~\cite{Diffie:2006:NDC:2263321.2269104} that changed the way of communication. They proposed a protocol that enables two parties, having no prior communication, to establish a secret key over an insecure channel in the presence of eavesdropping adversaries. The protocol uses two keys, one for encryption and one for decryption. The encryption key is called the public key and the decryption key is called the secret key (or private). Every party has a key pair consisting of a public and a secret key. The public key is made available for anyone---the receiver may post the public key online beforehand---that want to sent an encrypted message to the holder of the corresponding secret key. The receiver of the message decrypts the ciphertext with the use of her private key. Only the owner of the private key can decrypt a message that was encrypted with the corresponding public key. In an essence, a key pair is an identity and the blockchain smartly utilizes it to provide anonymous identities to the users of the system.
+As we see in~\ref{preliminaries:sym} a secret key needs to be agreed upon prior to communication. In 1976, Whitfield Diffie and Martin Hellman published a paper called New Directions in Cryptography~\cite{Diffie:2006:NDC:2263321.2269104} which changed completely the way we communicate. The two cryptographers proposed a protocol that enabled two parties, having no prior communication, to establish a secret key over an insecure channel in the presence of eavesdropping adversaries. The protocol uses two keys, one for encryption and one for decryption. The encryption key is called the public key and the decryption key is called the secret key (or private). Every party has a key pair, consisting of a public and a secret key. The public is available to anyone who wants to sent an encrypted message to the key holder -- the receiver may post the public key online beforehand. The receiver of the message decrypts the ciphertext with the use of her private key. Only the owner of the private key can decrypt a message that was encrypted using the corresponding public key. Any key pair is essentially an identity and the blockchain smartly utilizes it to provide anonymous identities to the users of the system.
 
-More formally, a public-key encryption scheme is composed of the following probabilistic, polynomial-time algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
+A public-key encryption scheme is composed of the following probabilistic, polynomial-time algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
 \begin{itemize}
-  \item The key generation algorithm $\calg$: Take as input a security parameter $1^{n}$ it and outputs a key pair ($p_k$, $s_k$).
-  \item The encryption algorithm $\cale$: Take as input a public key $p_k$ and a plaintext $m$ and outputs a ciphertext $c$.
-  \item The decryption algorithm $\cald$: Take as input a private key $s_k$ and a ciphertext $c$ and outputs a plaintext $m$.
+  \item The key generation algorithm $\calg$: Takes as input a security parameter $1^{n}$ it and outputs a key pair ($p_k$, $s_k$).
+  \item The encryption algorithm $\cale$: Takes as input a public key $p_k$ and a plaintext $m$ and outputs a ciphertext $c$.
+  \item The decryption algorithm $\cald$: Takes as input a private key $s_k$ and a ciphertext $c$ and outputs a plaintext $m$.
 \end{itemize}
 
-Likewise, a public-key cryptosystem must satisfy the correctness property: for all $m \in \calm$ and $(p_k, s_k) \in \calk$, it holds that
+Likewise, a public-key cryptosystem must satisfy the correctness property: for all $m \in \calm$ and $(p_k, s_k) \in \calk$, it holds that:
 
 \begin{equation*}
   \cald_{s_k}(\cale_{p_k}(m)) = m
 \end{equation*}
 
-Many important and wide-used public-key schemes base their security on mathematical problems that, under certain conditions, are assumed to be hard; they cannot be solved in polynomial time. Such problems are the discrete logarithm and the factoring problem.
+Many important and widely used public-key schemes base their security on mathematical problems that, under certain conditions, are assumed to be hard; they cannot be solved in polynomial time. Such problems are the discrete logarithm and the factoring problem.
 
 \subsection[Discrete Logarithm and Diffie-Hellman Assumptions]{Discrete Logarithm and Diffie-Hellman Assumptions~\cite{Katz:2014:IMC:2700550, kiagias:crypto}}
 \label{preliminaries:pub:dlog}
