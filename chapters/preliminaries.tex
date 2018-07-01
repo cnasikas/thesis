@@ -5,22 +5,20 @@
 \section{Overview}
 \label{preliminaries:overview}
 
-Cryptography is the art and science of secure communication in the presence of third parties. As such, it has an immediate relationship with the privacy and anonymity requirement of data. Blockchain is a strong paradigm of cryptography embracement to enable the sought trust needed for exchanging digital assets. In this section we shall review the basic building blocks that cryptography provides to a data sharing system with the use of blockchain. The purpose of the section is not about cryptography in itself but to merely lay the ground for the forthcoming chapters. As a result, the exposition style will not be formal in well know cases.
+Cryptography is the art and science of secure communication in the presence of third parties. Cryptography is directly related to data privacy and anonymity requirements. The blockchain is a good example of cryptography embracement to enable the sought trust needed for the exchange of digital assets. In this section we review the basic building blocks that cryptography provides to a data sharing system when the blockchain is used. In this Section, cryptographic schemes are introduced in order to lay the ground for the following research. As a result, the exposition style will not be formal in well known cases.
 
 \section{Cryptographic Hash Functions}
 \label{preliminaries:hash}
 
-A hash function is a function which takes an input of arbitrary length and returns a fixed-length value~\cite{crypto_101,boneh_crypto,kiagias:crypto,Katz:2014:IMC:2700550}. The output value is called digest.
+A hash function is a function which takes an input of arbitrary length and returns a fixed-length value~\cite{crypto_101,boneh_crypto,kiagias:crypto,Katz:2014:IMC:2700550}. The hash output value is called digest.
 
-Hash functions has many application. They are used in data structures such as hash tables, authentication schemes, password verification and data identifiers to name a few.
+Hash functions have many applications. They are used in data structures -- such as hash tables -- in authentication schemes, password verification and data identifiers to name just a few.
 
-A hash function at minimum guarantees that for the same input yields the same output. Since the size of the output is fixed, the output range is finite. As a result, it is possible that for two different inputs a hash function produce the same output. This phenomenon is called collision.
+A hash function guarantees at a minimum that for the same input yields the same output. The size of the output is fixed, thus the output range is finite. For this reason it is possible two different inputs produce the same output. This phenomenon is called collision.
 
-Cryptographic hash functions have much stronger properties than regular hash function. The ideal cryptographic hash function should be easily computable, noninvertible and collision-resistant~\cite{Katz:2014:IMC:2700550, kiagias:crypto, crypto_101}.
+Cryptographic hash functions have much stronger properties than regular hash functions. Ideal cryptographic hash functions should be easily computable, noninvertible and collision-resistant~\cite{Katz:2014:IMC:2700550, kiagias:crypto, crypto_101}. A cryptographic hash function $H$ is a deterministic polynomial algorithm that takes as input any given string $x \in \{0, 1\}^{*}$ and outputs a string $H(x) \in \{0, 1\}^{k}$ where $k$ is of fixed size. In the case of a hash function $H$, a collision is a pair of distinct messages $m_0, m_1$ where $m_0 \neq m_1$ and $H(m_0) = H(m_1)$. A hash function $H$ is collision-resistant if it is infeasible for any polynomial-time algorithm to find collisions.
 
-More formally, a cryptographic hash function $H$ is a deterministic polynomial algorithm that takes as input any string $x \in \{0, 1\}^{*}$ and outputs a string $H(x) \in \{0, 1\}^{k}$ where $k$ is of fixed size. A collision for a hash function $H$ is a pair of distinct messages $m_0, m_1$ where $m_0 \neq m_1$ and $H(m_0) = H(m_1)$. A hash function $H$ is collision-resistant if finding collisions is infeasible for any polynomial-time algorithm.
-
-Typically there are three levels of security~\cite{Katz:2014:IMC:2700550}:
+Three levels of security~\cite{Katz:2014:IMC:2700550} can be identified:
 
 \begin{itemize}
   \item Preimage resistance: Given a digest $h$ it is hard to find any message $m$ with $H(m) = h$
