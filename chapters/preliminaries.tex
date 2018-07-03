@@ -5,25 +5,25 @@
 \section{Overview}
 \label{preliminaries:overview}
 
-Cryptography is the art and science of secure communication in the presence of third parties. Cryptography is directly related to data privacy and anonymity requirements. The blockchain is a good example of cryptography embracement to enable the sought trust needed for the exchange of digital assets. In this section we review the basic building blocks that cryptography provides to a data sharing system when the blockchain is used. In this Section, cryptographic schemes are introduced in order to lay the ground for the following research. As a result, the exposition style will not be formal in well known cases.
+Cryptography is the art and science of securing digital information, transactions, and distributed computations in the presence of third parties~\cite{Katz:2014:IMC:2700550}. Cryptography is directly related to data privacy and anonymity requirements. The blockchain is a good example of cryptography embracement to enable the sought trust needed for the exchange of digital assets. In this section we review the basic building blocks that cryptography provides to a data sharing system when the blockchain is used. In this Section, cryptographic schemes are introduced in order to lay the ground for the following research. As a result, the exposition style will not be formal in well known cases.
 
 \section{Cryptographic Hash Functions}
 \label{preliminaries:hash}
 
-A hash function is a function which takes an input of arbitrary length and returns a fixed-length value~\cite{crypto_101,boneh_crypto,kiagias:crypto,Katz:2014:IMC:2700550}. The hash output value is called digest.
+A \textbf{hash function} is a function which takes an input of arbitrary length and returns a fixed-length value~\cite{crypto_101,boneh_crypto,kiagias:crypto,Katz:2014:IMC:2700550}. The hash output value is called \textbf{digest}.
 
 Hash functions have many applications. They are used in data structures -- such as hash tables -- in authentication schemes, password verification and data identifiers to name just a few.
 
-A hash function guarantees at a minimum that for the same input yields the same output. The size of the output is fixed, thus the output range is finite. For this reason it is possible two different inputs produce the same output. This phenomenon is called collision.
+A hash function guarantees at a minimum that for the same input yields the same output. The size of the output is fixed, thus the output range is finite. For this reason it is possible two different inputs produce the same output. This phenomenon is called \textbf{collision}.
 
 Cryptographic hash functions have much stronger properties than regular hash functions. Ideal cryptographic hash functions should be easily computable, noninvertible and collision-resistant~\cite{Katz:2014:IMC:2700550, kiagias:crypto, crypto_101}. A cryptographic hash function $H$ is a deterministic polynomial algorithm that takes as input any given string $x \in \{0, 1\}^{*}$ and outputs a string $H(x) \in \{0, 1\}^{k}$ where $k$ is of fixed size. In the case of a hash function $H$, a collision is a pair of distinct messages $m_0, m_1$ where $m_0 \neq m_1$ and $H(m_0) = H(m_1)$. A hash function $H$ is collision-resistant if it is infeasible for any polynomial-time algorithm to find collisions.
 
 Three levels of security~\cite{Katz:2014:IMC:2700550} can be identified:
 
 \begin{itemize}
-  \item Preimage resistance: Given a digest $h$ it is hard to find any message $m$ with $H(m) = h$
-  \item Second preimage resistance: For any given message $m_0$ it is hard to find a second message $m_1 \neq m_0$ such as $H(m_0) = H(m_1)$
-  \item Collision resistance: It is hard to find a pair of messages $m_0, m_1$ where $m_0 \neq m_1$ and $H(m_0) = H(m_1)$
+  \item \textbf{Preimage resistance}: Given a digest $h$ it is hard to find any message $m$ with $H(m) = h$
+  \item \textbf{Second preimage resistance}: For any given message $m_0$ it is hard to find a second message $m_1 \neq m_0$ such as $H(m_0) = H(m_1)$
+  \item \textbf{Collision resistance}: It is hard to find a pair of messages $m_0, m_1$ where $m_0 \neq m_1$ and $H(m_0) = H(m_1)$
 \end{itemize}
 
 Collision resistance is the strongest security property and a requirement for cryptographic hash functions.
@@ -35,17 +35,17 @@ Cryptographic hash functions are heavily used in the blockchain. They are used t
 \section{Symmetric-key cryptography}
 \label{preliminaries:sym}
 
-In a symmetric cryptosystem two parties share a common secret key agreed prior to communication. The key is used for both encryption and decryption. When a party wants to securely send a message she has to use the secret key to encrypt it and then sent it. The receiver uses the same secret key to decrypt and recover the message. More formally, a symmetric cryptosystem is composed of the following algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
+In a symmetric cryptosystem two parties share a common \textbf{secret key} agreed prior to communication. The key is used for both encryption and decryption. When a party wants to securely send a message she has to use the secret key to encrypt it and then sent it. The receiver uses the same secret key to decrypt and recover the message. More formally, a symmetric cryptosystem is composed of the following algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
 \begin{itemize}
-  \item A key generation algorithm $\calg$ that takes as input a security parameter $1^{n}$ and outputs a key $k$.
-  \item An encryption algorithm $\cale$ that takes as input a key $k$ and a plaintext $m$ and outputs a ciphertext $c$.
-  \item A decryption algorithm $\cald$ that takes as input a key $k$ and a ciphertext $c$ and outputs a plaintext $m$.
+  \item A \textbf{key generation algorithm} $\calg$ that takes as input a security parameter $1^{n}$ and outputs a key $k$.
+  \item An \textbf{encryption algorithm} $\cale$ that takes as input a key $k$ and a plaintext $m$ and outputs a ciphertext $c$.
+  \item A \textbf{decryption algorithm} $\cald$ that takes as input a key $k$ and a ciphertext $c$ and outputs a plaintext $m$.
 \end{itemize}
 
-The set of all possible keys which can derive from the key generation algorithm $\calg$ is called the key space $\calk$. Respectively, the set of all possible plaintext is called the plaintext message space denoted $\calm$, and the set of all possible ciphertexts is called ciphertext message space denoted $\calc$. In practice, keys are usually of some fixed length; 256-bit keys are very common. On the other hand, messages and ciphertexts can be of arbitrary length. For example, a message may be a video or a music file or even a single bit.
+The set of all possible keys which can derive from the key generation algorithm $\calg$ is called the \textbf{key space} $\calk$. Respectively, the set of all possible plaintext is called the \textbf{plaintext message space} denoted $\calm$, and the set of all possible ciphertexts is called \textbf{ciphertext message space} denoted $\calc$. In practice, keys are usually of some fixed length; 256-bit keys are very common. On the other hand, messages and ciphertexts can be of arbitrary length. For example, a message may be a video or a music file or even a single bit.
 
-A symmetric cryptosystem must satisfy the correctness property: for all $m \in \calm$ and $k \in \calk$, it holds that:
+A symmetric cryptosystem must satisfy the \textbf{correctness} property: for all $m \in \calm$ and $k \in \calk$, it holds that:
 
 \begin{equation*}
   \cald_{k}(\cale_{k}(m)) = m
@@ -81,7 +81,7 @@ The security of a block cipher is much stronger than semantic security~\cite{bon
 
 A mode of operation is a way to encrypt arbitrary-length messages using block ciphers of fixed message length. A message is broken into $l$ blocks of size $n$, the block cipher operating on each block. If the size of the last block is less than the block size, the block is padded to a full size block. In most modes of operation, a random initial vector (IV) of length $n$ is required. The IV ensures distinct ciphertexts for each encryption even for the same plaintext and key. The IV is not secret as it is crucial for completing decryption. For a mode to be secure, the IV must be distinct and random in each encryption~\cite{Katz:2014:IMC:2700550}
 
-Several modes of operation are presented below. These modes are vulnerable either to padding oracle attacks~\cite{padding_attacks} -- attacks that exploit the padding validation to decrypt the ciphertext -- or malleable~\cite{malleability} -- the property of transforming one ciphertext into another which decrypts to a different plaintext. To countermeasure padding oracle attacks, or changes to the ciphertext, message authentication~\cite{Katz:2014:IMC:2700550} should be used along with encryption to detect tampering with the ciphertext. Notable modes that combine encryption with authentication are CCM, OCB and GCM.
+Several modes of operation are presented below. These modes are vulnerable either to padding oracle attacks~\cite{padding_attacks} -- attacks that exploit the padding validation to decrypt the ciphertext -- or malleable~\cite{malleability} -- the property of transforming one ciphertext into another which decrypts to a different plaintext. To countermeasure padding oracle attacks, or changes to the ciphertext, message authentication~\cite{Katz:2014:IMC:2700550} should be used along with encryption to detect tampering with the ciphertext. Notable modes that combine encryption with authentication are Counter with CBC-MAC (CCM), Offset Codebook Mode (OCB) and Galois/Counter Mode (GCM).
 
 \epar{Electronic Codebook (ECB)}
 \label{preliminaries:sym:modes:ecb}
@@ -235,7 +235,7 @@ CTR mode has many advantages. One of the main advantages of CTR mode is that bot
 \section{Public Key Cryptography}
 \label{preliminaries:pub}
 
-As we see in~\ref{preliminaries:sym} a secret key needs to be agreed upon prior to communication. In 1976, Whitfield Diffie and Martin Hellman published a paper called New Directions in Cryptography~\cite{Diffie:2006:NDC:2263321.2269104} which changed completely the way we communicate. The two cryptographers proposed a protocol that enabled two parties, having no prior communication, to establish a secret key over an insecure channel in the presence of eavesdropping adversaries. The protocol uses two keys, one for encryption and one for decryption. The encryption key is called the public key and the decryption key is called the secret key (or private). Every party has a key pair, consisting of a public and a secret key. The public is available to anyone who wants to sent an encrypted message to the key holder -- the receiver may post the public key online beforehand. The receiver of the message decrypts the ciphertext with the use of her private key. Only the owner of the private key can decrypt a message that was encrypted using the corresponding public key. Any key pair is essentially an identity and the blockchain smartly utilizes it to provide anonymous identities to the users of the system.
+As we see in~\ref{preliminaries:sym} a secret key needs to be agreed upon prior to communication. In 1976, Whitfield Diffie and Martin Hellman published a paper called New Directions in Cryptography~\cite{Diffie:2006:NDC:2263321.2269104} which changed completely the way we communicate. The two cryptographers proposed a protocol that enabled two parties, having no prior communication, to establish a secret key over an insecure channel in the presence of eavesdropping adversaries. The protocol uses two keys, one for encryption and one for decryption. The encryption key is called the \textbf{public key} and the decryption key is called the \textbf{secret key} (or private). Every party has a key pair, consisting of a public and a secret key. The public is available to anyone who wants to sent an encrypted message to the key holder -- the receiver may post the public key online beforehand. The receiver of the message decrypts the ciphertext with the use of her private key. Only the owner of the private key can decrypt a message that was encrypted using the corresponding public key. Any key pair is essentially an identity and the blockchain smartly utilizes it to provide anonymous identities to the users of the system.
 
 A public-key encryption scheme is composed of the following probabilistic, polynomial-time algorithms~\cite{Katz:2014:IMC:2700550, kiagias:crypto}:
 
@@ -256,7 +256,7 @@ Many important and widely used public-key schemes base their security on mathema
 \subsection[Discrete Logarithm and Diffie-Hellman Assumptions]{Discrete Logarithm and Diffie-Hellman Assumptions~\cite{Katz:2014:IMC:2700550, kiagias:crypto}}
 \label{preliminaries:pub:dlog}
 
-In cryptography, any system to be considered secure has to be provable secure. There are cryptosystems which are perfectly secure~\cite{shannon_otp}, such as the one-time pad~\cite{shannon_otp}, and others that perfect security cannot be achieved. In such case, the security is proven by computational security assumptions; reductions to a particular problem which is assumed, under certain conditions, to be hard to solve in polynomial-time. The discrete log problem is one of those problems and significant cryptographic schemes, such as the Diffie-Hellman key exchange and El Gamal encryption and signature protocol, was built under the discrete log computational hardness assumption.
+In cryptography a system is considered to be secure if it is provable secure. There are cryptosystems which are perfectly secure~\cite{shannon_otp}, like the \textbf{one-time pad}~\cite{shannon_otp}, and others that perfect security cannot be achieved. In the second case security can be proven by computational security assumptions, in other words a reduction to a particular problem which under certain conditions is assumed to be hard to solve in polynomial-time. Significant cryptographic schemes like the Diffie-Hellman key exchange and El Gamal encryption and signature protocol are built according to the discrete log computational hardness assumption.
 
 \begin{dfn}
   Let $\G$ be a cyclic group of order $q$ and let $g$ be a generator of $\G$. The \textbf{discrete log problem} (DLOG) is as follows: given a random element $h \in \G$, find an integer $x \in \Z_q$ such that $g^{x} = h$.
@@ -272,31 +272,31 @@ In cryptography, any system to be considered secure has to be provable secure. T
 
 The DLOG problem is believed to be hard for specific group families of $\G$. For example, solving the DLOG for the subgroup of order $q$ of $\Z^{*}_{p}$, where $p$ and $q$ are primes of size at least $2048$-bits and $256$-bits respectively, is considered infeasible. This assumption is called the \textbf{discrete log assumption}.
 
-The DDH problem is weaker than the CDH problem and it holds that $DDH \leq CDH$; If an adversary could solve CDH, she can compute $g^{ab}$ and comparing it to $g^{c}$ and easily solves the DDH.
+The DDH problem is weaker than the CDH problem. It holds that $DDH \leq CDH$; if an adversary can solve CDH she can compute $g^{ab}$ and compare it to $g^{c}$ and easily solve the DDH.
 
 \section{Digital signatures}
 \label{preliminaries:sign}
 
-A digital signature is a fundamental cryptographic primitive. It can be considered as the equivalent to a handwritten signature. It is a scheme from presenting the authenticity of digital messages or documents.
+A digital signature is a fundamental cryptographic primitive. It is considered to be the equivalent to a handwritten signature. It is a scheme that demonstrates the authenticity of digital messages or documents.
 
-In a digital signature scheme, each party holds a unique key pair $(p_k, s_k)$. The signing key $s_k$ is used to uniquely sign a message $m$ and the verification key $p_k$ to verify the signature. Only someone with knowledge of $s_k$ can sign a message, but all parties having access to $p_k$ can verify a signature.
+In a digital signature scheme, each party holds a unique key pair $(p_k, s_k)$. A message $m$ is uniquely signed with the signing key $s_k$ and the verification key $p_k$ is used to verify the signature. Only someone who knows $s_k$ can sign a message, but all parties that have access to $p_k$ can verify a signature.
 
 Digital signatures have the following important properties:
 
 \begin{itemize}
-  \item Authentication: The message was signed by a known sender
-  \item Non-repudiation: The sender cannot deny having sent the message
-  \item Integrity: The message was not altered in transit
+  \item Authentication: The message is signed by a known sender
+  \item Non-repudiation: The sender cannot deny sending the message
+  \item Integrity: The message is not altered in transit
 \end{itemize}
 
-Digital signatures are commonly used for software distribution and financial transactions and in cases where forgery detection is important. Blockchain is empowered with digital signatures to provide asset ownership; the rightful owner sign the transaction to prove possession of the asset.
+Digital signatures are commonly used for software distribution and financial transactions and in cases where forgery detection is important. The blockchain uses digital signatures to provide asset ownership; the rightful owner signs the transaction to prove her possession of the asset.
 
-More formally, a digital signature scheme is composed of the following probabilistic polynomial-time algorithms~\cite{Katz:2014:IMC:2700550,kiagias:crypto}:
+A digital signature scheme is composed of the following probabilistic polynomial-time algorithms~\cite{Katz:2014:IMC:2700550,kiagias:crypto}:
 
 \begin{itemize}
-  \item The key generation algorithm $Gen$: Take as input a security parameter $1^{n}$ and outputs a key pair ($p_k$, $s_k$).
-  \item A signing algorithm $Sign$: Take a signing key $s_k$ and a message $m$ and produce a digital signature $\sigma$ of $m$
-  \item A deterministic verification algorithm $Verify$: Take a verification key $p_k$ and a signature $\sigma$. It outputs $b=1$ or $b=0$ ($true$ or $false$) to indicate if the signature is valid.
+  \item The key generation algorithm $Gen$: Takes as input a security parameter $1^{n}$ and outputs a key pair ($p_k$, $s_k$).
+  \item A signing algorithm $Sign$: Takes a signing key $s_k$ and a message $m$ and produce a digital signature $\sigma$ of $m$
+  \item A deterministic verification algorithm $Verify$: Takes a verification key $p_k$ and a signature $\sigma$. It outputs $b=1$ or $b=0$ ($true$ or $false$) to indicate if the signature is valid.
 \end{itemize}
 
 The primary goal of digital signatures is unforgeability; an adversary cannot create a new valid message-signature pair without the corresponding signing key.
@@ -312,7 +312,7 @@ The scheme works as follows:
   \item Key Generation:
     \begin{enumerate}
       \item Choose a cryptographic hash function $H$ where $H: \{0, 1\}^{*} \rightarrow \{0, 1\}^{n}$
-      \item Choose a prime $p$ such as the DLOG problem is difficult
+      \item Choose a prime $p$ such that the DLOG problem is difficult
       \item Find a generator $g$ of the group $\Z^{*}_{p}$
       \item Choose randomly $x \rselect{\Z_q}$
       \item Compute $h = g^{x} modp$
@@ -336,9 +336,9 @@ The scheme works as follows:
 \subsection{Digital Signature Algorithm (DSA)}
 \label{preliminaries:sign:dsa}
 
-The Digital Signature Algorithm (DSA)~\cite{dsa_nist} has been standardised by the National Institute of Standards and Technology (NIST). DSA is a variant of the El Gamal signature scheme. The main advantage of DSA over El Gamal Signature is the size of the signature. DSA produce signatures of size $320$-bit in comparison to El Gamal that needs at least signatures of size $2048$-bit to be secure given todays security standards~\cite{dsa}.
+The Digital Signature Algorithm (DSA)~\cite{dsa_nist} is a variant of the El Gamal signature scheme. The DSA was standardized by the National Institute of Standards and Technology (NIST). The main advantage of DSA over El Gamal Signature is the size of the signature. DSA produces signatures of $320$-bit in size, in comparison to El Gamal where at least $2048$-bit signatures are required for it to be secure according to contemporary security standards~\cite{dsa}.
 
-The algorithm work as follows~\cite{dsa}:
+The algorithm works as follows~\cite{dsa}:
 
 \begin{itemize}
   \item Key Generation:
@@ -373,11 +373,11 @@ The algorithm work as follows~\cite{dsa}:
 \section{Elliptic-curves}
 \label{preliminaries:el_curves}
 
-Elliptic curves (ECC) play an import role in cryptography. All cryptosystems, defined in previous chaptes, are built over multiplicative groups of integers modulo a sufficient large prime $p$~\cite{kiagias:crypto, boneh_crypto}. Elliptic curves are additive abelian groups~\cite{kiagias:crypto}; a group satisfying associativity, commutativity, existence of identity element and inverse under the addition group operation~\cite{elliptic_curves_2}.
+Elliptic curves (ECC) play an import role in cryptography. All cryptosystems presented in previous chapters are built over multiplicative groups of integers modulo a sufficient large prime $p$~\cite{kiagias:crypto, boneh_crypto}. Elliptic curves are additive abelian groups~\cite{kiagias:crypto}; a group satisfying associativity, commutativity, and existence of identity element and of inverse element under the addition group operation~\cite{elliptic_curves_2}.
 
-There are two apparent benefits for using curves over modular groups~\cite{kiagias:crypto}. The first is cost efficiency. In practice, cryptosystems that their security depends on the discrete log problem or the factorisation problem on a modular group, such as the El Gamal or the RSA, the primes have to be at least 2048 bits for the system to be secure. On the other hand, elliptic curves offer similar security using much smaller key sizes. A 233-bit elliptic curve key gives the same level of security as a 2,240-bit RSA key~\cite{ecc_rsa_bits, ecc_rsa_bits_1} and a 333-bit elliptic curve key as a 4096-bit RSA key~\cite{blake1999elliptic}. The second reason is that, for the moment, there is no know way to generalise the attacks against the discrete logarithm problem on a modular group to elliptic curves~\cite{kiagias:crypto}.
+There are two apparent benefits for using curves over modular groups~\cite{kiagias:crypto}. The first is cost efficiency. In practice, cryptosystems that their security depends on the discrete log problem or the factorisation problem on a modular group, such as the El Gamal or the RSA, the primes have to be at least 2048 bits for the system to be secure. On the other hand, elliptic curves offer similar security using much smaller key sizes. A 233-bit elliptic curve key gives the same level of security as a 2,240-bit RSA key~\cite{ecc_rsa_bits, ecc_rsa_bits_1} and a 333-bit elliptic curve key as a 4096-bit RSA key~\cite{blake1999elliptic}. The second reason is that a way to generalize the attacks against the discrete logarithm problem on a modular group to elliptic curves~\cite{kiagias:crypto} has not been found yet.
 
-Cryptography is primarily interested in elliptic curves over $\F_p$: the field of integers modulo $p$ where $p$ is a prime number. An elliptic curve $E$ over $\F_p$ is defined by the equation of the form~\cite{elliptic_curves, elliptic_curves_2}:
+Cryptography is primarily interested in elliptic curves over $\F_p$: the field of integers modulo $p$, where $p$ is a prime number. An elliptic curve $E$ over $\F_p$ is defined by the equation of the form~\cite{elliptic_curves, elliptic_curves_2}:
 
 \begin{equation*}
   y^2 = x^3 + ax + b
@@ -417,7 +417,7 @@ where $a, b \in \F_p$. A pair $(x, y)$ where $x, y \in \F_p$ is a point on the c
 \subsection[Points addition]{Points addition~\cite{elliptic_curves}}
 \label{preliminaries:el_curves:addition}
 
-Let $P = (x_1, y_1)$ and $Q = (x_2, y_2)$ two points on the elliptic curve $E$ where $P \neq Q$ and $P, Q \neq \infty$. Any two points on a curve add to produce a third point on the curve. A third point $R = (x_3, y_3)$ on the curve $E$ is defined as:
+Let $P = (x_1, y_1)$ and $Q = (x_2, y_2)$ be two points on the elliptic curve $E$ where $P \neq Q$ and $P, Q \neq \infty$. Any two points on a curve add to produce a third point on the curve. A third point $R = (x_3, y_3)$ on the curve $E$ is defined as:
 
 \begin{equation*}
   R = P + Q
@@ -526,9 +526,9 @@ Finally, to reflect $-R$ to the $x$-axis to obtain $R$ we change the sign of $y_
 \subsection[Points doubling]{Points doubling~\cite{elliptic_curves}}
 \label{preliminaries:el_curves:doubling}
 
-Let $P = (x_1, y_1)$ a points on the elliptic curve $E$ where $P \neq -P$ and $P \neq \infty$. Then $2P = (x_3, y_3)$. Unlike ~\ref{preliminaries:el_curves:addition}, where we have two points, in point doubling we have only one point, thus we cannot draw the line $L$. In that case, we use the tangent line $L$ to the curve $E$ at point $P$.
+Let $P = (x_1, y_1)$ a point on the elliptic curve $E$ where $P \neq -P$ and $P \neq \infty$. Then $2P = (x_3, y_3)$. Unlike ~\ref{preliminaries:el_curves:addition} where there are two points, in point doubling we have only one point, thus we cannot draw the line $L$. In that case, we use the tangent line $L$ to the curve $E$ at point $P$.
 
-The slope of $L$ can be found as
+The slope of $L$ can be found as:
 
 \begin{equation*}
   m = \dfrac{dy}{dx} = \dfrac{3x_1^{2} + a}{2y_1}
@@ -548,7 +548,7 @@ Therefore, proceeding as in~\ref{preliminaries:el_curves:addition}, we obtain
 
 \subsection{Elliptic curve discrete logarithm problem (ECDLP)}
 
-As with multiplicative groups, cyclic subgroups of some such elliptic curve groups can be used to implement secure systems based on the discrete logarithm problem which is as well assumed to be hard.
+Cyclic subgroups of some elliptic curve groups can be used to implement secure systems based on the discrete logarithm problem. The DLOG is assumed to be hard, like in multiplicative groups.
 
 \begin{dfn}
   The elliptic curve discrete logarithm problem (ECDLP) is as follows: given an elliptic curve $E$ over a finite field $\F_p$ and two points $P, Q \in E$, find an integer $d \in \Z_p$ such that $Q = dP$.
@@ -567,12 +567,12 @@ Let $E$ be an elliptic curve over $\F_p$ and $P$ a generator point in $E$ of ord
   \item Return the tuple $(Q, d)$ where $Q$ is the public key and $d$ the secret key
 \end{enumerate}
 
-The prime $p$, the curve $E$ the generator point $P$, its order $q$ and the public key $Q$ are public and finding the secret key $d$ is equivalent to solving the ECDLP.
+The prime $p$, the curve $E$ the generator point $P$, its order $q$ and the public key $Q$ are public. Finding the secret key $d$ is equivalent to solving the ECDLP.
 
 \subsection{Elliptic Curve Digital Signature Algorithm (ECDSA)}
 \label{preliminaries:sign:el_curves:ecdsa}
 
-The Elliptic Curve Digital Signature Algorithm (ECDSA)~\cite{ecdsa} is a variant of the Digital Signature Algorithm (DSA) which use elliptic Curves. It is the most widely standardized elliptic curve-based signature scheme~\cite{elliptic_curves_2}.
+The Elliptic Curve Digital Signature Algorithm (ECDSA)~\cite{ecdsa} is a variant of the Digital Signature Algorithm (DSA) which uses elliptic Curves. It is the most widely adopted elliptic curve-based signature scheme~\cite{elliptic_curves_2}.
 
 Let $E$ be an elliptic curve over $\F_p$, a generator point $P$ of order $q$ and $H$ a cryptographic hash function where $H: \{0, 1\}^{*} \rightarrow  \{0, 1\}^{q}$. The ECDSA is defined as follows~\cite{elliptic_curves_2}:
 
@@ -600,12 +600,12 @@ Let $E$ be an elliptic curve over $\F_p$, a generator point $P$ of order $q$ and
     \end{enumerate}
 \end{itemize}
 
-Blockchain uses elliptic curves for key pair generation and transaction signing (ECDSA). Bitcoin and Ethereum use a specific elliptic curve for ECDSA~\cite{ecdsa} which its parameters are defined in the secp256k1 standard~\cite{secp}.
+Blockchain uses elliptic curves for key pair generation and transaction signing (ECDSA). Bitcoin and Ethereum use a specific elliptic curve for ECDSA~\cite{ecdsa} whose parameters are defined in the secp256k1 standard~\cite{secp}.
 
 \section{Homomorphic Encryption}
 \label{preliminaries:homo}
 
-Homomorphic encryption allows specific types of computation on encrypted data. It allows to perform computations over ciphertexts and return encrypted results that when decrypted matches the result of the operations as if they had been performed on the plaintext. An encryption scheme is called homomorphic when it has the homomorphic property. In particular, if for all $m_1, m_2 \in \calm$ and $k \in \calk$ (secret key or public key):
+Homomorphic encryption allows to perform specific types of computation on encrypted data. Computations performed over a ciphertext return encrypted results. When the results are decrypted they match the results of the operations as if they had been performed on the plaintext. An encryption scheme is called homomorphic when it has the homomorphic property. In particular, if for all $m_1, m_2 \in \calm$ and $k \in \calk$ (secret key or public key):
 
 \begin{equation*}
   Enc_k(m_1) \otimes Enc_k(m_2) = Enc_k(m_1 \oplus m_2)
@@ -619,8 +619,8 @@ Homomorphic encryption schemes are by nature malleable and have weaker security 
 \label{zkp}
 
 A proof of knowledge is a protocol that enables one party to convince another of the validity of a statement.
-In a zero-knowledge proof~\cite{zkp}, this is accomplished without revealing any information beyond the legitimacy of the proof~\cite{kiagias:crypto},
-meaning that one party can prove to another party that a given statement is true, without conveying any information apart from the fact that the statement is indeed true.
+In a zero-knowledge proof~\cite{zkp} this is accomplished without revealing any information beyond the legitimacy of the proof~\cite{kiagias:crypto}.
+In other words, one party can prove to another party that a given statement is true, without conveying any information apart from the fact that the statement is indeed true.
 
 Let $\calp$ be a prover and $\calv$ the verifier. $\calp$ must convince $\calv$ that she has some
 knowledge of a statement $x$ without explicitly stating what she knows. We call this knowledge a witness $w$.
@@ -640,23 +640,22 @@ Both parties are aware of a predicate $R$ that will attest to $w$ being a valid 
 \subsubsection{The strange cave of Ali Baba}
 \label{zkp:examples}
 
-Let's bring our old friends Alice and Bob and define the following game: at the bottom of the cave~\cite{Quisquater:1989:EZP:118209.118269} of figure~\ref{fig:zkp:alibaba} there is a magic door that
-can only be open using a secret password. The cave is shaped like a rectangle with one entrance at one side and the magic door blocking the opposite side. Bob knows the secret password and wants to prove to Alice that he can open the magic door without revealing the password to Alice.
-Bob propose the following game to prove to Alice he can open the magic door: Alice waits outside the cave, Bob enters the cave and
-takes either from the left or right path. Alice can not see which path Bob takes. Then Alice enters, stands at the entrance of cave and calls
-Bob to come out either the left or the right passage. Bob complies, using the secret password if necessary.
+Let's bring in all cryptographers' old friends, Alice and Bob, and let them play the following game: at the bottom of the cave~\cite{Quisquater:1989:EZP:118209.118269} of figure~\ref{fig:zkp:alibaba} there is a magic door that
+can only open with a secret password. The cave has one entrance on one side and a magic door blocking the entrance on the opposite side. Bob knows the secret password and he wants to prove that to Alice without revealing the password.
+Bob proposes the following game to prove that he can open the magic door: Alice has to wait outside of the cave, while Bob enters the cave and
+takes either the left or the right path. Alice cannot see which path Bob is taking. Then, Alice enters; standing at the entrance of the cave, she calls
+Bob to come out from either the left or the right passage. Bob does so, using the secret password if necessary.
 
-If Bob does not know the secret password he has $1/2$ change of guessing correctly as Alice choose at random which path Bob should take. If they repeat this procedure $k$ times the probability of Bob convincing Alice that he knows the secret password without actually knowing it reduce exponentially; at most $1/2^{k}$.
+If Bob does not know the secret password he has $1/2$ change of guessing correctly as Alice chooses at random which path Bob is taking. If this process is repeated $k$ times the probability of Bob convincing Alice that he knows the secret password without actually knowing is exponentially reduced -- at most $1/2^{k}$.
 
 \subsubsection{The colour-blind friend}
 
-Let's bring again our friends Alice and Bob. Suppose Bob is color-blind~\cite{zkp:colour_blind} and Alice has two balls: one red and one green but otherwise identical when you touch them.
-To Alice they seem complete identical and she is not sure if they are actually distinguishable. Bob wants to prove to Alice that indeed the are differently-coloured
-without revealing which one is red and which is green. To prove his knowledge, Bob gives to Alice the two balls so that she is holding one in each hand. Bob can see
-at this point which ball is in which hand. Next, Alice either switches the ball behind her hands or leaves them be, with probability $1/2$. Finally, she brings
-them out from behind her back. Alice then asks Bob if she switch the balls. By looking at their colors, Bob can can say with certainty whether he switched them or not.
-On the other hand, if they were the same color and hence indistinguishable, there is no way he could guess correctly with probability higher than 1/2. If they repeat
-this procedure $k$ times the probability that Bob succeeded at identifying all the tries when the balls are identical is at most $1/2^{k}$.
+Now, suppose that Bob is color-blind~\cite{zkp:colour_blind} and Alice keeps two balls of the same size in her hands, one red and one green.
+To Bob they seem identical and he is not sure which one is which. Alice wants to prove him that indeed they are of different colour,
+without revealing which one is red and which is green. To prove her knowledge, she tells Bob to hold the two balls, one on each hand. Alice can see
+at this point which ball is in which hand. Next, he can either switch hands behind his back or leave them be. The probability, then, is $1/2$. Finally, he reveals them. Alice can say with certainty whether he switched hands or not.
+Have the balls had the same color, they would have been indistinguishable. There would have been no way Alice could guess the right answer with probability higher than $1/2$. If they repeat
+this $k$ times the probability that Alice succeeds when the balls are identical is at most $1/2^{k}$.
 
 \begin{figure}[t!]
   \centering
@@ -776,13 +775,13 @@ Intuitively, statistical zero-knowledge is a property that prohibits a verifier 
 \subsection{Verifiable Computation (VC)}
 \label{zkp:vc}
 
-Since computational power is often limited to devices such as mobiles or IoT devices the need of outsourcing computation to one or more powerful workers on the cloud emerges. Yet, confidence is needed at the working entity for proper computation. For this reason, the client should be able to verify the correctness of output. That way not only the client is protected from malicious or malfunctioning workers but also the legitimate worker is benefit by not be accountable for the computation~\cite{pinocchio-nearly-practical-verifiable-computation}. This scheme is called public verifiable computation (VC)~\cite{pinocchio-nearly-practical-verifiable-computation}.
+In devices such as mobiles or IoT devices where the computational power is often limited, the need to outsource computation to one or more powerful workers on the cloud emerges. Yet, confidence is required for the working entity to assure computation is done properly. The client should be able to verify the correctness of the output. This way, the client is protected from malicious or malfunctioning workers, and the legitimate worker is no longer accountable for the computation~\cite{pinocchio-nearly-practical-verifiable-computation}. This scheme is called public verifiable computation (VC)~\cite{pinocchio-nearly-practical-verifiable-computation}.
 
-In a public verifiable computation scheme the client outsource the evaluation of a function $F$ on input $u$ known to the client (e.g. a query). The client then can verify the correctness of the computation of $F(u)$ with less work than the computation of $F(u)$. The outsource function $F$ can take two inputs $u$ and $w$, where $w$ is the worker's private input (e.g a data set). In this case, the scheme is a Zero-Knowledge Verifiable Computation (or non-interactive zero knowledge (NIZK) proof~\cite{Blum:1991:NZ:123137.123145}) if the client learns nothing about worker's input expect the output of the computation~\cite{pinocchio-nearly-practical-verifiable-computation}.
+In a public verifiable computation scheme the client outsources the evaluation of a function $F$ on input $u$ -- for example, a query. The client then can verify the correctness of the computation of $F(u)$ doing less work than the initial computation of $F(u)$. The outsource function $F$ can take two inputs $u$ and $w$, where $w$ is the worker's private input -- for example, a data set. In this case, the scheme is a Zero-Knowledge Verifiable Computation (or non-interactive zero knowledge (NIZK) proof~\cite{Blum:1991:NZ:123137.123145}) if the client learns nothing about the worker's input except the computation's output~\cite{pinocchio-nearly-practical-verifiable-computation}.
 
-Such schemes are not interactive meaning no interaction is necessary between prover and verifier (worker and client) and a common reference string (CRS) shared between them is enough to achieve computational zero-knowledge~\cite{Blum:1991:NZ:123137.123145}.
+Such schemes are not interactive, which means that no interaction is necessary between prover and verifier (worker and client), and a common reference string (CRS) shared between them is enough to achieve computational zero-knowledge~\cite{Blum:1991:NZ:123137.123145}.
 
-Formally, as defined by Parno et. al~\cite{pinocchio-nearly-practical-verifiable-computation} a public Zero-Knowledge verifiable computation scheme $\calv \calc$ consist of a set of three polynomial-time algorithms:
+Formally, as defined by Parno et. al~\cite{pinocchio-nearly-practical-verifiable-computation}, a public Zero-Knowledge verifiable computation scheme $\calv \calc$ consists of a set of three polynomial-time algorithms:
 
 \begin{itemize}
   \item $(EK_F, VK_F) \leftarrow \text{KeyGen}(F, 1^{\lambda})$: The randomized key generation algorithm. It takes as input the outsourced function $F$ and a security parameter ${\lambda}$; it outputs a public evaluation key $EK_F$ and a public verification key $VK_F$.
@@ -793,26 +792,26 @@ Formally, as defined by Parno et. al~\cite{pinocchio-nearly-practical-verifiable
 \subsection{zk-SNARKs}
 \label{zkp:snarks}
 
-Non-interactive zero-knowledge proofs (NIKZ)~\cite{Blum:1991:NZ:123137.123145} are a variant of zero-knowledge proofs where sharing a common reference string (CRS) between the prover and the verifier ahead of time is enough to implement zero knowledge protocols without the need for interaction by the participants of the protocol. zkSNARKs protocols are non-interactive zero-knowledge proofs protocols with extra properties regarding the size of proof and the verification time.
+A Non-interactive Zero-Knowledge proof (NIKZ)~\cite{Blum:1991:NZ:123137.123145} is a zero-knowledge proof where sharing a common reference string (CRS) between the prover and the verifier ahead of time is enough to implement zero knowledge protocols without the need for interaction between the participants of the protocol. The zkSNARKs protocols are non-interactive zero-knowledge proof protocols which have some extra properties regarding the size of proof and the verification time.
 
-The acronym zkSNARK stands for `Zero-Knowledge Succinct Non-Interactive Argument of Knowledge` in which each individual part, informally, have the following meaning~\cite{zksnarks_nutshell, zcash, 184425, Bitansky:2012:ECR:2090236.2090263, zksnark_basics}:
+The acronym zkSNARK stands for `Zero-Knowledge Succinct Non-Interactive Argument of Knowledge` in which each individual part -- informally defined -- have the following meaning~\cite{zksnarks_nutshell, zcash, 184425, Bitansky:2012:ECR:2090236.2090263, zksnark_basics}:
 
 \begin{itemize}
   \item Zero-Knowledge: The verifier learns nothing but the validity of the computation
-  \item Succinct: The proof are sort and easy to verify in comparison to the actual computation (constant size and polynomial verifiable in the size of the proof).
-  \item Non-Interactive: There is no or little interaction done in one step. Anyone can verify without the need of interacting anew (publicly verifiable).
+  \item Succinct: The proofs are sort and easy to verify in comparison to the actual computation (constant size, and polynomial verifiable in the size of the proof).
+  \item Non-Interactive: There is no or little interaction in one step. Anyone can verify the proof, no need for new interaction (publicly verifiable).
   \item ARgument: Soundness (§~\ref{zkp:definition}) holds only against computationally bounded provers.
   \item of Knowledge: If the verifier accepts a proof output by a computationally bounded prover, then the prover has a witness for the given instance.
 \end{itemize}
 
-The first zkSNARKs constructions where inspired by the PCP theorem allowing faster and shorter proofs~\cite{zksnark_basics}. In this section we analyze the zk-SNARK model proposed by Gennaro et al~\cite{ggpr} and the Pinnochio protocol proposed by Parno et al~\cite{pinocchio-nearly-practical-verifiable-computation} without getting into rigorous mathematical proofs, security assumptions or implementations. The purpose of this chapter is to provide a high level understanding of zkSNARKs and their core mechanisms.
+The first zkSNARKs constructions where inspired by the PCP theorem allowing faster and shorter proofs~\cite{zksnark_basics}. In this section an analysis of the zk-SNARK model proposed by Gennaro et al~\cite{ggpr} and the Pinnochio protocol proposed by Parno et al~\cite{pinocchio-nearly-practical-verifiable-computation} is attempted, without getting into rigorous mathematical proofs, security assumptions or implementations. The purpose of this chapter is to provide a high level understanding of zkSNARKs and their core mechanisms.
 
 \subsection{Main idea}
 \label{zkp:snarks:main_idea}
 
-To be able to construct zkSNARKs for a computation problem it had to encoded to a specific form, which is equivalent to the original problem, from which zkSNARKs can be derived. This form is called Quadratic Arithmetic Program (QAP).
+In order to be able to construct a zkSNARKs for a computation problem it has to be encoded in a specific form, an equivalent to the original problem, from which zkSNARKs can derive. This form is called Quadratic Arithmetic Program (QAP).
 
-At high level, zkSNARKs consist of four basic steps (Figure ~\ref{fig:zkp:zksnark_flow}):
+At a high level, zkSNARKs consists of four basic steps (Figure ~\ref{fig:zkp:zksnark_flow}):
 
 \begin{enumerate}
   \item Computation to Arithmetic circuit~\cite{pinocchio-nearly-practical-verifiable-computation}
@@ -848,9 +847,9 @@ At high level, zkSNARKs consist of four basic steps (Figure ~\ref{fig:zkp:zksnar
 \label{zkp:snarks:circuits}
 
 An arithmetic circuit $C$ over a finite field $\F_p$ is a circuit that contains
-only addition and multiplication gates. It takes as inputs elements in $\F_p$ and its gates output elements in $\F_p$~\cite{184425, zcash}. The outputs are determined by the inputs which pass through the gates where their values are changed accordingly. Any program  can be reduced to  an arithmetic circuit~\cite{pankova_succinct_2013, 10.1007/978-3-642-40084-1_6} and normally the circuit is associated to the function it computes; the outsource function the prover works upon.
+only addition and multiplication gates. It takes as inputs elements in $\F_p$ and its gates output elements in $\F_p$~\cite{184425, zcash}. The outputs are determined by the inputs which pass through the gates where their values are changed accordingly. Any program  can be reduced to  an arithmetic circuit~\cite{pankova_succinct_2013, 10.1007/978-3-642-40084-1_6} and normally the circuit is associated to the function it computes -- the outsource function upon which the prover works.
 
-A legal or a valid assignment for an arithmetic circuit $C$ is a tuple $(c_1, c_2, \dots, c_n) \in \F_p$ such that $C(c_1, c_2, \dots, c_k) = (c_{k+1}, c_2, \dots, c_n)$ where $k$ is the number of all input and $n - k$ the number of all outputs of the circuit. Given a circuit evaluation, the task of the prover is to convince the verifier that there exist evaluations of intermediate gates such that the circuit indeed produces such an output with such an input~\cite{pankova_succinct_2013}. For example, if Alice wants to prove to Bob that she knows $c_1, c_2, c_3 \in \F_p$, such as $(c_{1}c_{2})(c_1 + c_3) = 7$, first she has to encode the computation to an arithmetic circuit $C$ (the presentation of $C$ is shown in Figure~\ref{fig:zkp:circuit}). Then she wants to prove that she knows a valid assignment $(c_1, c_2, c_3, c_4, c_5)$, where $c_4 = c_{1}c_{2}$ and $c_5 = c_{4}(c_1 + c_3)$, such that $c_5 = 7$.
+A legal or a valid assignment for an arithmetic circuit $C$ is a tuple $(c_1, c_2, \dots, c_n) \in \F_p$ such that $C(c_1, c_2, \dots, c_k) = (c_{k+1}, c_2, \dots, c_n)$ where $k$ is the number of all input and $n - k$ the number of all outputs of the circuit. Given a circuit evaluation, the task of the prover is to convince the verifier that evaluations of intermediate gates exist, so that the circuit indeed produces such an output with such an input~\cite{pankova_succinct_2013}. For example, if Alice wants to prove to Bob that she knows $c_1, c_2, c_3 \in \F_p$, such that $(c_{1}c_{2})(c_1 + c_3) = 7$, first she has to encode the computation to an arithmetic circuit $C$ (the presentation of $C$ is shown in Figure~\ref{fig:zkp:circuit}). Then she wants to prove that she knows a valid assignment $(c_1, c_2, c_3, c_4, c_5)$, where $c_4 = c_{1}c_{2}$ and $c_5 = c_{4}(c_1 + c_3)$, such that $c_5 = 7$.
 
 \begin{figure}[ht!]
   \center
@@ -891,7 +890,7 @@ A legal or a valid assignment for an arithmetic circuit $C$ is a tuple $(c_1, c_
 \subsubsection[Quadratic Arithmetic Program (QAP)]{Quadratic Arithmetic Program (QAP)~\cite{zksnark_basics, zcash_snarks}}
 \label{zkp:snarks:qap}
 
-Geranno et. al~\cite{ggpr} showed how to encode efficiently computation as quadratic programs called Quadratic Arithmetic Programs (QAP) to obtain zk-SNARKs. QAPs play an important role as they enable the prover to construct the proof $\pi$ claiming that she knows a valid assignment of a circuit $C$.
+Geranno et. al~\cite{ggpr} showed how to efficiently encode computations to quadratic programs called Quadratic Arithmetic Programs (QAP), to obtain zk-SNARKs. QAPs play an important role as they enable the prover to construct the proof $\pi$ where she claims that she knows a valid assignment of a circuit $C$.
 
 A  QAP $Q(C) = (L, R, O, T)$ for a given circuit $C$ is a set of three polynomials
 
@@ -905,19 +904,19 @@ and a target polynomial $T$ such that $T$ divides the polynomial:
   P = LR - O
 \end{equation*}
 
-if and only if $(c_1, c_2, \dots, c_n)$ is a valid assignment for $C$. The prover constructs the polynomial for its proof $\pi$ and the verifier check the divisibility of $P$ by $T$. Equivalent, $P = TH$ for some polynomial $H$.
+if and only if $(c_1, c_2, \dots, c_n)$ is a valid assignment for $C$. The prover constructs the polynomial for its proof $\pi$ and the verifier checks the divisibility of $P$ by $T$. Identically, $P = TH$ for some polynomial $H$.
 
 To translate the $C$ into a QAP the wires and gates must be labeled in a specific way:
 
 \begin{itemize}
-  \item Each multiplication gate has exactly two input wires: left and right wire
+  \item Each multiplication gate has exactly two input wires: a left and a right wire
   \item Each multiplication gate has a unique label
   \item Addition gates are not labeled
   \item Outgoing wires to more than one gate are labeled as one wire
   \item Outgoing wires from an addition gate to a multiplication gate are not labeled; the inputs of an addition gate go directly to the multiplication gate
 \end{itemize}
 
-A label assignment of circuit of Figure~\ref{fig:zkp:circuit} is shown in Figure~\ref{fig:zkp:circuit_label}.
+A label assignment of the circuit of Figure~\ref{fig:zkp:circuit} is shown in Figure~\ref{fig:zkp:circuit_label}.
 
 \begin{figure}[ht!]
   \center
@@ -955,9 +954,9 @@ A label assignment of circuit of Figure~\ref{fig:zkp:circuit} is shown in Figure
   \label{fig:zkp:circuit_label}
 \end{figure}
 
-The circuit is ready to be transformed to a QAP. Let $M$ is the set of the index of the multiplication gates and $W$ the set of input and output wires. The points in $M$ are called target points. For each gate $g \in M$ we construct a set of left, right, and output polynomials as follows: for each wire a polynomial is constructed in such way that it evaluates at zero on all target point expect the ones that correspond to the multiplication gate.
+The circuit is ready to be transformed into a QAP. Let $M$ be the set that contains the indexes of the multiplication gates and $W$ the set that contains the input and output wires. The points in $M$ are called target points. For each gate $g \in M$ we construct a set of left, right, and output polynomials as follows: for each wire a polynomial is constructed in such way that it evaluates at zero on each target point except those that correspond to the multiplication gate.
 
-\textbf{QAP construction of circuit of Figure~\ref{fig:zkp:circuit_label}}: Gate $g_1$, with target point $1$, has $w_1$ as left wire, $w_2$ as right wire and $w_4$ as output label. Thus, we construct $L_1 = R_2 = O_4 = 2 - x$ as the polynomial on point $1$ corresponding to $g_1$ is one and zero on point $2$ corresponding to $g_2$. Similar, for gate $g_2$ $L_4 = R_1 = R_3 = O_5 = x - 1$. Note that the wires $w_2$ and $w_3$ are both right inputs of $g_2$.
+\textbf{QAP construction of circuit of Figure~\ref{fig:zkp:circuit_label}}: Gate $g_1$, with target point $1$, has $w_1$ as left wire, $w_2$ as right wire and $w_4$ as output label. As the polynomial on point $1$ that corresponds to $g_1$ evaluates to $1$ and on point $2$ corresponding to $g_2$ evaluates to $0$, we construct $L_1 = R_2 = O_4 = 2 - x$. Similar, for gate $g_2$ $L_4 = R_1 = R_3 = O_5 = x - 1$. Note that the wires $w_2$ and $w_3$ are both right inputs of $g_2$.
 
 The wire polynomials:
 
@@ -986,4 +985,4 @@ If we evaluate these polynomials at target points $1$ and $2$ we get:
        &= c_1c_2 - c_4 & &=c_4(c_1 + c_3) - c_5
 \end{align*}
 
-Hence, $T(x) = (x - 1)(x - 2)$ divides $P(x)$ if and only $1, 2$ are roots of $P(x)$; $(c_1, c_2, \dots, c_5)$ is a valid assignment for $C$.
+Hence, $T(x) = (x - 1)(x - 2)$ divides $P(x)$ if and only if $1, 2$ are roots of $P(x)$. Identically, the tuple $(c_1, c_2, \dots, c_5)$ is a valid assignment for $C$.
