@@ -2,8 +2,10 @@
 \chapter{Future Work}
 \label{future_work}
 
-\section{Zero Knowledge Proof Verification}
+\section{Publicly verifiable zero knowledge proof}
 \label{future_work:zkp_ver}
+
+In the scheme presented in Chapter~\ref{solution}, only the requestor can verify the proof produced by the data processor crafted for her request. The output of the processing must be remain private. For that reason, is stored encrypted in the blockchain. As the output is a crucial input to the verification algorithm, only the requestor can validate the proof. This gives the requestor an opportunity to defy data processor's legitimacy and validity forcing the data processor to resort to a third part trusted entity that will enforce the data requestor to disclose the output of the process. To eliminate this, the verification algorithm must be run on the blockchain, where anyone can validate the proof, without revealing the output of the processing. The input of the verification algorithm must be encrypted. To achieve this, the proof generation algorithm must include the encryption procedure that encrypts the output. This ensures that the ciphertext corresponds to the output of the processing. Implementing the verification algorithm in the blockchain eliminates, also, the need of the salt (§~\ref{solution:proof}). The output is encrypted and an adversary cannot brute-force it efficiently.
 
 \section{Secure Multi party computation}
 \label{future_work:mpc}
