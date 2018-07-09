@@ -145,29 +145,27 @@ The data sharing application is governed by a smart contract deployed on the Eth
 \subsection{Data set registration}
 \label{implemenation:contracts:data_reg}
 
-In order to register a new data set to the application an entity needs to call the \verb|registerDataSet| function with the following arguments:
+A data controller to register a new dataset to the application needs to call the \verb|registerDataSet| function with the following arguments:
 
 \begin{itemize}
-  \item \verb|_id|: The id of the data set. Data sets ids must be unique and will be converted to lowercase. It can be any string as long as it have not been already registered and it's length is less that 32
-  \item \verb|name|: The name of the data set. It can be an arbitrary string
+  \item \verb|hash|: The SHA256 of the raw data set. It serves as a unique identifier of the dataset: the \verb|dataSetID|.
+  \item \verb|name|: The name of the dataset. It can be an arbitrary string
   \item \verb|location|: The URI of the location of the data set
   \item \verb|category|: The category of the data set. It can be an arbitrary string
-  \item \verb|hashMeta|: The SHA256 of the submitted values
-  \item \verb|_dataOwner|: The address of the owner of the data source
-  \item \verb|digest|: The SHA256 of the raw data set
+  \item \verb|metaHash|: The SHA256 of the submitted values: \verb|hash|, \verb|name|, \verb|location| and \verb|category|
 \end{itemize}
 
 \begin{lstlisting}[language=Solidity, caption={Data set registration function}]
   function registerDataSet(
-        bytes32 _id,
-        string name,
-        string location,
-        string category,
-        string hashMeta,
-        address _dataOwner,
-        string digest
+    bytes32 hash,
+    bytes32 name,
+    string location,
+    bytes32 category,
+    bytes32 metaHash
   ) public returns (bool success);
 \end{lstlisting}
+
+The address of the controller is taken from the \verb|msg.sender| field.
 
 \subsection{Request for processing}
 \label{implemenation:contracts:req_pr}
@@ -178,31 +176,31 @@ In order to request for data processing the \verb|requestProcessing| function ne
 
 \begin{itemize}
   \item \verb|_dataSetID|: The id of the dataset of interest
-  \item \verb|_subscriber|: The address of the requestor
-  \item \verb|queryID|: The id of the algorithm that the processor will apply over the data set
+  \item \verb|algorithmID|: The id of the algorithm that the processor will apply over the data set
   \item \verb|pubKey|: The public key of the requestor
 \end{itemize}
+
+A unique identifier of the request is created by applying the \verb|SHA256| hash function to the concatenation of the dataset's id with the address of the requestor. In particular, as \verb|SHA256(_dataSetID, msg.sender)|. The address of the requestor is taken from the \verb|msg.sender| field.
 
 In order to notify a data processor that a request for data processing is pending a call to the \verb|notifyProcessor| function must be made with the following arguments:
 
 \begin{itemize}
-  \item \verb|_providerAddress|: The address of the owner of the data source
-  \item \verb|_subscriber|: The address of the requestor
-  \item \verb|cipher|: The encryption of the symmetric key with which the dataset has been encrypted
+  \item \verb|_processorAddress|: The address of the data processor that will process the dataset
+  \item \verb|_requestID|: The id of the request
+  \item \verb|encryptedKey|: The encrypted symmetric key with which the dataset has been encrypted
 \end{itemize}
 
 \begin{lstlisting}[language=Solidity, caption={Request for processing functions}]
   function requestProcessing(
     bytes32 _dataSetID,
-    address _subscriber,
-    bytes32 queryID,
+    bytes32 algorithmID,
     string pubKey
   ) public returns (bool success);
 
   function notifyProcessor(
-    address _providerAddress,
-    address _subscriber,
-    string cipher
+    address _processorAddress,
+    bytes32 _requestID,
+    string encryptedKey
   ) public returns (bool success);
 
 \end{lstlisting}
@@ -230,20 +228,20 @@ Only the contract creator can execute the \verb|registerProcessor| function.
 
 \subsection{Data Controller Registration}
 \label{implemenation:contracts:reg_processor}
-
-Likewise, a data processor can be registered by a transaction that invokes the \verb|registerProvider| function with the following inputs:
+registerController
+Likewise, a data processor can be registered by a transaction that invokes the \verb|registerController| function with the following inputs:
 
 \begin{itemize}
-  \item \verb|_providerAddress|: The address of the data controller
+  \item \verb|_controllerAddress|: The address of the data controller
   \item \verb|name|: The name of the data controller. It can be an arbitrary string
   \item \verb|pubKey|: The public key of the data controller
 \end{itemize}
 
-Again, only the contract creator can execute the \verb|registerProvider| function.
+Again, only the contract creator can execute the \verb|registerController| function.
 
 \begin{lstlisting}[language=Solidity, caption={Data controller registration function}]
-  function registerProvider(
-    address _providerAddress,
+  function registerController(
+    address _controllerAddress,
     bytes32 name,
     string pubKey
   ) public returns (bool success);
@@ -257,8 +255,8 @@ Various general function are provided to facilitate the usage of the system.
 \begin{itemize}
   \item \verb|getDataSetInfo|: Given a data set id it returns all the information of the specific data set
   \item \verb|getRequestInfo|: Given a requestor address it returns all the information of the specific request
-  \item \verb|getDataProviderInfo|: Given a data controller address it returns all the information of the specific data controller
-  \item \verb|getDataProcessorInfo|: Given a data processor address it returns all the information of the specific data processor
+  \item \verb|getController|: Given a data controller address it returns all the information of the specific data controller
+  \item \verb|getProcessor|: Given a data processor address it returns all the information of the specific data processor
 \end{itemize}
 
 \begin{lstlisting}[language=Solidity, caption={General functions}]
@@ -266,42 +264,39 @@ Various general function are provided to facilitate the usage of the system.
     public
     view
     returns(
-          string name,
-          string location,
-          string category,
-          address owner,
-          string hashMeta,
-          string digest
+        bytes32 name,
+        string location,
+        bytes32 category,
+        bytes32 metaHash,
+        address controller
       );
 
-  function getRequestInfo(address _subscriber)
+  function getRequestInfo(bytes32 _requestID)
     public
     view
     returns(
       bytes32 dataSetID,
-      address provider,
+      address requestor,
       bool hasProof,
       bool processed,
-      bytes32 queryID,
+      bytes32 algorithmID,
       string pubKey
   );
 
-  function getDataProviderInfo(address provider)
+  function getController(address _controller)
     public
     view
     returns(
-      address owner,
       bytes32 name,
       string pubKey
   );
 
-  function getDataProcessorInfo(address _dataProcessorAddress)
+  function getProcessor(address _processor)
   public
   view
   returns(
-      address owner,
-      bytes32 name,
-      string pubKey
+    bytes32 name,
+    string pubKey
   );
 \end{lstlisting}
 
@@ -311,7 +306,7 @@ Various general function are provided to facilitate the usage of the system.
 A data processor can save the ZKP proof and the output of the computation by calling the \verb|addProof| function with the following arguments:
 
 \begin{itemize}
-  \item \verb|_subscriber|: The address of the requestor
+  \item \verb|_requestID|: The request id
   \item \verb|proof|: The proof in hex format
   \item \verb|output|: The encrypted output
 \end{itemize}
@@ -319,7 +314,7 @@ A data processor can save the ZKP proof and the output of the computation by cal
 \begin{lstlisting}[language=Solidity, caption={Data sharing application events}]
 
 function addProof(
-  address _requestor,
+  bytes32 _requestID,
   string proof,
   string output
 ) public returns (bool success);
@@ -343,37 +338,37 @@ In particular:
 \begin{lstlisting}[language=Solidity, caption={Data sharing application events}]
 
   event NewDataSet(
-    bytes32 _id,
-    string name,
-    string location,
-    string category,
-    string hashMeta,
-    address owner,
-    string digest
+      bytes32 hash,
+      bytes32 name,
+      string location,
+      bytes32 category,
+      bytes32 metaHash,
+      address controller
   );
 
-  event NewProvider(
-    address _providerAddress,
-    bytes32 name
+  event NewController(
+      address _controllerAddress,
+      bytes32 name,
+      string pubKey
   );
 
   event NewProcessor(
-    address _providerAddress,
-    bytes32 name,
-    string pubKey
+      address _processorAddress,
+      bytes32 name,
+      string pubKey
   );
 
   event NewRequest(
-    bytes32 _dataSetID,
-    address _provider,
-    address _subscriber,
-    bytes32 queryID,
-    string pubKey
+      bytes32 _requestID,
+      bytes32 _dataSetID,
+      address _requestor,
+      bytes32 algorithmID,
+      string pubKey
   );
   event Process(
-    address _providerAddress,
-    address _subscriber,
-    string cipher
+    address _processorAddress,
+    bytes32 _requestID,
+    string encryptedKey
   );
 \end{lstlisting}
 
