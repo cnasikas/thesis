@@ -2,26 +2,34 @@
 \chapter{Implementation}
 \label{implemenation}
 
-To cover the needs of the data sharing ecosystem the application is separated in two parts: the \textit{off-chain network} and the \textit{blockchain network}. The off-chain network is responsible for dataset storage, dataset distribution, and dataset processing. The blockchain is responsible for recording dataset registrations, requests for processing and processing outputs along with proofs of computations. For that reason, every node of the network -- a data share node -- is connected to the blockchain and track every transaction specified for the application. This way it can track and index every registered dataset, all requests for processing and all processing outputs and proofs which in turn the node can act accordingly.
+To cover the needs of the data sharing and processing ecosystem the application is separated in two parts: the \textit{off-chain network} and the \textit{blockchain network}. The off-chain network is responsible for dataset storage, dataset distribution, and dataset processing. The blockchain is responsible for recording dataset registrations, requests for data processing and data processing outputs along with their proofs of computations. For that reason, every node of the network -- \textit{a data share node} -- is connected to the blockchain and track every transaction related to the application. The node can track and index every registered dataset, all requests for data processing and all processing outputs and proofs. A node, depending on its role, acts accordingly when a blockchain transaction is broadcasted in the network.
 
-To implement those functionalities and services a variety of tools and APIs are made. They are analyzed in the following sections.
+A variety of tools and APIs are made to implement the protocol as described in Chapter~\ref{solution}. They are analyzed in the following sections.
 
-\section{RESTful API}
-\label{implemenation:rest}
+\section{API}
 
-A RESTful API is provided to facilitate communication between any application, that follows the REST architecture, and the data sharing ecosystem. The REST API expose the blockchain business network that can be easily consumed by HTTP or REST clients. That way, any developer familiar with existing web technologies and frameworks is not obligated to learn the interval mechanisms of the blockchain system to develop and deploy applications atop.
+A server is implemented to aid developers and users and is responsible to: a) expose a RESTful API that facilitates the interaction with the application, and b) listen and record to a relational database all the events of the application emitted by the blockchain.
+
+The existence of such server is not a threat to the decentralization of the system. The application is governed by the smart contracts deployed on the blockchain. Anyone can interact directly with the blockchain or implement their own server or client.
+
+\subsection{RESTful API}
+\label{implemenation:api:rest}
+
+A RESTful API is provided to facilitate communication between any application, that follows the REST architecture, and the data sharing application. The REST API expose the blockchain business network that can be easily consumed by HTTP or REST clients. That way, any developer familiar with existing web technologies and frameworks is not obligated to learn the interval mechanisms of the blockchain system to develop and deploy applications atop.
 
 Through the REST API one can:
 
 \begin{itemize}
   \item Get all datasets
-  \item Register a dataset
+  \item Register a dataset (as pending)
   \item Get a specific dataset
   \item Get all processing requests
-  \item Register a request for processing
+  \item Register a request for processing (as pending)
   \item Get a specific request
   \item Get all processors
-  \item Register a processor
+  \item Register a processor (as pending)
+  \item Get all controllers
+  \item Register a controller (as pending)
   \item Get all blockchain accounts
 \end{itemize}
 
@@ -45,26 +53,77 @@ The REST API expose a set of routes each one having an HTTP method and a URI. Al
  POST &  /requests \\ \hline
  GET &  /processors \\ \hline
  POST &  /processors \\ \hline
+ GET &  /controllers \\ \hline
+ POST &  /controllers \\ \hline
 \end{tabular}
 \label{table:api_routes}
 \end{table}
 
+All blockchain transaction made by a user must be sign with her signing key. As keys should be private and be managed only by the user itself, the server exposing the REST API cannot make a transaction on behalf of the user. For that reason, all \verb|POST| actions create a database record where the status of the action is set as \verb|pending|.
+
+\subsection{Database}
+\label{implemenation:api:db}
+
+The server is registered to all available events (§~\ref{implemenation:contracts:events}) of the system that are emitted by the blockchain. When an event is triggered a record of the action is saved to a relational database. The database's scheme is shown in Figure~\ref{fig:implemenation:db}.
+
+\begin{figure}[ht!]
+  \begin{tikzpicture}
+
+    \matrix(Users) [table, label=above:Users] {
+      id & firstName & lastName & email \\ & & & \\
+    };
+
+    \matrix(Addr) [table, label=above:Addresses, below=1.25cm of Users] {
+      id & hash & userId \\ & & \\
+    };
+
+    \matrix(Datasets) [table, label=above:Datasets, below=1.25cm of Addr] {
+      id & addressId & name & location & category & hash & txId & metaHash & status  \\ & & & & & & & & \\
+    };
+
+    \matrix(Requests) [table, label=above:Requests, below=1.25cm of Datasets] {
+      id & datasetId & addressId & algorithmId & processed & pubKey & txId & status  \\ & & & & & & & \\
+    };
+
+    \matrix(Alg) [table, label=above:Algorithms, below=1.25cm of Requests] {
+      id & name \\ & \\
+    };
+
+    \matrix(Processors) [table, label=above:Processors, below=1.25cm of Alg] {
+      id & name & pubKey & addressId & txId & status \\ & & & & & \\
+    };
+
+    \matrix(Controllers) [table, label=above:Controllers, below=1.25cm of Processors] {
+      id & name & pubKey & addressId & txId & status \\ & & & & & \\
+    };
+
+    \draw (Users-2-1.south)--++(0,-.5)-|(Addr-1-3.north);
+    \draw (Addr-2-1.south)--++(0,-.5)-|(Datasets-1-2.north);
+
+    \draw (Datasets-2-1.south)--++(0,-.5)-|(Requests-1-2.north);
+    \draw (Requests-2-3.south)--++(0,-.5)-|(Alg-1-1.north);
+
+  \end{tikzpicture}
+  \caption{Database scheme}
+  \label{fig:implemenation:db}
+\end{figure}
+
 \section{Distributed Application}
 \label{implemenation:dapp}
 
-The distributed application is a web-based application providing a graphical user interface (UI) to facilitate the data sharing platform usage. The goal of the distributed application is to provide to the end-user an easy, self-explanatory and efficient way of interacting with the data sharing ecosystem. As most users are already familiar with the use of web applications and platforms, such as webmails, cloud services and social media, such interfaces makes the user feel accustomed. The user does not and should not need to know that interacts with the blockchain.
+The distributed application is a web-based application providing a graphical user interface (UI) to facilitate the data sharing platform usage. The goal of the distributed application is to provide to the end-user an easy, self-explanatory and efficient way of interacting with the data sharing ecosystem. As most users are already familiar with the use of web applications and platforms, such as webmails, cloud services and social media, such interfaces makes the user feel accustomed. The only requirement is to have an ethereum account and installed the metamask wallet~\cite{metamask}.
 
 The distributed application consumes the REST API and yields the same functionalities.
 
 \section{Controller}
 \label{implemenation:controller}
 
-The controller is a data sharing node that is responsible for providing a dataset for data processing. It listens for processing requests and forwards the dataset to a data processor. Is implemented as described in §~\ref{solution:entities:data_controller} and §~\ref{solution:flow:pr_req}.
+The controller is a data sharing node that is responsible for providing a dataset for data processing. It listens for processing requests and forwards datasets to data processors. Is implemented as described in §~\ref{solution:entities:data_controller} and §~\ref{solution:flow:pr_req}.
 
 \section{Processor}
 \label{implemenation:processor}
 
-The processor is a data sharing node that is waiting for data processing notifications from a data controller. It is also connected to the blockchain and when it is notified for processing it processes the dataset and produces a Zero Knowledge proof for the correctness of the computation. Is implemented as described in §~\ref{solution:entities:data_processor} and §~\ref{solution:flow:pr_data}.
+The processor is a data sharing node that listens to data processing notifications pushed by a data controller. It processes datasets and produces Zero Knowledge proofs of correctness of computation. Is implemented as described in §~\ref{solution:entities:data_processor} and §~\ref{solution:flow:pr_data}.
 
 \section{Libraries}
 \label{implemenation:libs}
@@ -74,7 +133,7 @@ Various libraries have been build to facilitate the interaction with the various
 \subsection{Blockchain}
 \label{implemenation:libs:bl}
 
-The blockchain library offers a set of functionalities that makes communication with any blockchain implementation easier. Is a wrapper library over blockchain specific libraries, such as Ethereum's \verb|web3|, and it's main purpose is to be blockchain agnostic allowing the use of different Blockchains. For the moment only the Ethereum blockchain is supported.
+The blockchain library offers a set of functionalities that makes the communication with any blockchain implementation easier. Is a wrapper library over blockchain specific libraries, such as Ethereum's \verb|web3|, and it's main purpose is to be blockchain agnostic allowing the use of different Blockchains. For the moment only the Ethereum blockchain is supported.
 
 Abstract Functions:
 
@@ -90,12 +149,17 @@ Abstract Functions:
   \item \verb|getFilter|: Get a filter object
   \item \verb|toBytes|: Covert a string to bytes
   \item \verb|fromBytes|: Covert bytes to a string
+  \item \verb|registerDataSet|: Register a dataset
+  \item \verb|registerProcessor|: Register a processor
+  \item \verb|registerController|: Register a controller
+  \item \verb|requestProcessing|: Request a data processing
+  \item \verb|notifyProcessor|: Notify a data processor for data processing
 \end{itemize}
 
 \subsection{Crypto}
 \label{implemenation:libs:cr}
 
-The crypto library provides various cryptographic functionalities. It wraps various \verb|SJCL| and \verb|Node.js Crypto module| functions.
+The crypto library provides various cryptographic functionalities. It wraps the \verb|SJCL| and the \verb|Node.js Crypto module| libraries.
 
 Functions:
 
@@ -106,8 +170,8 @@ Functions:
   \item \verb|pubDecrypt|: Decrypt a ciphertext with a secret key with the use of ECC
   \item \verb|encryptFile|: Encrypt a file with a symmetric key with the use of AES256
   \item \verb|decryptFile|: Decrypt a file with a symmetric key with the use of AES256
-  \item \verb|bytesToHex|: Convert bytes to a hex
-  \item \verb|hextoBytes|: Convert a hex to bytes
+  \item \verb|bytesToHex|: Convert bytes to hex
+  \item \verb|hextoBytes|: Convert hex to bytes
   \item \verb|hashFile|: Hash a file with the use of SHA256
   \item \verb|hash|: Hash an array of values with the use of SHA256
 \end{itemize}
@@ -145,7 +209,7 @@ The data sharing application is governed by a smart contract deployed on the Eth
 \subsection{Data set registration}
 \label{implemenation:contracts:data_reg}
 
-A data controller to register a new dataset to the application needs to call the \verb|registerDataSet| function with the following arguments:
+A data controller registers a new dataset to the application by calling the \verb|registerDataSet| function with the following arguments:
 
 \begin{itemize}
   \item \verb|hash|: The SHA256 of the raw data set. It serves as a unique identifier of the dataset: the \verb|dataSetID|.
@@ -170,9 +234,9 @@ The address of the controller is taken from the \verb|msg.sender| field.
 \subsection{Request for processing}
 \label{implemenation:contracts:req_pr}
 
-The request for processing consists of two parts: A show of interest by a requestor for data processing and a notification to the processor informing that there is a request that needs attention.
+A request for data processing consists of two parts: Requesting for data processing and notifying the data processor of that request.
 
-In order to request for data processing the \verb|requestProcessing| function needs to be invoked with the following arguments:
+A data processing request is made by calling the \verb|requestProcessing| function with the following arguments:
 
 \begin{itemize}
   \item \verb|_dataSetID|: The id of the dataset of interest
@@ -182,7 +246,7 @@ In order to request for data processing the \verb|requestProcessing| function ne
 
 A unique identifier of the request is created by applying the \verb|SHA256| hash function to the concatenation of the dataset's id with the address of the requestor. In particular, as \verb|SHA256(_dataSetID, msg.sender)|. The address of the requestor is taken from the \verb|msg.sender| field.
 
-In order to notify a data processor that a request for data processing is pending a call to the \verb|notifyProcessor| function must be made with the following arguments:
+In order to notify a data processor that a request for data processing is pending, a data controller calls the \verb|notifyProcessor| function with the following arguments:
 
 \begin{itemize}
   \item \verb|_processorAddress|: The address of the data processor that will process the dataset
@@ -208,7 +272,7 @@ In order to notify a data processor that a request for data processing is pendin
 \subsection{Processor Registration}
 \label{implemenation:contracts:reg_processor}
 
-A data processor can be registered by a transaction that invokes the  \verb|registerProcessor| function with the following inputs:
+A data processor can be registered by a transaction that invokes the \verb|registerProcessor| function with the following inputs:
 
 \begin{itemize}
   \item \verb|_processorAddress|: The address of the data processor
@@ -228,7 +292,7 @@ Only the contract creator can execute the \verb|registerProcessor| function.
 
 \subsection{Data Controller Registration}
 \label{implemenation:contracts:reg_processor}
-registerController
+
 Likewise, a data processor can be registered by a transaction that invokes the \verb|registerController| function with the following inputs:
 
 \begin{itemize}
@@ -254,7 +318,7 @@ Various general function are provided to facilitate the usage of the system.
 
 \begin{itemize}
   \item \verb|getDataSetInfo|: Given a data set id it returns all the information of the specific data set
-  \item \verb|getRequestInfo|: Given a requestor address it returns all the information of the specific request
+  \item \verb|getRequestInfo|: Given a request id it returns all the information of the specific request
   \item \verb|getController|: Given a data controller address it returns all the information of the specific data controller
   \item \verb|getProcessor|: Given a data processor address it returns all the information of the specific data processor
 \end{itemize}
@@ -331,7 +395,7 @@ In particular:
   \item \verb|NewDataSet|: A data set is registered
   \item \verb|NewProvider|: A data controller is registered
   \item \verb|NewProcessor|: A data processor is registered
-  \item \verb|NewRequest|: A request for processing is made
+  \item \verb|NewRequest|: A request for data processing is made
   \item \verb|Process|: A notification for data processing is sent to a specific processor
 \end{itemize}
 
@@ -377,14 +441,14 @@ In particular:
 
 To generate and verify zkSNARKs proofs the \verb|Pequin| library~\cite{pequin} is used. \verb|Pequin| is a toolchain to verifiably execute programs expressed in the C programming language. \verb|Pequin| consists of a front-end and a back-end. The front-end takes C programs and transforms them to a set of arithmetic constraints as described in ~\ref{zkp:snarks}. The back-end in Pequin is a zk-SNARK. Pequin uses \verb|SCIPR Lab's libsnark|~\cite{libsnark}, which is an optimized implementation of the back-end of \verb|Pinocchio|~\cite{pinocchio-nearly-practical-verifiable-computation}, itself a refinement and implementation of \verb|GGPR|~\cite{ggpr}.
 
-Each of the supported algorithm (§~\ref{solution:algorithms}) is written in the C programming language. A trusted setup has been run and a key pair $(e_k, v_k)$ has been generated for each of the available algorithms. The evaluation keys and the compiled programs are available to all data processors as they are necessary components for proof generation and data computation. The verification keys are also publicly available to all requestors as they are needed for the proof verification.
+Each of the supported algorithm (§~\ref{solution:algorithms}) is written in the C programming language. A trusted setup has been run and a key pair $(e_k, v_k)$ has been generated for each of the available algorithms. The evaluation keys and the compiled programs are available to all data processors as they are necessary components for proof generation and data computation. The verification keys are also publicly available to all requestors important to proof verification.
 
-A set of various bash scripts are made to facilitate the data processors and the data requestors. They provide simple commands and abstract the interaction with the \verb|Pequin| library.
+A set of various bash scripts are made to facilitate the data processors and the data requestors. They provide simple commands that abstract the interaction with the \verb|Pequin| library.
 
 \section{Programming details}
 \label{implemenation:details}
 
-Building the data sharing ecosystem (§~\ref{solution}) requires the use of various frameworks, technologies, programming languages and libraries.
+The data sharing ecosystem (§~\ref{solution}) required various frameworks, technologies, programming languages and libraries.
 
 In particular:
 
@@ -399,7 +463,7 @@ In particular:
       \item Blockchain: \verb|web3 0.20.4|~\cite{web3js}
       \item Crypto: \verb|SJCL 1.0.7|~\cite{sjcl} and \verb|Node.js v8.9.4 Crypto Module|
     \end{enumerate}
-  \item Smart contracts: \verb|Truffle 4.1.0|~\cite{truffle} and \verb|Solidity 0.4.19|~\cite{solidity}
+  \item Smart contracts: \verb|Truffle 4.1.0|~\cite{truffle} and \verb|Solidity 0.4.24|~\cite{solidity}
   \item Zero Knowledge Proofs: \verb|Pequin|~\cite{pequin} and \verb|libsnark|~\cite{libsnark}
   \item Ethereum Blockchain: \verb|Ganache CLI v6.0.3 (ganache-core: 2.0.2)|~\cite{ganache}
 \end{enumerate}
