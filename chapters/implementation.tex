@@ -2,7 +2,7 @@
 \chapter{Implementation}
 \label{implemenation}
 
-To cover the needs of the data sharing ecosystem the application is separated in two parts: the off-chain network and the blockchain network. The off-chain network is responsible for dataset storage, dataset distribution, and dataset processing. The blockchain is responsible for recording dataset registrations, requests for processing and processing outputs along with proofs of computations. For that reason, every node of the network---a data share node--- is connected to the blockchain and track every transaction specified for the application. This way it can track and index every registered dataset, all requests for processing and all processing outputs and proofs which in turn the node can act accordingly.
+To cover the needs of the data sharing ecosystem the application is separated in two parts: the \textit{off-chain network} and the \textit{blockchain network}. The off-chain network is responsible for dataset storage, dataset distribution, and dataset processing. The blockchain is responsible for recording dataset registrations, requests for processing and processing outputs along with proofs of computations. For that reason, every node of the network -- a data share node -- is connected to the blockchain and track every transaction specified for the application. This way it can track and index every registered dataset, all requests for processing and all processing outputs and proofs which in turn the node can act accordingly.
 
 To implement those functionalities and services a variety of tools and APIs are made. They are analyzed in the following sections.
 
