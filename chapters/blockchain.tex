@@ -446,11 +446,9 @@ PBFT and state-machine replication protocols’ downside is poor \textit{scalabi
 
 \section{Mining \& incentives}\label{blockchain:mining}
 
-The process of creating a block in a PoW consensus system is known as \textit{mining} and the participants as \textit{miners}. The first block was mined by Satoshi Nakamoto~\cite{nakamoto2012bitcoin} and is called the \textit{genesis} block. Every valid chain starts from the genesis block.
+The process of creating a block in a PoW consensus system is known as \textit{mining} and the participants as \textit{miners}. Miners contribute their computation resources to validate and generate blocks. This process can be costly. For that reason incentives motivates the miners of the network to mine blocks. In permissionless blockchains such as Bitcoin or Ethereum a monetary incentive in the form of cryptocurrency incentivize the miners while in permissioned blockchains incentives can be financial or acquiring access to valuable information~\cite{deloitte}.
 
-For miners to participate in the network and contribute their computation resources incentives are provided. Normally, in permissionless blockchains such as Bitcoin or Ethereum a monetary incentive in the form of cryptocurrency incentivize the miners and in a permissioned blockchain finance incentives or access to blockchain data could encourage miners to participate~\cite{deloitte}.
-
-In Bitcoin, the miner is rewarded with a number of bitcoins that are created for the specific block. This happens through a specific type of transaction called \textit{coinbase}. This type of transaction has an unconnected income edge without a sender and an outcoming edge with recipient the miner that found the particular block. This is how new bitcoins are generated. The amount of coin mined in each block is pre agreed by the network and every four years is reduced by half. Currently, the reward is 12,5 BTC.
+In Bitcoin a reward is given to the miner who its proposed block got into the blockchain. This happens through a specific type of transaction called \textit{coinbase}. This type of transaction has an unconnected income edge without a sender and an outcoming edge with recipient the miner that produced the particular block. This is how new bitcoins are generated. The amount of coin mined in each block is pre agreed by the network and every four years is reduced by half. At the moment of writing, the reward is 12,5 BTC.
 
 \begin{figure}[!ht]
   \centering
@@ -463,7 +461,7 @@ In Bitcoin, the miner is rewarded with a number of bitcoins that are created for
   \label{fig:mining:coinbase}
 \end{figure}
 
-Another way a miner is rewarded is by collecting \textit{transactions fees}; the financial remains of a confirmed transaction. This can happen when a user makes a transaction where the total value of all incoming edges are bigger than the total value of all outcoming edges. In particular, the total fees of a block are defined as:
+Another way a miner is rewarded is by collecting \textit{transactions fees}. A transaction fee is the difference between the total value of all incoming edges and the total value of all outcoming edges. In particular, the total fees a miner collects by a block are defined as:
 
 \begin{equation*}
   fees = \sum_{tx \in block} [ \sum_{i \in in(tx) }w(i) -  \sum_{o \in out(tx) }w(o)]
