@@ -2,11 +2,11 @@
 \chapter{Solution}
 \label{solution}
 
-In our solution we use a protocol where \textit{datasets} can be \textit{registered} to the system and be made available for \textit{processing}. Anyone can request a data processing over a registered dataset and a processing algorithm of their choice. A request is served by a \textit{data processor} to whom the dataset is transferred by the \textit{data controller}.
+In our solution we use a protocol where \textit{datasets} can be \textit{registered} to the system and be made available for \textit{processing}. Anyone can request a data processing over a registered dataset and a processing algorithm of their choice. A request is fulfilled by a \textit{data processor} to whom the dataset is transferred by the \textit{data controller}.
 
-A public blockchain is used as the \textit{controller} of the application. It is responsible for keeping an audit, immutable, tamper-proof and transparent log of all actions of the participants. All participants are \textit{accountable} for their actions and cannot challenge the validity of them. Dataset are stored \textit{off-chain} and the data controllers, the owners of datasets, are responsible for their quality, availability and security. To increase trust to the data processors, a \textit{zero knowledge verifiable scheme} is used. The data processors are obligated to produce a \textit{proof of correctness of computation}, along with the output, that the \textit{requestor} verifies.
+A public blockchain is used as the \textit{controller} of the application. It is responsible for keeping an audit, immutable, tamper-proof and transparent log of all actions of the participants. All participants are \textit{accountable} for their actions and cannot challenge the validity of them. Dataset are stored \textit{off-chain} and data controllers, the owners of datasets, are responsible for their quality, availability and security. To increase trust to data processors, a \textit{zero knowledge verifiable scheme} is used. The data processors are obligated to produce a \textit{proof of correctness of computation}, along with the output of the processing, that the \textit{requestor} in turn verifies.
 
-It has to be noted that the blockchain does not provides an extra security layer concerning datasets. The datasets are stored off-chain, data controllers are responsible for the security of their system and the participants can still collaborate outside the Blockchain network. Nevertheless, the use of the Blockchain can guarantee accountability, auditability and provenance tracking of the data increasing the trust to the system.
+It has to be noted that the blockchain does not provides an extra security layer concerning datasets. The datasets are stored off-chain, data controllers are responsible for the security of their system and the participants can still collaborate outside the blockchain network. Nevertheless, the use of the blockchain can guarantee accountability, auditability and provenance tracking of the datasets increasing the trust to the system.
 
 \section{Participants}
 \label{solution:entities}
@@ -28,7 +28,7 @@ The data processor is responsible for processing datasets on behalf of the data 
 \subsection{Data Requester}
 \label{solution:entities:data_req}
 
-The requester can be any entity that requests a computation over a dataset. It can be a research center, a university, a machine learning algorithm or any individual. The requester expects, along with the output, a proof of correct computation over the requested dataset that verifies at the end of the processing.
+The requester can be any entity that requests a computation over a dataset with the use of a specific algorithm. It can be a research center, a university, a machine learning algorithm or any individual. The requester expects, along with the output, a proof of correct computation over the requested dataset that verifies at the end of the processing.
 
 \section{Threat model}
 \label{solution:treat_model}
@@ -42,7 +42,7 @@ Adversaries can be divided in 4 categories:
 \begin{itemize}
   \item Malicious data controller
   \item Malicious data processor
-  \item Malicious requestor
+  \item Malicious requester
   \item Malicious public user
 \end{itemize}
 
@@ -58,7 +58,7 @@ In our solution we do not address those issues. We assume that a data controller
 \subsection{Malicious data processor}
 \label{solution:treat_model:mprocessor}
 
-As data controllers, data processors may want to manipulate the results of the processing. A malicious data processor could influence the results of the processing with the following means:
+Similarly to data controllers, data processors may want to manipulate the results of the processing. A malicious data processor could influence the results of the processing with the following means:
 
 \begin{itemize}
   \item Fake computation
@@ -70,10 +70,10 @@ As data controllers, data processors may want to manipulate the results of the p
 
 We aim to fully protect requestors from such malicious actors except of data disclosure.
 
-\subsection{Malicious requestor}
+\subsection{Malicious requester}
 \label{solution:treat_model:mrequestor}
 
-The role of a requestor is certain: it can only make requests. Therefore, the only type of attack a malicious requestor can perform is a distributed denial-of-service attack (DDoS) by flooding the network with requests in an attempt to overload the data processors and prevent other requests from being fulfilled. DDoS attacks are not address in this work and are left for future work (§~\ref{future_work:fees}).
+The role of a requestor is certain: it can only make requests. Therefore, the only type of attack a malicious requestor can perform is a distributed denial-of-service attack (DDoS) by flooding the network with requests in an attempt to overload  data processors and prevent other requests from being fulfilled. DDoS attacks are not addressed in this work and are left for future work (§~\ref{future_work:fees}).
 
 \subsection{Malicious public user}
 \label{solution:treat_model:mpublic_user}
@@ -101,28 +101,28 @@ For the moment the supported algorithms by the system are:
   \item Minimum
 \end{enumerate}
 
-The above algorithms are not considered to be privacy-preserving as it is outside the scope of the initial prototype and should be considered on future work(§~\ref{future_work:ppq}).
+The above algorithms are not considered to be privacy-preserving as it is outside the scope of the initial prototype and should be considered on future work (§~\ref{future_work:ppq}).
 
 \section{Zero-Knowledge Verifiable Computation}
 \label{solution:proof}
 
-Every data processor provides a proof of correctness of the execution for a computation on a given dataset without \textit{revealing} the dataset itself. As the processor is obligated to provide a proof -- a rational verifier rejects a computation without it -- it is impossible for the processor a) to pretend that it done a processing without actually make any computation at all; b) to process a different dataset of its choice; c) to execute a different algorithm other than the requested one; d) to return another result other than the one that returned by the computation. It is evident that a Zero-Knowledge proof of computation plays a crucial role as it address various threats by malicious processors and enforce them to be honest.
+Every data processor provides a proof of correctness of execution of a computation on a given dataset without \textit{revealing} the dataset itself. As the processor is obligated to provide a proof -- a rational verifier rejects a computation without it -- it is impossible for the processor a) to pretend that it done a processing without actually make any computation at all; b) to process a different dataset of its choice; c) to execute a different algorithm other than the requested one; d) to return another result other than the one that returned by the computation. It is evident that a Zero-Knowledge proof of computation plays a crucial role as it address various threats by malicious processors and enforce them to be honest.
 
-Constructions of zkSNARKs require a \textit{one-time trusted setup} in which a common-reference string (CRS) is generated; the public parameters of the system. The CRS is used to construct and verify proofs. Proof generation and verification requires two publicly available keys which derived from the CRS: the evaluation key $ek_f$ and the verification key $vk_f$. The CRS is different for each function $F$ for which the prover wants to produce a proof of computation. For that reason, a key pair $(ek_f, vk_f)$ need to be generated one for each of the available algorithms that the processors use.
+Constructions of zkSNARKs require a \textit{one-time trusted setup} in which a common-reference string (CRS) is generated; the public parameters of the system. The CRS is used to construct and verify proofs. Proof generation and verification requires two publicly available keys which derived from the CRS: the evaluation key $ek_f$ and the verification key $vk_f$. The CRS is different for each function $F$ for which the prover wants to produce a proof of computation. For that reason, a key pair $(ek_f, vk_f)$ needs to be generated one for each of the available algorithms that the processors use.
 
-Anyone that can obtained the trapdoor information corresponding to the CRS can produce fake proofs. For that reason, whomever runs the setup should be a trusted entity. Various alternatives to bypass the trusted party -- such as secure \textit{multi-party computation} for CRS generation~\cite{zcash_mpc} or multi-string models~\cite{groth2014cryptography} where a set of untrusted authorities generate a random trusted string -- have been proposed. In our solution, we assume that the trusted entity, that registers and verifies the parties through the PKI, is also responsible for key generation and distribution. The distribution can be done either by saving the public parameters on the blockchain or in a publicly available server.
+Anyone who obtains the trapdoor information corresponding to the CRS can produce fake proofs. For that reason, whomever runs the setup should be a trusted entity. Various alternatives to bypass the trusted party -- such as secure \textit{multi-party computation} for CRS generation~\cite{zcash_mpc} or multi-string models~\cite{groth2014cryptography} where a set of untrusted authorities generate a random trusted string -- have been proposed. In our solution, we assume that the trusted entity, that registers and verifies the parties through the PKI, is also responsible for key generation and distribution. The distribution can be done either by saving the public parameters on the blockchain or in a publicly available server.
 
-In our scheme, the processor executes an algorithm $F$ with public input $u$ and private input $w$ and with the use of the evaluation key $ek_f$ it generates a zero knowledge proof. Then, the requestor with the use of the verification key $vk_f$ can verify that the processor executed correctly the algorithm $F$ on inputs $u$ and $w$.
+In our scheme, the processor executes an algorithm $F$ with public input $u$ and private input $w$. With the use of the evaluation key $ek_f$ it generates a zero knowledge proof. Then, the requestor with the use of the verification key $vk_f$ can verify that the processor executed correctly the algorithm $F$ on inputs $u$ and $w$.
 
-First, the data processor want to prove to the verifier that the computation is indeed done on the requested dataset without disclosing the dataset to it. The dataset is the private input $w$. For better understanding of the construction of the proof we define a game where tree participants are involved: a trusted oracle, a  computationally bounded processor and a requestor. The trusted oracle has a list of datasets and the corresponding digests (hashes). The oracle cannot cheat or collaborate with any of the participant and for the same dataset it produces the same digest. At any moment the oracle selects randomly a dataset, gives it to the processor and announce the hash of the dataset to the requestor. The requestor wants to know if the processor holds the dataset that produce the same digest as the one that was given to it by the oracle. To do that, the requestor ask the processor to compute the hash of the dataset. The computation of the digest of the dataset serves as a proof that shows that the data processor holds the corresponding dataset. The requestor accepts the proof if and only if the hash of the processor match the hash of the oracle and rejects otherwise. The processor is forced to correctly compute the hash of the dataset as it is the only way to convince the requestor; hash functions are one-way and the oracle is trusted.
+First, the data processor want to prove to the verifier that the computation is indeed done on the requested dataset without disclosing the dataset. The dataset is the private input $w$. For better understanding of the construction of the proof we define a game where tree participants are involved: a trusted oracle, a  computationally bounded processor and requestor. The trusted oracle has a list of datasets and the corresponding digests (hashes). The oracle cannot cheat or collaborate with any of the participant and for the same dataset it produces the same digest. At any moment the oracle selects randomly a dataset, gives it to the processor and announce the hash of the dataset to the requestor. The requestor wants to know if the processor holds the dataset that produce the same digest as the one that was given to it by the oracle. To do that, the requestor ask the processor to compute the hash of the dataset. The computation of the digest of the dataset serves as a proof that shows that the data processor holds the corresponding dataset. The requestor accepts the proof if and only if the hash of the processor match the hash of the oracle and rejects otherwise. The processor is forced to correctly compute the hash of the dataset as it is the only way to convince the requestor -- hash functions are one-way and the oracle is trusted.
 
-Let's modify our game and assume now that the oracle gives the hash of the dataset to both the processor and requestor. The processor can easily convince the requestor without computing the hash; it knows the hash beforehand. To countermeasure that, the requestor demands from the processor to produce a proof of verifiable computation. It gives as function $F$ the same hash function $H$ the oracle used to produce the digests of the datasets. Then, it asks the processor to generate a proof for $F(h, d) = H(d)$ where $d$ is the dataset given by the oracle and $h$ the hash of it. The hash is the public input $u$ and the dataset $d$ the private input $w$. As the processor wants to disclose the dataset $d$ it produces a zero knowledge proof. The requestor verifies the proof and accept if and only if the proof is valid. Again, the processor can not do anything else but to comply and computes the digest.
+Let's modify our game and assume now that the oracle gives the hash of the dataset to both the processor and requestor. The processor can easily convince the requestor without computing the hash; it knows the hash beforehand. To countermeasure that, the requestor demands from the processor to produce a proof of verifiable computation. It gives as function $F$ the same hash function $H$ the oracle used to produce the digests of the datasets. Then, it asks the processor to generate a proof for $F(h, d) = H(d)$ where $d$ is the dataset given by the oracle and $h$ the hash of it. The hash is the public input $u$ and the dataset $d$ the private input $w$. As the processor wants to disclose the dataset $d$ it produces a zero knowledge proof. The requestor verifies the proof and accept if and only if the proof is valid. Again, the processor can not do anything else but to comply and compute the digest.
 
-Ideally, we would like the trusted oracle to be the data controller and make an indistinguishability assumption between them but that is not the case. The data controller is trusted to publish the correct digest of the dataset in the blockchain and the immutability property of it prevent a malicious processor to change the digest to its preferences.
+Ideally, we would like the trusted oracle to be the data controller and make an indistinguishability assumption between them. That is not the case. The data controller is trusted to publish the correct digest of the dataset in the blockchain and the immutability property of the blockchain prevent a malicious processor to change the digest to its preferences.
 
-What remains, is to include inside $F$ the processing procedure of the dataset. The algorithm $F$ with private inputs $d$ and public input $h$, for which a zero knowledge proof of correct computation is generated, consists of a) hash generation of dataset $d$; b) the dataset processing.
+What remains, is to include inside $F$ the processing procedure of the dataset. The algorithm $F$ with private inputs $d$ and public input $h$, for which a zero knowledge proof of correct computation is generated, consists of a) hash generation of dataset $d$; b) dataset processing.
 
-Informally, let $d$ be a private dataset, $H$ a cryptographic hash function and $h = H(d)$ the digest of $d$ over $H$. Let $\calp$ be the prover (data processor) and $\calv$ the verifier (data requestor). Prover $\calp$ produces a zkSNARK proof (§~\ref{zkp:snarks}) $\pi$ for the following \textit{NP statement}:
+Let $d$ be a private dataset, $H$ a cryptographic hash function and $h = H(d)$ the digest of $d$ over $H$. Let $\calp$ be the prover (data processor) and $\calv$ the verifier (data requestor). Prover $\calp$ produces a zkSNARK proof (§~\ref{zkp:snarks}) $\pi$ for the following \textit{NP statement}:
 
 Given the public digest $h$, an outsourced function $F$ and an output $y$ I know a private dataset $d$ such that:
   \begin{enumerate}
@@ -132,7 +132,7 @@ Given the public digest $h$, an outsourced function $F$ and an output $y$ I know
 
 The irreversibility of cryptographic hash function in conjunction with the immutability of the blockchain and the trust for data integrity to the data controller, that produced the digest of the dataset in the first place, guarantees that indeed the prover $\calp$ processed the requested dataset without revealing it.
 
-The proof $\pi$ is publicly available for anyone to verify. In our solution, the result of the computation remains private and is encrypted with the public key of the requestor. Thus, only the requestor can verify the proof; the output is needed from the verification algorithm. A malicious adversary who wants to learn the output $y$ can potentially do this by brute-force attacking $y$ using the public parameters of the zkSNARK setting. A realistic example could be when $F$ computes the summation of a list of integers and return $0$ if the sum is even and $1$ if it is odd. An adversary can use the verification algorithm for both possible outputs and guess $y$ correctly. To avoid this, a random \textit{salt} $s \rselect{\{0, 1\}^{l}}$, with security parameter $l$, is used as an additional input of the proof. Each proof should use a unique salt. Although, the processor generates the salt before constructing a proof and is private to anybody than the requestor, in the zkSNARK setting it is considered as a public input.
+The proof $\pi$ is publicly available for anyone to verify. In our solution, the result of the computation remains private and is encrypted with the public key of the requestor. Thus, only the requestor can verify the proof -- the raw output is needed by the verification algorithm. A malicious adversary who wants to learn the output $y$ can potentially do this by brute-force attacking $y$ using the public parameters of the zkSNARK setting. A realistic example could be when $F$ computes the summation of a list of integers and return $0$ if the sum is even and $1$ if it is odd. An adversary can use the verification algorithm for both possible outputs and guess $y$ correctly. To avoid this, a random \textit{salt} $s \rselect{\{0, 1\}^{l}}$, with security parameter $l$, is used as an additional input of the proof. Each proof should use a unique salt. Although, the processor generates the salt before constructing a proof and is private to anybody than the requestor, in the zkSNARK setting it is considered as a public input.
 
 The proof generation procedure is summarized in Algorithm~\ref{alg:zkp}.
 
@@ -158,9 +158,9 @@ The proof generation procedure is summarized in Algorithm~\ref{alg:zkp}.
 
 Naturally, for datasets to be available for processing a data registration process is needed. Anyone who register a dataset automatically becomes a data controller who is responsible for the availability and quality of it. The dataset should be publicly available on any location of their choice provided that the controller expose an API for data retrieval. The location can be in a distributed file system~\cite{ipfs}, a decentralized cloud storage~\cite{storj} or a central server. As long as the involved participants communicate over the same protocol the choice is irrelevant; the system is agnostic concerning data storage.
 
-The confidentiality of the dataset must rely solely on cryptographic primitives with strong guarantees. Therefore, every dataset, before stored, is encrypted using the symmetric encryption algorithm \verb|AES| with \verb|256-bit| key length and \verb|CTR| as mode of operation. For each dataset a different encryption key is created and used. This approach bear the burden of key generation and management but on the other hand if an attacker manages to obtain a key the security of other datasets is not compromised~\cite{schneier1997improved}.The hash of contents of the unencrypted dataset is computed, and stored in the blockchain, using the cryptographic hash function \verb|SHA256|. As discussed in~\ref{solution:proof}, the hash of the dataset plays an important role in the application.
+The confidentiality of the dataset must rely solely on cryptographic primitives with strong guarantees. Therefore, every dataset, before stored, is encrypted using the symmetric encryption algorithm \verb|AES| with \verb|256-bit| key length and \verb|CTR| as mode of operation. For each dataset a different encryption key is created and used. This approach bear the burden of key generation and management but on the other hand if an attacker manages to obtain a key the security of other datasets is not compromised~\cite{schneier1997improved}.The hash of contents of the unencrypted dataset is computed, and stored in the blockchain, using the cryptographic hash function \verb|SHA256|. As discussed in~\ref{solution:proof} the hash of the dataset plays an important role in the application.
 
-A dataset is actually registered and available when a \textit{register} transaction is sent to the blockchain, signed by the data controller. The transaction needs to include the name of the \textit{dataset}, a \textit{category}, the \textit{location} (URI) and the \textit{digest} (hash) of the file. From the name of the dataset a \textit{unique persistent identifier} is created, to which all participants refer to. Two datasets with the same name cannot be saved; the transaction is rejected in the case of name duplication.
+A dataset is actually registered and available when a \textit{register} transaction is sent to the blockchain signed by the data controller. The transaction needs to include the name of the \textit{dataset}, a \textit{category}, the \textit{location} (URI) and the \textit{digest} (hash) of the file. The hash of the dataset is used as a \textit{unique persistent identifier} to which all participants refer to.
 
 The data registration procedure is summarized in Algorithm~\ref{alg:data_registration}.
 
@@ -183,7 +183,7 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
   \EndFunction
   \Procedure{\sf register}{name, file, category}
     \Let{(h, k, \textsf{uri})}{\textsf{save(file)}} \Comment{Save dataset}
-    \State $tx \rightarrow$ broadcast(name, uri, category, h) \Comment{Register dataset}
+    \State $tx \leftarrow$ broadcast(name, uri, category, h) \Comment{Register dataset}
     \State \Return{$(tx, k)$}
   \EndProcedure
   \end{algorithmic}
@@ -198,7 +198,7 @@ The data registration procedure is summarized in Algorithm~\ref{alg:data_registr
       \node[database] (db) [below right=of owner] {Datastore};
       \draw[<->] (owner) -- (db) node[midway,left] {$Enc_k(data)$};
       \draw[<-] ([xshift=-1em]owner.north) -- ([xshift=-1em]2,-0.5);
-      \draw[->] ([xshift=1em]owner.north) -- ([xshift=1em]2,-0.5) node[midway,right] {$Tx(\{name, location, category, digest, address, hashMeta\}, "register\_data")$};
+      \draw[->] ([xshift=1em]owner.north) -- ([xshift=1em]2,-0.5) node[midway,right] {$Tx(\{name, location, category, digest, hashMeta\}, "register\_data")$};
     \end{scope}
 
   \end{tikzpicture}
@@ -214,8 +214,8 @@ The entity registration procedure can be done only by the trusted entity that de
 \begin{algorithm}[!htb]
   \caption{Entity registration}\label{alg:entity_registration}
   \begin{algorithmic}[1]
-  \Procedure{\sf register\_entity}{name, $p_k$, address}
-    \Let{tx}{(\textsf{name}, p_k, \textsf{address})}
+  \Procedure{\sf register\_entity}{name, $p_k$}
+    \Let{tx}{(\textsf{name}, p_k)}
     \State $tx$.send()
     \State \Return{$tx$}
   \EndProcedure
@@ -229,7 +229,7 @@ The entity registration procedure can be done only by the trusted entity that de
     \begin{scope}
       \node[node, anchor=west] (controller) at (0,5) {PKI};
       \draw[<-] ([xshift=-1em]controller.south) -- ([xshift=-1em]2,0.5);
-      \draw[->] ([xshift=1em]controller.south) -- ([xshift=1em]2,0.5) node[midway,right] {$Tx(\{name, pubKey, address\}, "register\_entity")$};
+      \draw[->] ([xshift=1em]controller.south) -- ([xshift=1em]2,0.5) node[midway,right] {$Tx(\{name, pubKey\}, "register\_entity")$};
     \end{scope}
 
   \end{tikzpicture}
@@ -240,7 +240,7 @@ The entity registration procedure can be done only by the trusted entity that de
 \section{Request for processing}
 \label{solution:flow:pr_req}
 
-A \textit{request for processing} is the procedure where a participant of the network request a specific processing algorithm to be performed on a dataset of its choice. The requestor can only choose datasets that are registered on the network and publicly available on the blockchain. A request for data processing is registered when the requestor signs and sent a request transaction to the network. In its payload the public key of the requestor must be included. The public key is needed by the processor to be able to encrypt data processing results as it is crucial the results to be private from other parties. When a request is registered, a \verb|request| event is emitted notifying the interested parties. All data controllers are listening to \verb|request| events and are responsible for notifying a data processor of their choice that in turn will fulfill the request. The data controller, responsible of the requested dataset, selects \textit{randomly} a data processor and encrypts the symmetric key of the dataset with its public key. The choice of the data processor could also be done \textit{sequentially}; the data controller choose the next in line data processor; selection by popularity in the existence of a decentralized ranking system is a another viable option. A transaction is sent to the blockchain to notify the selected data processor passing along the id of the request and the encrypted symmetric key.
+A \textit{request for processing} is the procedure where a participant of the network request a specific processing algorithm to be performed on a dataset of its choice. The requestor can only choose datasets that are registered on the network and publicly available on the blockchain. A request for data processing is registered when the requestor signs and sent a request transaction to the network. In its payload the public key of the requestor must be included. The public key is needed by the processor to be able to encrypt data processing results as they must remain private from other parties. When a request is registered, a \verb|request| event is emitted notifying the interested parties. All data controllers are listening to \verb|request| events and are responsible for notifying a data processor of their choice that in turn will fulfill the request. The data controller, responsible of the requested dataset, selects \textit{randomly} a data processor and encrypts the symmetric key of the dataset with the public key of the data processor. The choice of the data processor could also be done \textit{sequentially}; the data controller choose the next in line data processor; selection by popularity in the existence of a decentralized ranking system is a another viable option. A transaction is sent to the blockchain to notify the selected data processor passing along the id of the request and the encrypted symmetric key.
 
 The request for processing procedure is summarized in Algorithm~\ref{alg:data_request}.
 
@@ -305,7 +305,7 @@ The request for processing procedure is summarized in Algorithm~\ref{alg:data_re
 \section{Dataset processing}
 \label{solution:flow:pr_data}
 
-As it has already been mentioned, the role of a data processor is crucial. They decrease the pressure over data controllers which they exploit them by entrusting specific data processing operations on behalf of data requestors. Data processors can only perform pre-agreed algorithms (§~\ref{solution:algorithms}) on registered datasets. A processor is constantly listening for \verb|process| events related to it. As seen in §~\ref{solution:flow:pr_req}, the controller \textit{notify} the processor by emitting those events including the ID of the request and the encrypted symmetric key of the dataset. The processor, having all the needed information, signs a transaction to get the details of that request; the \textit{dataset ID} and the \textit{algorithm ID}. Another transaction is made to get the location and the hash of the dataset. As all informations are saved only in the blockchain, for traceability, accountability and provenance tracking to be enabled, those transactions are needed. The processor is ready to process the dataset. At first, it decrypts the symmetric key with its private key $sk_p$, it downloads the dataset from the provided location and decrypts it. Assuming no errors, the computation is started and a proof, as analyzed in~\ref{solution:proof}, is generated with the evaluation key $ek_f$. The results are encrypted with the public key of the requestor $pk_r$. Final, a transaction is sent to the blockchain with the proof $\pi$ and the encrypted results and an event is emitted to notify the requestor for the completion of the data processing.
+As it has already been mentioned, the role of a data processor is crucial. They decrease the pressure over data controllers which they exploit them by entrusting specific data processing operations on behalf of data requestors. Data processors can only perform pre-agreed algorithms (§~\ref{solution:algorithms}) on registered datasets. A processor is constantly listening for \verb|process| events related to it. As seen in §~\ref{solution:flow:pr_req}, the controller \textit{notify} the processor by emitting those events including the ID of the request and the encrypted symmetric key of the dataset. The processor, having all the needed information, signs a transaction to get the details of that request; the \textit{dataset ID} and the \textit{algorithm ID}. Another transaction is made to get the location and the hash of the dataset. As all informations are saved only in the blockchain this transactions are needed. The processor is ready to process the dataset. At first, it decrypts the symmetric key with its private key $sk_p$, it downloads the dataset from the provided location and decrypts it. Assuming no errors, the computation is started and a proof, as analyzed in~\ref{solution:proof}, is generated with the evaluation key $ek_f$. The results are encrypted with the public key of the requestor $pk_r$. Final, a transaction is sent to the blockchain with the proof $\pi$ and the encrypted results and an event is emitted to notify the requestor for the completion of the data processing.
 
 The data processing procedure is summarized in Algorithm~\ref{alg:data_processing}.
 
@@ -414,7 +414,7 @@ The verification procedure is summarized in Algorithm~\ref{alg:data_verify}.
 
     \begin{scope}
       \node[node, anchor=east] (requester) at (\textwidth,-5) {Requester};
-      \draw[->] ([xshift=-1em]requester.north) -- ([xshift=-1em]14.45,-0.5) node[midway,left] {$Request(pk_R, pred)$};
+      \draw[->] ([xshift=-1em]requester.north) -- ([xshift=-1em]14.45,-0.5) node[midway,left] {$Request(pk_R, metadata)$};
       \draw[<-] ([xshift=1em]requester.north) -- ([xshift=1em]14.45,-0.5) node[midway,right]  {$Verify_{vk}(\pi)$};
     \end{scope}
 
