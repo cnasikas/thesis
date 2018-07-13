@@ -2,9 +2,9 @@
 \chapter{Evaluation}
 \label{evaluation}
 
-We measure the efficiency of our solution via various analyses and comparisons. As storing data on Ethereum, and in blockchain in general, is expensive, the first series of experiments have been made regarding the cost of saving data by comparing and analyze various methods and alternatives. Second, we measure the cost of deploying the application on Ethereum and the cost of each of the individual operations. Lastly, a series of benchmarks have been made to measure the time and the size of computational proofs for each of the predefined algorithms supported by the data processors.
+We measure the efficiency of our solution via various experiments. Storing data on Ethereum, and in blockchain in general, is expensive. For that reason, the first series of experiments are made to measure the cost of saving data in smart contracts by comparing and analyze various methods and alternatives. Second, we measure the cost of deploying the application on Ethereum and the cost of each of the individual operations of it. Lastly, a series of benchmarks are made to measure the time and the size of computational proofs for each of the predefined algorithms supported by the data processors.
 
-All experiments are conducted on MacBook Pro 2016 having a \verb|2GHz Intel Core i5| \verb|(2 cores)| CPU with \verb|8GB (1867 MHz LPDDR3)| of memory and a \verb|256GB PCI-Express SSD|. We use \verb|Ganache CLI v6.0.3 (ganache-core: 2.0.2)| as local Ethereum blockchain testnet and all smart contract are compiled with \verb|Solidity 0.4.19|.
+All experiments are conducted on MacBook Pro 2016 having a \verb|2GHz Intel Core i5| \verb|(2 cores)| CPU with \verb|8GB (1867 MHz LPDDR3)| of memory and a \verb|256GB PCI-Express SSD|. We use \verb|Ganache CLI v6.0.3 (ganache-core: 2.0.2)| as local Ethereum blockchain testnet and all smart contract are compiled with \verb|Solidity 0.4.24|.
 
 \section{Benchmarks}
 \label{evaluation:benchmarks}
@@ -12,13 +12,13 @@ All experiments are conducted on MacBook Pro 2016 having a \verb|2GHz Intel Core
 \subsection{Data storage}
 \label{evaluation:data_storage}
 
-First, we measure the cost of storing raw data on the blockchain for each one of the following sizes: \verb|32 bytes|, \verb|1KB|, \verb|1MB|, \verb|10MB|, \verb|100MB| and \verb|1GB|. The size of \verb|32 bytes| is included as EVM words are of \verb|256-bits|. Table~\ref{table:bytes_usd_cost} reports the results.
+We measure the cost of storing raw data on the blockchain for each one of the following sizes: \verb|32 bytes|, \verb|1KB|, \verb|1MB|, \verb|10MB|, \verb|100MB| and \verb|1GB|. The size of \verb|32 bytes| is included as EVM words are of \verb|256-bits|. Table~\ref{table:bytes_usd_cost} reports the results.
 
-As the size grows in multiples of ten the cost is growing significantly. Storing 1GB of data in Ethereum costs around 13.000.000 US dollars make it impossible and unpractical to store big data in blockchain. A common way of countermeasure is to store the data in an off-chain infrastructure (i.e IPFS~\cite{ipfs}, Storj~\cite{storj} or Filecoin~\cite{filecoin}) and store a reference to the data in the blockchain; a hash pointer. Storing a fixed size reference is much cheaper than saving an arbitrary size dataset. An alternative is to use the logging system of Ethereum whose cost of use is much cheaper than direct storage and can be used as an alternative for data storage.
+As size grows in multiples of ten the cost is growing significantly. Storing 1GB of data in Ethereum costs around 13.000.000 US dollars make it impossible and unpractical to store big data in the blockchain. An alternative is to store the data in an off-chain infrastructure (i.e IPFS~\cite{ipfs}, Storj~\cite{storj} or Filecoin~\cite{filecoin}) and store a reference to the data in the blockchain -- a hash pointer. Storing a fixed size reference is much cheaper than saving arbitrary size datasets. Another alternative is to use the logging system of Ethereum whose cost of use is much cheaper than direct storage.
 
-In attempt to reduce storage costs, various experiments were conducted to compare different storage techniques. Four basic technique have been evaluated: data storage, data hash pointer storage, data logging, data hash pointer logging. Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_05} shows the cost of the four possible ways of storing data for sizes of \verb|32 bytes|, \verb|1KB|, and \verb|1MB|. The size of hash value is constant and \verb|32 bytes|. Logging instead of saving the hash value to storage is cheaper by 35.42\%. Logging raw data far exceeds direct data storage by an average of 700\%.
+In an attempt to reduce storage costs, various experiments were conducted to compare different storage techniques. Four basic technique have been evaluated: data storage, data hash pointer storage, data logging, data hash pointer logging. Tables~\ref{table:data_store_comparison_01} to~\ref{table:data_store_comparison_05} shows the cost of the four possible ways of storing data for sizes of \verb|32 bytes|, \verb|1KB|, and \verb|1MB|. The size of hash value is constant and \verb|32 bytes|. Logging instead of saving the hash value to storage is cheaper by 35.42\%. Logging raw data far exceeds direct data storage by an average of 700\%.
 
-At the time of the experiments the price of Ether is at 942.99 US dollars and the gas price is set at 2 Gwei.
+At the time of the experiments the price of Ether is 942.99 US dollars and the gas price is set at 2 Gwei.
 
 \begin{table}[!htb]
 \centering
@@ -219,7 +219,7 @@ At the time of the experiments the price of Ether is at 942.99 US dollars and th
 \subsection{Application costs}
 \label{evaluation:app_costs}
 
-Each action by the participants has a cost in gas and therefore in money. Table~\ref{table:app_costs} shows the costs of each operation of the application. The most expensive operation is the dataset registration, with a cost of 233.487 gas, as it contains a lot of metadata for the dataset itself. Nevertheless, is an negligible cost considering the advantages of data sharing in privacy preserving manner.
+Each action of the participants has a cost in gas. Table~\ref{table:app_costs} shows the costs of each action of the application. The most expensive action is dataset registration. It costs 233.487 gas. The reason is that various dataset's metadata are saved upon registration. Nevertheless, is a negligible cost considering the advantages of data sharing in privacy preserving manner.
 
 \begin{table}[!htb]
 \centering
@@ -240,9 +240,9 @@ Each action by the participants has a cost in gas and therefore in money. Table~
 \subsection{Zero Knowledge Proofs}
 \label{evaluation:zkp}
 
-A series of benchmarks are performed to measure the performance of the basic parts of the construction and verification zero knowledge proofs. Proof generation is divided in three phases: \verb|Setup|, \verb|Compute| and \verb|Verify|. \verb|Setup| phase consists of the compilation of a \verb|C| programm to QAP (§~\ref{zkp:snarks}) and the generation of the keys needed for proof construction and verification. \verb|Setup| phase is executed once at application bootstrap and per processing algorithm. \verb|Compute| phase consists of circuit evaluation, polynomial solving and proof generation with the use of the evaluation key. Lastly, \verb|Verification| phase consists of proof verification by the verifier with the use of the verification key.
+A series of benchmarks are performed to measure the performance of the basic parts of the construction and verification of zero knowledge proofs. Proof generation is divided in three phases: \verb|Setup|, \verb|Compute| and \verb|Verify|. \verb|Setup| phase consists of the compilation of a \verb|C| programm to QAP (§~\ref{zkp:snarks}) and the generation of the keys needed for proof construction and verification. \verb|Setup| phase is executed once at application bootstrap and per processing algorithm. \verb|Compute| phase consists of circuit evaluation, polynomial solving and proof generation with the use of the evaluation key. Lastly, \verb|Verification| phase consists of proof verification by the verifier with the use of the verification key.
 
-Tables~\ref{table:zkp_01} to~\ref{table:zkp_03} provide details of ZKP performance for each query that application supports and with inputs of size \verb|100|, \verb|1.000| and \verb|10.000|. For each query, we measure the time execution of each one of the three phases and the size of the generated keys and proofs. The keys are reasonably sized, with the evaluation key to typically be from 10 to 100 MB and the verification key to be 100KB. Due to the succinctness property of zkSNARKs the size of the proof is very small and constant for all programs regardless of input size. The size of the evaluation keys and the execution time of each one of the phases are proportional to program complexity.
+Tables~\ref{table:zkp_01} to~\ref{table:zkp_03} shows ZKP performance of the supported algorithms of the application. For each algorithm, we measure the time execution of each one of the three phases and the size of the generated keys and proofs. The keys are reasonably sized, with the evaluation key to typically range from 10 to 100 MB. The verification key is always constant size of 100KB. Due to the succinctness property of zkSNARKs the size of the proof is very small and constant for all programs regardless input size. The size of the evaluation keys and the execution time of each one of the phases are proportional to program's complexity.
 
 \begin{table}[!htb]
 \small
